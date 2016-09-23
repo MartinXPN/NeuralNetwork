@@ -12,7 +12,7 @@
 using namespace std;
 
 class BaseNeuralNetwoek {
-
+/*
 protected:
     vector < BaseNeuron* > input;
     vector < BaseNeuron* > hidden;
@@ -31,7 +31,8 @@ public:
     virtual void onPreBackpropagate() = 0;
     virtual void backpropagate() = 0;
     virtual void onPostBackpropagate() = 0;
-};
+*/
+ };
 
 
 #endif //NEURALNETWORK_BASENEURALNETWOEK_H

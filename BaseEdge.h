@@ -5,33 +5,35 @@
 
 #include "BaseNeuron.h"
 
+template <class Type> class BaseNeuron; /// say that this class exists but don't declare what's inside
+                                        /// this is needed in order to be able to keep a pointer inside BaseEdge
+                                        /// and to keep a pointer of BaseEdge inside BaseNeuron as without this it's a compile error
 
 /**
  *            weight
  * (from) --------------> (to)
 */
+
 template <class Type> class BaseEdge {
 
 protected:
-    BaseNeuron *from;   /// pointer to Neuron
-    BaseNeuron *to;     /// pointer to Neuron
-    Type weight;        /// weight of the Edge
+    BaseNeuron <Type> *from;    /// pointer to Neuron | there are no setters for the Neuron from as it has to be given in the constructor
+    BaseNeuron <Type> *to;      /// pointer to Neuron | there are no setters for the Neuron to as it has to be given in the constructor
+    Type *weight;               /// weight of the Edge
 
 public:
+    BaseEdge( BaseNeuron <Type> * from, BaseNeuron <Type>* to, const Type& weight );
+    BaseEdge( BaseNeuron <Type> from, BaseNeuron <Type> to, const Type& weight );
+    virtual ~BaseEdge();
 
-    BaseEdge( BaseNeuron* from, BaseNeuron* to, const Type& weight );
-    BaseEdge( BaseNeuron from, BaseNeuron to, const Type& weight );
 
+    inline BaseNeuron <Type>* getFrom() const   { return from; }
+    inline BaseNeuron <Type>* getTo() const     { return to; }
 
-    BaseNeuron* getFrom()               { return from; }
-    void setFrom( BaseNeuron* from )    { this -> from = from; }
-
-    BaseNeuron* getTo()                 { return to; }
-    void setTo( BaseNeuron* from )      { this -> to = to; }
-
-    Type getWeight()                    { return weight; }
-    void setWeight( Type weight )       { this -> weight = weight; }
-};
-
+    inline Type* getWeight() const              { return weight; }
+    void setWeight( Type weight )               { *(this -> weight) = weight; }
+    void setWeight( const Type& weight )        { *(this -> weight) = weight; }
+    void setWeight( Type *weight )              { this -> weight = weight; }
+ };
 
 #endif //NEURALNETWORK_BASEEDGE_H
