@@ -1,6 +1,3 @@
-//
-// Created by Martin Mirakyan on 9/22/16.
-//
 
 #ifndef NEURALNETWORK_BASENEURALNETWOEK_H
 #define NEURALNETWORK_BASENEURALNETWOEK_H
