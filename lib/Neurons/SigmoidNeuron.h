@@ -5,7 +5,7 @@
 
 #include <cmath>
 #include <vector>
-#include "BaseNeuron.h"
+#include "../BaseClasses/BaseNeuron.h"
 
 template <class NeuronType>
 class SigmoidNeuron : public BaseNeuron <NeuronType> {
@@ -20,19 +20,12 @@ public:
     virtual ~SigmoidNeuron() {}
 
 
+    inline void setValue( NeuronType value ) { BaseNeuron <NeuronType> :: activatedValue = value; }
+
     virtual NeuronType activation(NeuronType x) override;
     virtual NeuronType activationDerivative(NeuronType x) override;
 };
 
-
-template <class NeuronType>
-NeuronType SigmoidNeuron <NeuronType> :: activation(NeuronType x) {
-    return  1. / ( 1. + std::exp( -x ) );
-}
-
-template <class NeuronType>
-NeuronType SigmoidNeuron <NeuronType> :: activationDerivative(NeuronType x) {
-    return std::exp( x ) / ( ( 1. + std::exp( x ) ) * ( 1. + std::exp( x ) ) );
-}
+#include "SigmoidNeuron.tpp"
 
 #endif //NEURALNETWORK_SIGMOIDNEURON_H

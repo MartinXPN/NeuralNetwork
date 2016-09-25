@@ -15,14 +15,20 @@ template <class EdgeType> class BaseEdge;   /// say that this class exists but d
  *      1. onPreActivation
  *      2. onActivation
  *      3. onPostActivation
+ *      4. onCalculateLoss
+ *      5. onPreBackpropagation
+ *      6. onBackpropagation
+ *      7. onPostBackpropagation
  *
  * @Contains:
  *      1. edges to the next layer
  *      2. edges to the previous layer
  *      3. activatedValue
  *      4. preActivatedValue
+ *      5. loss
  */
-template <class NeuronType> class BaseNeuron {
+template <class NeuronType>
+class BaseNeuron {
 
 protected:
     std::vector < BaseEdge <NeuronType>* > next;        /// all the connections to the neuron from the next layer
@@ -30,6 +36,7 @@ protected:
 
     NeuronType activatedValue;      /// value after activating the neuron
     NeuronType preActivatedValue;   /// value before activating the neuron
+    NeuronType loss;                /// loss calculated during backpropagation
 
 
 public:
@@ -41,8 +48,9 @@ public:
     virtual NeuronType activationDerivative( NeuronType x ) = 0;    /// derivative of the activation function of the neuron
 
 
-    inline NeuronType getActivatedValue() const    { return activatedValue; }      /// get the activated value
-    inline NeuronType getPreActivatedValue() const { return preActivatedValue; }   /// get pre activated value (i.e. sum of [values of neurons from previous layer * weights connected to them ] )
+    inline NeuronType getActivatedValue() const     { return activatedValue; }      /// get the activated value
+    inline NeuronType getPreActivatedValue() const  { return preActivatedValue; }   /// get pre activated value (i.e. sum of [values of neurons from previous layer * weights connected to them ] )
+    inline NeuronType getLoss() const               { return loss; }
 
     virtual void addNextLayerConnection( BaseEdge <NeuronType>* edge ) { next.push_back( edge ); }
     virtual void addPreviousLayerConnection( BaseEdge <NeuronType> * edge ) { previous.push_back( edge ); }
@@ -54,7 +62,6 @@ public:
      */
     virtual void onPreActivation() {};
 
-
     /**
      * Called to activate the neuron
      * calculates the sum of [values of neurons from previous layer * weights connected to them ]
@@ -62,42 +69,34 @@ public:
      */
     virtual void onActivation();
 
-
     /**
      * called after activating the neuron
      */
     virtual void onPostActivation() {};
+
+
+    /**
+     * called to calculate the loss for the neuron
+     */
+    virtual void onCalculateLoss() {};
+
+
+    /**
+     * Called right before beckpropagating the neuron
+     */
+    virtual void onPreBackpropagation() {};
+
+    /**
+     * Called to beckpropagating the neuron
+     */
+    virtual void onBackpropagation( NeuronType learningRate, int batchSize );
+
+    /**
+     * Called after beckpropagating the neuron
+     */
+    virtual void onPostBackpropagation() {};
 };
 
-
-
-template <class NeuronType>
-BaseNeuron <NeuronType> :: BaseNeuron() {}
-
-
-template <class NeuronType>
-BaseNeuron <NeuronType> :: BaseNeuron( const std::vector < BaseEdge <NeuronType>* >& next,
-                                       const std::vector < BaseEdge <NeuronType>* >& previous ):
-        next( next ), previous( previous ) {}
-
-
-template <class NeuronType>
-BaseNeuron <NeuronType> :: ~BaseNeuron() {
-
-    for( auto edge : next )     delete edge;
-    for( auto edge : previous ) delete edge;
-}
-
-template <class NeuronType>
-void BaseNeuron <NeuronType> :: onActivation() {
-
-    /// preactivatedValue = sum of [values of neurons from previous layer * weights connected to them ]
-    preActivatedValue = 0;
-    for( auto edge : previous ) {
-        preActivatedValue += *(edge -> getWeight()) *
-                             edge -> getFrom() -> getActivatedValue();
-    }
-    activatedValue = activation( preActivatedValue );
-}
+#include "BaseNeuron.tpp"
 
 #endif //NEURALNETWORK_BASENEURON_H

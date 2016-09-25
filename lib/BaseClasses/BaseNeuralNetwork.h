@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class BaseNeuralNetwoek {
+class BaseNeuralNetwork {
 /*
 protected:
     vector < BaseNeuron* > input;
