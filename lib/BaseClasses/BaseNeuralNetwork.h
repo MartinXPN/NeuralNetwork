@@ -1,6 +1,3 @@
-//
-// Created by Martin Mirakyan on 9/22/16.
-//
 
 #ifndef NEURALNETWORK_BASENEURALNETWOEK_H
 #define NEURALNETWORK_BASENEURALNETWOEK_H
@@ -11,8 +8,8 @@
 
 using namespace std;
 
-class BaseNeuralNetwoek {
-
+class BaseNeuralNetwork {
+/*
 protected:
     vector < BaseNeuron* > input;
     vector < BaseNeuron* > hidden;
@@ -31,7 +28,8 @@ public:
     virtual void onPreBackpropagate() = 0;
     virtual void backpropagate() = 0;
     virtual void onPostBackpropagate() = 0;
-};
+*/
+ };
 
 
 #endif //NEURALNETWORK_BASENEURALNETWOEK_H
