@@ -5,7 +5,7 @@
 
 #include <cmath>
 #include <vector>
-#include "../BaseClasses/BaseNeuron.h"
+#include "../BaseClasses/Neurons/BaseNeuron.h"
 
 template <class NeuronType>
 class SigmoidNeuron : public BaseNeuron <NeuronType> {

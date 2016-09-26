@@ -3,7 +3,7 @@
 #define NEURALNETWORK_BASENEURON_H
 
 #include <vector>
-#include "BaseEdge.h"
+#include "../Edges/BaseEdge.h"
 
 template <class EdgeType> class BaseEdge;   /// say that this class exists but don't declare what's inside
                                             /// this is needed in order to be able to keep a pointer inside BaseNeuron
@@ -12,13 +12,9 @@ template <class EdgeType> class BaseEdge;   /// say that this class exists but d
 /**
  * Base ABSTRACT class for a neuron
  * @Lifecycle:
- *      1. onPreActivation
- *      2. onActivation
- *      3. onPostActivation
- *      4. onCalculateLoss
- *      5. onPreBackpropagation
- *      6. onBackpropagation
- *      7. onPostBackpropagation
+ *      1. activateNeuron
+ *      2. calculateLoss
+ *      3. backpropagateNeuron
  *
  * @Contains:
  *      1. edges to the next layer
@@ -52,49 +48,28 @@ public:
     inline NeuronType getPreActivatedValue() const  { return preActivatedValue; }   /// get pre activated value (i.e. sum of [values of neurons from previous layer * weights connected to them ] )
     inline NeuronType getLoss() const               { return loss; }
 
-    virtual void addNextLayerConnection( BaseEdge <NeuronType>* edge ) { next.push_back( edge ); }
+    virtual void addNextLayerConnection( BaseEdge <NeuronType>* edge )      { next.push_back( edge ); }
     virtual void addPreviousLayerConnection( BaseEdge <NeuronType> * edge ) { previous.push_back( edge ); }
 
 
 
-    /**
-     * Called right before activating the neuron
-     */
-    virtual void onPreActivation() {};
 
     /**
      * Called to activate the neuron
      * calculates the sum of [values of neurons from previous layer * weights connected to them ]
      * updates the values activatedValue and preActivatedValue
      */
-    virtual void onActivation();
+    virtual void activateNeuron();
 
     /**
-     * called after activating the neuron
+     * Called to calculate the loss for the neuron
      */
-    virtual void onPostActivation() {};
-
-
-    /**
-     * called to calculate the loss for the neuron
-     */
-    virtual void onCalculateLoss() {};
-
-
-    /**
-     * Called right before beckpropagating the neuron
-     */
-    virtual void onPreBackpropagation() {};
+    virtual void calculateLoss();
 
     /**
      * Called to beckpropagating the neuron
      */
-    virtual void onBackpropagation( NeuronType learningRate, int batchSize );
-
-    /**
-     * Called after beckpropagating the neuron
-     */
-    virtual void onPostBackpropagation() {};
+    virtual void backpropagateNeuron(NeuronType learningRate, int batchSize);
 };
 
 #include "BaseNeuron.tpp"

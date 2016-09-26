@@ -3,7 +3,7 @@
 #define NEURALNETWORK_BASEEDGE_H
 
 
-#include "BaseNeuron.h"
+#include "../Neurons/BaseNeuron.h"
 
 template <class NeuronType>
 class BaseNeuron;   /// say that this class exists but don't declare what's inside
@@ -29,18 +29,46 @@ public:
     BaseEdge( BaseNeuron <WeightType> * from, BaseNeuron <WeightType>* to, WeightType* weight );
     virtual ~BaseEdge();
 
-    inline auto getFrom() const { return from; }
-    inline auto getTo() const   { return to; }
+    /**
+     * Get instance of the 'from' neuron
+     */
+    inline auto getFrom() const { return *from; }
+    /**
+     * Get instance of the 'to' neuron
+     */
+    inline auto getTo() const   { return *to; }
 
-    inline WeightType* getWeight() const                    { return weight; }
-    inline void setWeight( WeightType *weight )             { this -> weight = weight; }
-    inline void setWeight( const WeightType& weight )       { *(this -> weight) = weight; }
 
+    /**
+     * Get instance of the weight
+     */
+    inline WeightType getWeight() const                 { return *weight; }
+    /**
+     * Set the weight pointer
+     */
+    inline void setWeight( WeightType *weight )         { this -> weight = weight; }
+    /**
+     * Set the value of the weight
+     */
+    inline void setWeight( const WeightType& weight )   { *(this -> weight) = weight; }
+
+
+    /**
+     * Get instance of the delta weight
+     */
     inline WeightType getDeltaWeight() const                    { return *deltaWeight; }
+    /**
+     * Set the value of the weight
+     */
+    inline void setDeltaWeight( WeightType *deltaWeight )       { this -> deltaWeight = deltaWeight; }
+    /**
+     * Set the value of the weight
+     */
     inline void setDeltaWeight( const WeightType& deltaWeight ) { *(this -> deltaWeight) = deltaWeight; }
 
+
     virtual void updateWeight();
- };
+};
 
 #include "BaseEdge.tpp"
 
