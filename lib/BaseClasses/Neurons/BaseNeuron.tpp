@@ -2,16 +2,14 @@
 #include "BaseNeuron.h"
 
 
-template <class NeuronType>
-BaseNeuron <NeuronType> :: BaseNeuron() :
-        BaseNeuron( {}, {} ) {}
-
 
 template <class NeuronType>
-BaseNeuron <NeuronType> :: BaseNeuron( const std::vector < BaseEdge <NeuronType>* >& next,
-                                       const std::vector < BaseEdge <NeuronType>* >& previous ) :
-        next( next ), previous( previous ), activatedValue(1.), preActivatedValue(0.), loss(1.) {}
+BaseNeuron <NeuronType> :: BaseNeuron( BaseActivationFunction<NeuronType>* activationFunction,
+                                       const std::vector<BaseEdge<NeuronType> *> &next,
+                                       const std::vector<BaseEdge<NeuronType> *> &previous) :
+        activationFunction( activationFunction ), next( next ), previous( previous ), activatedValue( 0. ), preActivatedValue( 0. ), loss( 1. ) {
 
+}
 
 template <class NeuronType>
 BaseNeuron <NeuronType> :: ~BaseNeuron() {
@@ -31,7 +29,7 @@ void BaseNeuron <NeuronType> :: activateNeuron() {
         preActivatedValue += edge -> getWeight() *
                              edge -> getFrom().getActivatedValue();
     }
-    activatedValue = activation( preActivatedValue );
+    activatedValue = activationFunction -> activation( preActivatedValue );
 }
 
 
@@ -44,7 +42,7 @@ void BaseNeuron <NeuronType> :: calculateLoss() {
         loss += edge -> getWeight() *
                 edge -> getTo().getLoss();
     }
-    loss *= activationDerivative( this -> preActivatedValue );
+    loss *= activationFunction -> activationDerivative( this -> preActivatedValue );
 }
 
 
@@ -62,3 +60,11 @@ void BaseNeuron <NeuronType> :: backpropagateNeuron(NeuronType learningRate, int
                                 getActivatedValue() );
     }
 }
+
+template <class NeuronType>
+void BaseNeuron <NeuronType> :: updateWeights() {
+
+    for( auto edge : next )
+        edge -> updateWeight();
+}
+

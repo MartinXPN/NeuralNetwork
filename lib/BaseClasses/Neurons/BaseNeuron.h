@@ -4,13 +4,15 @@
 
 #include <vector>
 #include "../Edges/BaseEdge.h"
+#include "../../Activations/BaseActivation/BaseActivationFunction.h"
+
 
 template <class EdgeType> class BaseEdge;   /// say that this class exists but don't declare what's inside
                                             /// this is needed in order to be able to keep a pointer inside BaseNeuron
                                             /// and to keep a pointer of BaseNeuron inside BaseEdge as without this it's a compile error
 
 /**
- * Base ABSTRACT class for a neuron
+ * Base class for a neuron
  * @Lifecycle:
  *      1. activateNeuron
  *      2. calculateLoss
@@ -22,6 +24,7 @@ template <class EdgeType> class BaseEdge;   /// say that this class exists but d
  *      3. activatedValue
  *      4. preActivatedValue
  *      5. loss
+ *      6. activation function (interface) -> inherited from BaseActivationFunction
  */
 template <class NeuronType>
 class BaseNeuron {
@@ -30,19 +33,15 @@ protected:
     std::vector < BaseEdge <NeuronType>* > next;        /// all the connections to the neuron from the next layer
     std::vector < BaseEdge <NeuronType>* > previous;    /// all the connections to the neuron from the previous layer
 
+    BaseActivationFunction <NeuronType>* activationFunction; /// inherface for activation function ( contains activation() and activationDerivative() )
     NeuronType activatedValue;      /// value after activating the neuron
     NeuronType preActivatedValue;   /// value before activating the neuron
     NeuronType loss;                /// loss calculated during backpropagation
 
 
 public:
-    BaseNeuron();
-    BaseNeuron( const std::vector < BaseEdge <NeuronType>* >& next, const std::vector < BaseEdge <NeuronType>* >& previous );
+    BaseNeuron( BaseActivationFunction <NeuronType>* activationFunction, const std::vector < BaseEdge <NeuronType>* >& next = {}, const std::vector < BaseEdge <NeuronType>* >& previous = {} );
     virtual ~BaseNeuron();
-
-    virtual NeuronType activation( NeuronType x ) = 0;              /// activation function of the neuron
-    virtual NeuronType activationDerivative( NeuronType x ) = 0;    /// derivative of the activation function of the neuron
-
 
     inline NeuronType getActivatedValue() const     { return activatedValue; }      /// get the activated value
     inline NeuronType getPreActivatedValue() const  { return preActivatedValue; }   /// get pre activated value (i.e. sum of [values of neurons from previous layer * weights connected to them ] )
@@ -70,6 +69,11 @@ public:
      * Called to beckpropagating the neuron
      */
     virtual void backpropagateNeuron(NeuronType learningRate, int batchSize);
+
+    /**
+     * Called to update the weights connecting the neuron to the next layer
+     */
+    virtual void updateWeights();
 };
 
 #include "BaseNeuron.tpp"

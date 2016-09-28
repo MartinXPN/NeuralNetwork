@@ -4,6 +4,8 @@
 
 
 #include "BaseNeuron.h"
+#include "../../Activations/SimpleActivations/Identitiy.h"
+
 
 template <class NeuronType>
 class BaseOutputNeuron : private BaseNeuron <NeuronType> {
@@ -13,14 +15,14 @@ protected:
     using BaseNeuron <NeuronType> :: activatedValue;
     using BaseNeuron <NeuronType> :: preActivatedValue;
     using BaseNeuron <NeuronType> :: loss;
-
-    virtual NeuronType activation(NeuronType x) override            { return x; }
-    virtual NeuronType activationDerivative(NeuronType x) override  { return x; }
+    using BaseNeuron <NeuronType> :: activationFunction;
 
 
 public:
     BaseOutputNeuron();
-    BaseOutputNeuron(  const std::vector < BaseEdge <NeuronType>* >& next, const std::vector < BaseEdge <NeuronType>* >& previous  );
+    BaseOutputNeuron( BaseActivationFunction <NeuronType> * activationFunction );
+    BaseOutputNeuron( BaseActivationFunction <NeuronType> * activationFunction,
+                      std::vector < BaseEdge <NeuronType>* > previous );
     virtual ~BaseOutputNeuron() {}
 
 

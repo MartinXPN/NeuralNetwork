@@ -1,21 +1,17 @@
 
 #include "BaseInputNeuron.h"
-
-template <class NeuronType>
-BaseInputNeuron <NeuronType> :: BaseInputNeuron() :
-        BaseNeuron <NeuronType> () {}
+#include "../../Activations/SimpleActivations/Identitiy.h"
 
 
 template <class NeuronType>
-BaseInputNeuron <NeuronType> ::BaseInputNeuron(const std::vector<BaseEdge<NeuronType> *> &next,
-                                               const std::vector<BaseEdge<NeuronType> *> &previous) :
-        BaseNeuron <NeuronType> ( next, previous ) {}
+BaseInputNeuron <NeuronType> :: BaseInputNeuron() : BaseInputNeuron( 0., {} ) {
 
-
-
-template <class NeuronType>
-BaseInputNeuron <NeuronType> :: BaseInputNeuron(NeuronType inputValue) :
-        BaseNeuron <NeuronType> () {
-
-    activatedValue = inputValue;
 }
+
+template <class NeuronType>
+BaseInputNeuron <NeuronType> :: BaseInputNeuron(NeuronType inputValue, const std::vector<BaseEdge<NeuronType> *> &next) :
+        BaseNeuron <NeuronType> ( new Identity <NeuronType>, next ) {
+
+}
+
+
