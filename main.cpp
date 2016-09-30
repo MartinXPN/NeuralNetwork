@@ -65,13 +65,16 @@ int main() {
         for (int i = 3; i < numberOfNeurons; ++i) {
             neurons[i] -> activateNeuron();
         }
+
+
         /// calculate losses
-        cout << "input: (" << one << "," << two << ") -> " << out << "\tout: " << ((BaseOutputNeuron<double> *) neurons[6]) -> getValue() << "\t"
+        cout << "(" << one << "," << two << ") -> " << out << "\tout: " << ((BaseOutputNeuron<double> *) neurons[6]) -> getValue() << "\t"
              << "loss #" << iteration << ": " << ((BaseOutputNeuron<double> *) neurons[6]) -> calculateLoss( out ) << endl;
 
         for (int i = 5; i >= 3; --i) {
             neurons[i] -> calculateLoss();
         }
+
         /// backpropagate neurons
         for (int i = numberOfNeurons - 1; i >= 0; --i) {
             neurons[i] -> backpropagateNeuron(0.01, 1);
