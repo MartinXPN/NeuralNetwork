@@ -7,7 +7,12 @@ template <class NeuronType>
 BaseNeuron <NeuronType> :: BaseNeuron( BaseActivationFunction<NeuronType>* activationFunction,
                                        const std::vector<BaseEdge<NeuronType> *> &next,
                                        const std::vector<BaseEdge<NeuronType> *> &previous) :
-        activationFunction( activationFunction ), next( next ), previous( previous ), activatedValue( 0. ), preActivatedValue( 0. ), loss( 1. ) {
+        activationFunction( activationFunction ),
+        next( next ),
+        previous( previous ),
+        activatedValue( 0. ),
+        preActivatedValue( 0. ),
+        loss( 1. ) {
 
 }
 
@@ -42,7 +47,7 @@ void BaseNeuron <NeuronType> :: calculateLoss() {
         loss += edge -> getWeight() *
                 edge -> getTo().getLoss();
     }
-    loss *= activationFunction -> activationDerivative( this -> preActivatedValue );
+    loss *= activationFunction -> activationDerivative( preActivatedValue );
 }
 
 
@@ -52,11 +57,11 @@ void BaseNeuron <NeuronType> :: backpropagateNeuron(NeuronType learningRate, int
 
     for( auto edge : next ) {
 
-        /// update current weight
-        /// weight -= (learningRate / batchSize)  * next.loss * activatedValue
-        edge -> setDeltaWeight( edge -> getDeltaWeight() +
-                                learningRate / batchSize *
-                                edge -> getTo().getLoss() *
+        /// update deltaWeight
+        /// deltaWeight += (learningRate / batchSize)  * next.loss * activatedValue
+        edge -> setDeltaWeight( ( edge -> getDeltaWeight() ) +
+                                ( learningRate / batchSize ) *
+                                ( edge -> getTo().getLoss() ) *
                                 getActivatedValue() );
     }
 }

@@ -5,6 +5,13 @@
 
 #include "BaseNeuron.h"
 
+/**
+ * Base class for input neurons
+ * privately inherited from BaseNeuron <>
+ * Contains:
+ *      1. next (connections to the next layer)
+ *      2. activatedValue
+ */
 template <class NeuronType>
 class BaseInputNeuron : private BaseNeuron <NeuronType> {
 

@@ -7,6 +7,15 @@
 #include "../../Activations/SimpleActivations/Identitiy.h"
 
 
+/**
+ * Base class for output neurons
+ * privately inherited from BaseNeuron <>
+ * Conteins:
+ *      1. activatedValue
+ *      2. preActivatedValue
+ *      3. loss
+ *      4. activationFunction
+ */
 template <class NeuronType>
 class BaseOutputNeuron : private BaseNeuron <NeuronType> {
 
@@ -26,7 +35,7 @@ public:
     virtual ~BaseOutputNeuron() {}
 
 
-    virtual NeuronType calculateLoss( NeuronType realValue );
+    virtual NeuronType calculateLoss( NeuronType targetValue );
     using BaseNeuron <NeuronType> :: activateNeuron;
     using BaseNeuron <NeuronType> :: addPreviousLayerConnection;
 

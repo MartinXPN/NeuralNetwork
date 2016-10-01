@@ -25,6 +25,7 @@ BaseOutputNeuron <NeuronType> :: BaseOutputNeuron(BaseActivationFunction<NeuronT
 
 
 template <class NeuronType>
-NeuronType BaseOutputNeuron <NeuronType> :: calculateLoss( NeuronType realValue ) {
-    return loss = getValue() - realValue;
+NeuronType BaseOutputNeuron <NeuronType> :: calculateLoss( NeuronType targetValue ) {
+    return loss = ( activatedValue - targetValue ) *
+                  activationFunction -> activationDerivative( preActivatedValue );
 }

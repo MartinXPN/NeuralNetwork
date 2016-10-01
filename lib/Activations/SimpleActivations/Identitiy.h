@@ -5,6 +5,11 @@
 
 #include "../BaseActivation/BaseActivationFunction.h"
 
+/**
+ * Identity activation function
+ * activation -> x
+ * derivative -> 1
+ */
 template <class Type>
 class Identity : public BaseActivationFunction <Type> {
 

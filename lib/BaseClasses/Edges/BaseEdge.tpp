@@ -9,9 +9,7 @@ BaseEdge <WeightType> :: BaseEdge(BaseNeuron<WeightType> *from,
         from(from), to(to) {
 
     this -> weight = weight;
-    if( deltaWeight == nullptr ) {
-        deltaWeight = new WeightType( 0.5 );
-    }
+    this -> deltaWeight = new WeightType( 0 );
 }
 
 

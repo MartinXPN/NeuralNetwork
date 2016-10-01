@@ -17,6 +17,7 @@ template <class EdgeType> class BaseEdge;   /// say that this class exists but d
  *      1. activateNeuron
  *      2. calculateLoss
  *      3. backpropagateNeuron
+ *      4. updateWeights (called after the batch is processed)
  *
  * @Contains:
  *      1. edges to the next layer
@@ -40,7 +41,9 @@ protected:
 
 
 public:
-    BaseNeuron( BaseActivationFunction <NeuronType>* activationFunction, const std::vector < BaseEdge <NeuronType>* >& next = {}, const std::vector < BaseEdge <NeuronType>* >& previous = {} );
+    BaseNeuron( BaseActivationFunction <NeuronType>* activationFunction,
+                const std::vector < BaseEdge <NeuronType>* >& next = {},
+                const std::vector < BaseEdge <NeuronType>* >& previous = {} );
     virtual ~BaseNeuron();
 
     inline NeuronType getActivatedValue() const     { return activatedValue; }      /// get the activated value
@@ -49,7 +52,6 @@ public:
 
     virtual void addNextLayerConnection( BaseEdge <NeuronType>* edge )      { next.push_back( edge ); }
     virtual void addPreviousLayerConnection( BaseEdge <NeuronType> * edge ) { previous.push_back( edge ); }
-
 
 
 

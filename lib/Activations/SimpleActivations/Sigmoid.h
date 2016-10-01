@@ -6,7 +6,10 @@
 #include <cmath>
 #include "../BaseActivation/BaseActivationFunction.h"
 
-
+/**
+ * Sigmoid activation function
+ * @see: https://en.wikipedia.org/wiki/Sigmoid_function
+ */
 template <class Type>
 class Sigmoid : public BaseActivationFunction <Type> {
 

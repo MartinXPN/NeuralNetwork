@@ -7,6 +7,10 @@
 #include "../BaseActivation/BaseActivationFunction.h"
 
 
+/**
+ * Tanh activation function
+ * @see: https://en.wikipedia.org/wiki/Hyperbolic_function#Hyperbolic_tangent
+ */
 template <class Type>
 class Tanh : public BaseActivationFunction <Type> {
 
