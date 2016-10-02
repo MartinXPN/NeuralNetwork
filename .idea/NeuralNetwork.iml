@@ -15,6 +15,7 @@
       <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/Sigmoid.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/Identitiy.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/ReLU.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/ELU.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
     </content>

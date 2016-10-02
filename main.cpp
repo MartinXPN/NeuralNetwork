@@ -57,9 +57,9 @@ int main() {
     }
 
 
-    const int batchSize = 100;
+    const int batchSize = 4;
     double learningRate = 0.01;
-    for( int iteration = 0; iteration < 5000; ++iteration ) {
+    for( int iteration = 0; iteration < 100000; ++iteration ) {
 
         double loss = 0;
         for( int batch = 0; batch < batchSize; ++batch ) {
@@ -80,7 +80,7 @@ int main() {
             /// calculate losses
             double currentLoss = ((BaseOutputNeuron<double> *) neurons.back())->calculateLoss(out);
             loss += currentLoss;
-            if( iteration == 4999 ) {
+            if( iteration == 49999 ) {
                 cout << "(" << one << "," << two << ") -> " << out << "\tout: "
                      << ((BaseOutputNeuron<double> *) neurons.back())->getValue() << "   \t"
                      << "loss #" << iteration << ": " << currentLoss
@@ -97,7 +97,7 @@ int main() {
             }
         }
 
-        cout << "Loss #" << iteration << ": " << loss / batchSize << endl;
+//        cout << "Loss #" << iteration << ": " << loss / batchSize << endl;
 
         /// update weights
         for (int i = numberOfNeurons - 2; i >= 0; --i) {
