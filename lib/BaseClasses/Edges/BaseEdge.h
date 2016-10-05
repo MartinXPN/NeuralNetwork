@@ -20,51 +20,43 @@ template <class WeightType>
 class BaseEdge {
 
 protected:
-    BaseNeuron <WeightType> *from;  /// pointer to Neuron | there are no setters for the Neuron from as it has to be given in the constructor
-    BaseNeuron <WeightType> *to;    /// pointer to Neuron | there are no setters for the Neuron to as it has to be given in the constructor
-    WeightType *weight;             /// weight of the Edge
-    WeightType *deltaWeight;        /// how much to update weight on backpropagation
+    const BaseNeuron <WeightType> *from;  /// pointer to Neuron | there are no setters for the Neuron from as it has to be given in the constructor
+    const BaseNeuron <WeightType> *to;    /// pointer to Neuron | there are no setters for the Neuron to as it has to be given in the constructor
+    WeightType *weight;         /// weight of the Edge
+    WeightType *deltaWeight;    /// how much to update weight on backpropagation
 
 public:
     BaseEdge( BaseNeuron <WeightType> * from, BaseNeuron <WeightType>* to, WeightType* weight );
     virtual ~BaseEdge();
 
     /**
-     * Get instance of the 'from' neuron
+     * Get const reference of the 'from' neuron
      */
-    inline auto getFrom() const { return *from; }
+    inline const BaseNeuron <WeightType>& getFrom() const { return *from; }
     /**
-     * Get instance of the 'to' neuron
+     * Get const reference of the 'to' neuron
      */
-    inline auto getTo() const   { return *to; }
+    inline const BaseNeuron <WeightType>& getTo() const   { return *to; }
 
 
     /**
      * Get instance of the weight
      */
-    inline WeightType getWeight() const                 { return *weight; }
-    /**
-     * Set the weight pointer
-     */
-    inline void setWeight( WeightType *weight )         { this -> weight = weight; }
+    inline const WeightType& getWeight() const      { return *weight; }
     /**
      * Set the value of the weight
      */
-    inline void setWeight( const WeightType& weight )   { *(this -> weight) = weight; }
+    inline void setWeight( WeightType weight )      { *(this -> weight) = weight; }
 
 
     /**
      * Get instance of the delta weight
      */
-    inline WeightType getDeltaWeight() const                    { return *deltaWeight; }
+    inline const WeightType& getDeltaWeight() const     { return *deltaWeight; }
     /**
      * Set the value of the weight
      */
-    inline void setDeltaWeight( WeightType *deltaWeight )       { this -> deltaWeight = deltaWeight; }
-    /**
-     * Set the value of the weight
-     */
-    inline void setDeltaWeight( const WeightType& deltaWeight ) { *(this -> deltaWeight) = deltaWeight; }
+    inline void setDeltaWeight( WeightType deltaWeight ) { *(this -> deltaWeight) = deltaWeight; }
 
 
     virtual void updateWeight();

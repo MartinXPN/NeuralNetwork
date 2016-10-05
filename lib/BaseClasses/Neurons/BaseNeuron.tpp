@@ -5,8 +5,8 @@
 
 template <class NeuronType>
 BaseNeuron <NeuronType> :: BaseNeuron( BaseActivationFunction<NeuronType>* activationFunction,
-                                       const std::vector<BaseEdge<NeuronType> *> &next,
-                                       const std::vector<BaseEdge<NeuronType> *> &previous) :
+                                       std::vector<BaseEdge<NeuronType> *> next,
+                                       std::vector<BaseEdge<NeuronType> *> previous) :
         activationFunction( activationFunction ),
         next( next ),
         previous( previous ),

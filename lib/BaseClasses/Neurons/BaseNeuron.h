@@ -42,13 +42,13 @@ protected:
 
 public:
     BaseNeuron( BaseActivationFunction <NeuronType>* activationFunction,
-                const std::vector < BaseEdge <NeuronType>* >& next = {},
-                const std::vector < BaseEdge <NeuronType>* >& previous = {} );
+                std::vector < BaseEdge <NeuronType>* > next = {},
+                std::vector < BaseEdge <NeuronType>* > previous = {} );
     virtual ~BaseNeuron();
 
-    inline NeuronType getActivatedValue() const     { return activatedValue; }      /// get the activated value
-    inline NeuronType getPreActivatedValue() const  { return preActivatedValue; }   /// get pre activated value (i.e. sum of [values of neurons from previous layer * weights connected to them ] )
-    inline NeuronType getLoss() const               { return loss; }
+    inline const NeuronType& getActivatedValue() const     { return activatedValue; }
+    inline const NeuronType& getPreActivatedValue() const  { return preActivatedValue; }   /// get pre activated value (i.e. sum of [values of neurons from previous layer * weights connected to them ] )
+    inline const NeuronType& getLoss() const               { return loss; }
 
     virtual void addNextLayerConnection( BaseEdge <NeuronType>* edge )      { next.push_back( edge ); }
     virtual void addPreviousLayerConnection( BaseEdge <NeuronType> * edge ) { previous.push_back( edge ); }

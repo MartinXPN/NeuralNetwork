@@ -39,7 +39,7 @@ public:
     using BaseNeuron <NeuronType> :: activateNeuron;
     using BaseNeuron <NeuronType> :: addPreviousLayerConnection;
 
-    inline NeuronType getValue() const { return activatedValue; }
+    inline const NeuronType& getValue() const { return activatedValue; }
 };
 
 

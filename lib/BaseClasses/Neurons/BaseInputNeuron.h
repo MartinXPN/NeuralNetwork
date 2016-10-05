@@ -23,13 +23,13 @@ protected:
 public:
 
     BaseInputNeuron();
-    BaseInputNeuron( NeuronType inputValue, const std::vector < BaseEdge <NeuronType>* >& next = {} );
+    BaseInputNeuron( NeuronType inputValue, std::vector < BaseEdge <NeuronType>* > next = {} );
     virtual ~BaseInputNeuron() {}
 
     using BaseNeuron <NeuronType> :: backpropagateNeuron;
     using BaseNeuron <NeuronType> :: addNextLayerConnection;
 
-    inline NeuronType getValue() const          { return activatedValue; }
+    inline const NeuronType& getValue() const   { return activatedValue; }
     inline void setValue( NeuronType value )    { activatedValue = value; }
 };
 
