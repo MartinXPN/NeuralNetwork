@@ -10,6 +10,7 @@ using namespace std;
 #include "lib/Activations/SimpleActivations/ReLU.h"
 #include "lib/Activations/SimpleActivations/Sigmoid.h"
 #include "lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h"
+#include "lib/LossFunctions/SimpleLossFunctions/MeanSquaredError.h"
 
 
 int main() {
@@ -28,7 +29,7 @@ int main() {
     neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );    // layer{2}     [6]
     neurons.push_back( new BaseInputNeuron <double>( 1 ) );                 // layer{2}     [7] bias
 
-    neurons.push_back( new BaseOutputNeuron <double>( new CrossEntropyCost <double>(), //   [8]
+    neurons.push_back( new BaseOutputNeuron <double>( new MeanSquaredError <double>(), //   [8]
                                                       new Sigmoid <double> () ) );
 
 /*
@@ -56,7 +57,7 @@ int main() {
     /// get values of all edges
     for( int i=0; i < numberOfEdges; ++i ) {
         int from, to;
-        double *weight = new double( rand() / double(RAND_MAX) );
+        double *weight = new double( rand() / double(RAND_MAX) - 0.5 );
         cin >> from >> to;
 
         BaseEdge <double>* edge = new BaseEdge <double>( neurons[from], neurons[to], weight );
@@ -65,8 +66,8 @@ int main() {
     }
 
 
-    const int maxIterations = 20000;
-    const int batchSize = 100;
+    const int maxIterations = 200000;
+    const int batchSize = 20;
     double learningRate = 0.01;
     for( int iteration = 0; iteration < maxIterations; ++iteration ) {
 
@@ -75,7 +76,7 @@ int main() {
             /// set values of input neurons
             double one = rand() % 2;
             double two = rand() % 2;
-            double out = (int) one | (int) two;
+            double out = (int) one ^ (int) two;
 
             ((BaseInputNeuron<double> *) neurons[0]) -> setValue( one );
             ((BaseInputNeuron<double> *) neurons[1]) -> setValue( two );
@@ -123,7 +124,7 @@ int main() {
         /// set values of input neurons
         double one = rand() % 2;
         double two = rand() % 2;
-        double out = (int) one | (int) two;
+        double out = (int) one ^ (int) two;
 
         ((BaseInputNeuron<double> *) neurons[0])->setValue(one);
         ((BaseInputNeuron<double> *) neurons[1])->setValue(two);
