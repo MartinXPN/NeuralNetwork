@@ -9,52 +9,54 @@ using namespace std;
 #include "lib/BaseClasses/Neurons/BaseOutputNeuron.h"
 #include "lib/Activations/SimpleActivations/ReLU.h"
 #include "lib/Activations/SimpleActivations/Sigmoid.h"
+#include "lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h"
 
 
 int main() {
 
-    const int numberOfNeurons = 10;
-    const int numberOfEdges = 13;
+    const int numberOfNeurons = 9;
+    const int numberOfEdges = 17;
 
     vector< BaseNeuron <double>* > neurons;
-    neurons.push_back( (BaseNeuron <double>*) new BaseInputNeuron <double>() );     // layer{1} first input neuron
-    neurons.push_back( (BaseNeuron <double>*) new BaseInputNeuron <double>() );     // layer{1} second input neuron
-    neurons.push_back( (BaseNeuron <double>*) new BaseInputNeuron <double>( 1 ) );  // layer{1} bias neuron
+    neurons.push_back( new BaseInputNeuron <double>() );                    // layer{1}     [0]
+    neurons.push_back( new BaseInputNeuron <double>() );                    // layer{1}     [1]
+    neurons.push_back( new BaseInputNeuron <double>( 1 ) );                 // layer{1}     [2] bias
 
-    neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );            // layer{2} first neuron
-    neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );            // layer{2} second neuron
-    neurons.push_back( (BaseNeuron <double>*) new BaseInputNeuron <double>( 1 ) );  // layer{2} bias neuron
+    neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );    // layer{2}     [3]
+    neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );    // layer{2}     [4]
+    neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );    // layer{2}     [5]
+    neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );    // layer{2}     [6]
+    neurons.push_back( new BaseInputNeuron <double>( 1 ) );                 // layer{2}     [7] bias
 
-
-    neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );            // layer{3} first neuron
-    neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );            // layer{3} second neuron
-    neurons.push_back( (BaseNeuron <double>*) new BaseInputNeuron <double>( 1 ) );  // layer{3} bias neuron
-
-    neurons.push_back( (BaseNeuron <double>*) new BaseOutputNeuron <double>( new Sigmoid <double> () ) );    // output layer
+    neurons.push_back( new BaseOutputNeuron <double>( new CrossEntropyCost <double>(), //   [8]
+                                                      new Sigmoid <double> () ) );
 
 /*
 0 3
 0 4
+0 5
+0 6
 1 3
 1 4
+1 5
+1 6
 2 3
 2 4
-3 6
-3 7
-4 6
-4 7
-5 6
-5 7
-6 9
-7 9
-8 9
+2 5
+2 6
+
+3 8
+4 8
+5 8
+6 8
+7 8
 */
     srand( 1 );
     cout << "Get the edges..." << endl;
     /// get values of all edges
     for( int i=0; i < numberOfEdges; ++i ) {
         int from, to;
-        double *weight = new double( ( rand()%10 - 5 ) / 5. );
+        double *weight = new double( rand() / double(RAND_MAX) );
         cin >> from >> to;
 
         BaseEdge <double>* edge = new BaseEdge <double>( neurons[from], neurons[to], weight );
@@ -63,8 +65,8 @@ int main() {
     }
 
 
-    const int maxIterations = 50000;
-    const int batchSize = 5;
+    const int maxIterations = 20000;
+    const int batchSize = 100;
     double learningRate = 0.01;
     for( int iteration = 0; iteration < maxIterations; ++iteration ) {
 
@@ -73,7 +75,7 @@ int main() {
             /// set values of input neurons
             double one = rand() % 2;
             double two = rand() % 2;
-            double out = (int) one ^ (int) two;
+            double out = (int) one | (int) two;
 
             ((BaseInputNeuron<double> *) neurons[0]) -> setValue( one );
             ((BaseInputNeuron<double> *) neurons[1]) -> setValue( two );
@@ -85,7 +87,8 @@ int main() {
 
 
             /// calculate losses
-            double currentLoss = ((BaseOutputNeuron<double> *) neurons.back())->calculateLoss(out);
+            ((BaseOutputNeuron<double> *) neurons.back())->calculateLoss(out);
+            double currentLoss = ((BaseOutputNeuron<double> *) neurons.back())->getError(out);
             loss += currentLoss;
             if( iteration == maxIterations - 1 ) {
                 cout << "(" << one << "," << two << ") -> " << out << "\tout: "
@@ -104,7 +107,8 @@ int main() {
             }
         }
 
-//        cout << "Loss #" << iteration << ": " << loss / batchSize << endl;
+        if( iteration % 100 == 0 )
+            cout << "Loss #" << iteration << ": " << loss / batchSize << endl;
 
         /// update weights
         for (int i = numberOfNeurons - 2; i >= 0; --i) {
@@ -115,11 +119,11 @@ int main() {
 
 
 
-    for( int batch = 0; batch < 10; ++batch ) {
+    for( int batch = 0; batch < 15; ++batch ) {
         /// set values of input neurons
         double one = rand() % 2;
         double two = rand() % 2;
-        double out = (int) one ^(int) two;
+        double out = (int) one | (int) two;
 
         ((BaseInputNeuron<double> *) neurons[0])->setValue(one);
         ((BaseInputNeuron<double> *) neurons[1])->setValue(two);

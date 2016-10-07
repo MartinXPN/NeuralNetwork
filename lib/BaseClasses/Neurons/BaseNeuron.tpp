@@ -12,7 +12,7 @@ BaseNeuron <NeuronType> :: BaseNeuron( BaseActivationFunction<NeuronType>* activ
         previous( previous ),
         activatedValue( 0. ),
         preActivatedValue( 0. ),
-        loss( 1. ) {
+        loss( 0. ) {
 
 }
 
@@ -34,7 +34,8 @@ void BaseNeuron <NeuronType> :: activateNeuron() {
         preActivatedValue += edge -> getWeight() *
                              edge -> getFrom().getActivatedValue();
     }
-    activatedValue = activationFunction -> activation( preActivatedValue );
+    if( !previous.empty() )
+        activatedValue = activationFunction -> activation( preActivatedValue );
 }
 
 
@@ -47,7 +48,8 @@ void BaseNeuron <NeuronType> :: calculateLoss() {
         loss += edge -> getWeight() *
                 edge -> getTo().getLoss();
     }
-    loss *= activationFunction -> activationDerivative( preActivatedValue );
+    if( activationFunction != nullptr )
+        loss *= activationFunction -> activationDerivative( preActivatedValue );
 }
 
 

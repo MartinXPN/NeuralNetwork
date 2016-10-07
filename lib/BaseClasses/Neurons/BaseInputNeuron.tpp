@@ -12,7 +12,7 @@ BaseInputNeuron <NeuronType> :: BaseInputNeuron() :
 template <class NeuronType>
 BaseInputNeuron <NeuronType> :: BaseInputNeuron(NeuronType inputValue,
                                                 std::vector<BaseEdge<NeuronType> *> next) :
-        BaseNeuron <NeuronType> ( new Identity <NeuronType>, next ) {
+        BaseNeuron <NeuronType> (nullptr, next ) {
 
     activatedValue = inputValue;
 }

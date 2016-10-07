@@ -16,11 +16,14 @@ class Sigmoid : public BaseActivationFunction <Type> {
 public:
 
     virtual Type activation(Type x) override {
+        if( x < -5 )    return 0.0000001;
+        if( x > 5 )     return 0.9999999;
         return  1. /
                 ( 1. + exp( -x ) );
     }
 
     virtual Type activationDerivative(Type x) override {
+        if( abs(x) > 5 )    return 0.0000001;
         return exp( x ) /
                pow( ( 1. + exp( x ) ), 2 );
     }
