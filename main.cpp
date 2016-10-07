@@ -15,8 +15,8 @@ using namespace std;
 
 int main() {
 
-    const int numberOfNeurons = 9;
-    const int numberOfEdges = 17;
+    const int numberOfNeurons = 8;
+    const int numberOfEdges = 13;
 
     vector< BaseNeuron <double>* > neurons;
     neurons.push_back( new BaseInputNeuron <double>() );                    // layer{1}     [0]
@@ -26,31 +26,26 @@ int main() {
     neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );    // layer{2}     [3]
     neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );    // layer{2}     [4]
     neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );    // layer{2}     [5]
-    neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );    // layer{2}     [6]
-    neurons.push_back( new BaseInputNeuron <double>( 1 ) );                 // layer{2}     [7] bias
+    neurons.push_back( new BaseInputNeuron <double>( 1 ) );                 // layer{2}     [6] bias
 
-    neurons.push_back( new BaseOutputNeuron <double>( new MeanSquaredError <double>(), //   [8]
+    neurons.push_back( new BaseOutputNeuron <double>( new CrossEntropyCost <double>(), //   [7]
                                                       new Sigmoid <double> () ) );
 
 /*
 0 3
 0 4
 0 5
-0 6
 1 3
 1 4
 1 5
-1 6
 2 3
 2 4
 2 5
-2 6
 
-3 8
-4 8
-5 8
-6 8
-7 8
+3 7
+4 7
+5 7
+6 7
 */
     srand( 1 );
     cout << "Get the edges..." << endl;
@@ -66,9 +61,9 @@ int main() {
     }
 
 
-    const int maxIterations = 200000;
-    const int batchSize = 20;
-    double learningRate = 0.01;
+    const int maxIterations = 1000;
+    const int batchSize = 10;
+    double learningRate = 0.1;
     for( int iteration = 0; iteration < maxIterations; ++iteration ) {
 
         double loss = 0;
