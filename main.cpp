@@ -14,7 +14,7 @@ using namespace std;
 
 
 int main() {
-
+    //Unnecessary comment
     const int numberOfNeurons = 9;
     const int numberOfEdges = 17;
 
