@@ -2,25 +2,30 @@
 <module type="CPP_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/lib/BaseClasses/Neurons/BaseOutputNeuron.tpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/BaseClasses/Neurons/BaseInputNeuron.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/BaseClasses/Neurons/BaseNeuron.tpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/BaseClasses/Neurons/BaseInputNeuron.tpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/BaseClasses/Neurons/BaseBias.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/BaseClasses/Neurons/BaseBias.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/BaseClasses/Neurons/BaseNeuron.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/BaseClasses/Neurons/BaseOutputNeuron.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/BaseClasses/Edges/BaseEdge.tpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/BaseClasses/Edges/BaseEdge.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Network/BaseNeuralNetwork.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Network/BaseNeuralNetwork.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Edges/BaseEdge.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Edges/BaseEdge.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseOutputNeuron.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseInputNeuron.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseNeuron.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseInputNeuron.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseNeuron.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseOutputNeuron.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Activations/BaseActivation/BaseActivationFunction.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/Tanh.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/Sigmoid.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/Identitiy.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/ReLU.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/ELU.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseLayer.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseLayer.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/SimpleLayers/FullyConnected.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/SimpleLayers/FullyConnected.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/SimpleLossFunctions/MeanSquaredError.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/BaseLoss/BaseLossFunction.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/TestNeurons/NeuronTest.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
     </content>

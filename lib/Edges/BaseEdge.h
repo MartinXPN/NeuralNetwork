@@ -3,7 +3,7 @@
 #define NEURALNETWORK_BASEEDGE_H
 
 
-#include "../Neurons/BaseNeuron.h"
+#include "../Neurons/BaseNeurons/BaseNeuron.h"
 
 template <class NeuronType>
 class BaseNeuron;   /// say that this class exists but don't declare what's inside

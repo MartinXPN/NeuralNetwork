@@ -3,7 +3,7 @@
 #define NEURALNETWORK_BASENEURON_H
 
 #include <vector>
-#include "../Edges/BaseEdge.h"
+#include "../../Edges/BaseEdge.h"
 #include "../../Activations/BaseActivation/BaseActivationFunction.h"
 
 
