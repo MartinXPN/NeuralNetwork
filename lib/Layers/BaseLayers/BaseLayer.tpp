@@ -3,8 +3,9 @@
 
 template <class LayerType>
 BaseLayer <LayerType> :: BaseLayer(unsigned numberOfNeurons,
-                                   const BaseLayer* previous) {
+                                   const std :: vector< const BaseLayer* > previousLayers) {
 
-    createNeurons( numberOfNeurons );
-    connectNeurons( previous );
+//    createNeurons( numberOfNeurons );
+//    for( auto layer : previousLayers )
+//        connectNeurons( layer );
 }

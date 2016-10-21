@@ -22,8 +22,8 @@ class BaseEdge {
 protected:
     const BaseNeuron <WeightType> *from;  /// pointer to Neuron | there are no setters for the Neuron from as it has to be given in the constructor
     const BaseNeuron <WeightType> *to;    /// pointer to Neuron | there are no setters for the Neuron to as it has to be given in the constructor
-    WeightType *weight;         /// weight of the Edge
-    WeightType *deltaWeight;    /// how much to update weight on backpropagation
+    WeightType *weight;         /// weight of the Edge                              | we keep pointer because weights can be shared (in convolutions for instance)
+    WeightType *deltaWeight;    /// how much to update weight on backpropagation    | we keep pointer because weights can be shared (in convolutions for isntance)
 
 public:
     BaseEdge( BaseNeuron <WeightType> * from, BaseNeuron <WeightType>* to, WeightType* weight );
