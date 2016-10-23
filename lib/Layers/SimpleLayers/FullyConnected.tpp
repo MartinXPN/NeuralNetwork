@@ -1,15 +1,17 @@
 
 #include "FullyConnected.h"
+#include "../../Utilities/NeuronOperations.h"
 
 
 template <class LayerType>
 FullyConnected <LayerType> :: FullyConnected(unsigned int numberOfNeurons,
                                              const std::vector< const BaseLayer<LayerType>* > &previousLayers,
-                                             BaseActivationFunction<LayerType> *activationFunction, bool hasBias) :
+                                             BaseActivationFunction<LayerType> *activationFunction,
+                                             BaseBias <LayerType>* bias) :
         BaseHiddenLayer <LayerType> ( numberOfNeurons,
                                       previousLayers,
                                       activationFunction,
-                                      hasBias ) {
+                                      bias ) {
 
 }
 
@@ -26,11 +28,11 @@ void FullyConnected <LayerType> ::connectNeurons( const BaseLayer<LayerType>& pr
 
     for( auto currentNeuron : neurons ) {
         for( auto previousNeuron : previous.getNeurons() ) {
-            LayerType *weight = new LayerType(rand() / LayerType(RAND_MAX) - 0.5);
-            BaseEdge<LayerType>* edge = new BaseEdge<LayerType>(previousNeuron, currentNeuron, weight);
+            NeuronOperations::connectNeurons( previousNeuron, currentNeuron, new LayerType(rand() / LayerType(RAND_MAX) - 0.5) );
+        }
 
-            previousNeuron -> addNextLayerConnection( edge );
-            currentNeuron -> addPreviousLayerConnection( edge );
+        if( bias != nullptr ) {
+            NeuronOperations::connectNeurons( bias, currentNeuron, new LayerType(rand() / LayerType(RAND_MAX) - 0.5) );
         }
     }
 }

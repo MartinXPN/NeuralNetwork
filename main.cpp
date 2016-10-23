@@ -3,7 +3,7 @@
 
 int main() {
 
-    test();
-    //testNeuronsXOR();
+//    testNeuronsXOR();
+    layerTestXOR();
     return 0;
 }

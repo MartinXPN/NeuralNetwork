@@ -55,23 +55,23 @@ void BaseNeuron <NeuronType> :: calculateLoss() {
 
 
 template <class NeuronType>
-void BaseNeuron <NeuronType> :: backpropagateNeuron(NeuronType learningRate, int batchSize) {
+void BaseNeuron <NeuronType> :: backpropagateNeuron(NeuronType coefficient) {
 
-    for( auto edge : next ) {
+    for( auto edge : previous ) {
 
         /// update deltaWeight
-        /// deltaWeight += (learningRate / batchSize)  * next.loss * activatedValue
-        edge -> setDeltaWeight( ( edge -> getDeltaWeight() ) +
-                                ( learningRate / batchSize ) *
-                                ( edge -> getTo().getLoss() ) *
-                                getActivatedValue() );
+        /// deltaWeight += coefficient * this.loss * previous.activatedValue
+        edge -> setDeltaWeight( edge -> getDeltaWeight() +
+                                coefficient * getLoss() * edge->getFrom().getActivatedValue() );
     }
 }
 
 template <class NeuronType>
-void BaseNeuron <NeuronType> :: updateWeights() {
+void BaseNeuron <NeuronType> :: updateWeights( NeuronType learningRate, int batchSize ) {
 
-    for( auto edge : next )
-        edge -> updateWeight();
+    for( auto edge : previous ) {
+        edge -> setDeltaWeight( ( edge -> getDeltaWeight() ) * ( learningRate / batchSize ) );
+        edge->updateWeight();
+    }
 }
 

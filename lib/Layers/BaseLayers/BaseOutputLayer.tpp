@@ -2,16 +2,18 @@
 #include <cstdlib>
 #include "BaseOutputLayer.h"
 #include "../../Neurons/BaseNeurons/BaseOutputNeuron.h"
+#include "../../Utilities/NeuronOperations.h"
 
 
 template <class LayerType>
 BaseOutputLayer <LayerType> :: BaseOutputLayer(unsigned int numberOfNeurons,
                                                const std::vector< const BaseLayer<LayerType>* > &previousLayers,
                                                BaseLossFunction<LayerType> *lossFunction,
-                                               BaseActivationFunction<LayerType> *activationFunction, bool hasBias)
+                                               BaseActivationFunction<LayerType> *activationFunction,
+                                               BaseBias <LayerType>* bias)
         : activationFunction( activationFunction ),
           lossFunction( lossFunction ),
-          hasBias( hasBias ),
+          bias( bias ),
           BaseLayer <LayerType> (numberOfNeurons, previousLayers) {
 
 }
@@ -30,11 +32,11 @@ void BaseOutputLayer <LayerType> :: connectNeurons( const BaseLayer<LayerType>& 
 
     for( auto currentNeuron : neurons ) {
         for (auto previousNeuron : previous.getNeurons()) {
-            LayerType *weight = new LayerType(rand() / LayerType(RAND_MAX) - 0.5);
-            BaseEdge<LayerType>* edge = new BaseEdge<LayerType>(previousNeuron, currentNeuron, weight);
+            NeuronOperations::connectNeurons( previousNeuron, currentNeuron, new LayerType(rand() / LayerType(RAND_MAX) - 0.5) );
+        }
 
-            previousNeuron -> addNextLayerConnection( edge );
-            currentNeuron -> addPreviousLayerConnection( edge );
+        if( bias != nullptr ) {
+            NeuronOperations::connectNeurons( bias, currentNeuron, new LayerType(rand() / LayerType(RAND_MAX) - 0.5) );
         }
     }
 }

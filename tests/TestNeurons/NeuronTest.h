@@ -14,25 +14,23 @@ using namespace std;
 #include "../../lib/Activations/SimpleActivations/Sigmoid.h"
 #include "../../lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h"
 #include "../../lib/LossFunctions/SimpleLossFunctions/MeanSquaredError.h"
-
+#include "../../lib/Neurons/BaseNeurons/BaseBias.h"
 
 
 void testNeuronsXOR() {
 
-    const int numberOfNeurons = 8;
     const int numberOfEdges = 13;
 
     vector< BaseNeuron <double>* > neurons;
     neurons.push_back( new BaseInputNeuron <double>() );                    // layer{1}     [0]
     neurons.push_back( new BaseInputNeuron <double>() );                    // layer{1}     [1]
-    neurons.push_back( new BaseInputNeuron <double>( 1 ) );                 // layer{1}     [2] bias
+    neurons.push_back( new BaseBias <double>() );                           // [2] bias
 
     neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );    // layer{2}     [3]
     neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );    // layer{2}     [4]
     neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );    // layer{2}     [5]
-    neurons.push_back( new BaseInputNeuron <double>( 1 ) );                 // layer{2}     [6] bias
 
-    neurons.push_back( new BaseOutputNeuron <double>( new CrossEntropyCost <double>(), //   [7]
+    neurons.push_back( new BaseOutputNeuron <double>( new CrossEntropyCost <double>(), //   [6]
                                                       new Sigmoid <double> () ) );
 
 /*
@@ -46,10 +44,10 @@ void testNeuronsXOR() {
 2 4
 2 5
 
-3 7
-4 7
-5 7
-6 7
+3 6
+4 6
+5 6
+2 6
 */
     srand( 1 );
     cout << "Get the edges..." << endl;
@@ -81,7 +79,7 @@ void testNeuronsXOR() {
             ((BaseInputNeuron<double> *) neurons[1]) -> setValue( two );
 
             /// activate neurons
-            for (int i = 3; i < numberOfNeurons; ++i) {
+            for (int i = 3; i < neurons.size(); ++i) {
                 neurons[i] -> activateNeuron();
             }
 
@@ -97,13 +95,13 @@ void testNeuronsXOR() {
                      << endl;
             }
 
-            for( int i = numberOfNeurons - 2; i >= 3; --i ) {
+            for( int i = neurons.size() - 2; i >= 3; --i ) {
                 neurons[i] -> calculateLoss();
             }
 
             /// backpropagate neurons
-            for( int i = numberOfNeurons - 2; i >= 0; --i ) {
-                neurons[i] -> backpropagateNeuron( learningRate, batchSize );
+            for( int i = neurons.size() - 1; i >= 3; --i ) {
+                neurons[i] -> backpropagateNeuron();
             }
         }
 
@@ -111,8 +109,8 @@ void testNeuronsXOR() {
             cout << "Loss #" << iteration << ": " << loss / batchSize << endl;
 
         /// update weights
-        for (int i = numberOfNeurons - 2; i >= 0; --i) {
-            neurons[i] -> updateWeights();
+        for (int i = neurons.size() - 1; i >= 3; --i) {
+            neurons[i] -> updateWeights( learningRate, batchSize );
         }
     }
 
@@ -129,7 +127,7 @@ void testNeuronsXOR() {
         ((BaseInputNeuron<double> *) neurons[1])->setValue(two);
 
         /// activate neurons
-        for (int i = 3; i < numberOfNeurons; ++i) {
+        for (int i = 3; i < neurons.size(); ++i) {
             neurons[i]->activateNeuron();
         }
 

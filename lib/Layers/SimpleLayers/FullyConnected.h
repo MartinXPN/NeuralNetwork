@@ -11,13 +11,14 @@ template <class LayerType>
 class FullyConnected : public BaseHiddenLayer <LayerType> {
 
 protected:
-    using BaseLayer <LayerType> :: neurons;
+    using BaseHiddenLayer <LayerType> :: neurons;
+    using BaseHiddenLayer <LayerType> :: bias;
 
 public:
     FullyConnected(unsigned int numberOfNeurons,
                    const std::vector< const BaseLayer<LayerType>* > &previousLayers,
                    BaseActivationFunction<LayerType>* activationFunction,
-                   bool hasBias = true );
+                   BaseBias <LayerType>* bias = nullptr );
 
     virtual void createNeurons(unsigned numberOfNeurons, BaseActivationFunction<LayerType> *activationFunction) override;
 

@@ -5,9 +5,9 @@ template <class LayerType>
 BaseHiddenLayer <LayerType> :: BaseHiddenLayer(unsigned int numberOfNeurons,
                                                const std::vector< const BaseLayer<LayerType>* > &previousLayers,
                                                BaseActivationFunction<LayerType> *activationFunction,
-                                               bool hasBias)
+                                               BaseBias <LayerType>* bias)
         : activationFunction( activationFunction),
-          hasBias( hasBias ),
+          bias( bias ),
           BaseLayer <LayerType> (numberOfNeurons, previousLayers)  {
 
 }

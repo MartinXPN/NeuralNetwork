@@ -10,19 +10,19 @@
 
 /**
  * Base class for output neurons
- * privately inherited from BaseNeuron <>
+ * Inherited from BaseNeuron
  * Conteins:
  *      1. activatedValue
  *      2. preActivatedValue
  *      3. loss
  *      4. activationFunction
+ *      5. lossFunction
  */
 template <class NeuronType>
 class BaseOutputNeuron : public BaseNeuron <NeuronType> {
 
 private:
     using BaseNeuron <NeuronType> :: addNextLayerConnection;    /// there is no next layer
-    using BaseNeuron <NeuronType> :: updateWeights;             /// last layer is not responsible for updating the weights
     using BaseNeuron <NeuronType> :: calculateLoss;             /// the loss function for outputNeuron is different
 
 protected:
@@ -45,6 +45,9 @@ public:
     virtual NeuronType getError( NeuronType targetValue );
     using BaseNeuron <NeuronType> :: activateNeuron;
     using BaseNeuron <NeuronType> :: addPreviousLayerConnection;
+    using BaseNeuron <NeuronType> :: backpropagateNeuron;
+    using BaseNeuron <NeuronType> :: updateWeights;
+
 
     inline const NeuronType& getValue() const { return activatedValue; }
 };

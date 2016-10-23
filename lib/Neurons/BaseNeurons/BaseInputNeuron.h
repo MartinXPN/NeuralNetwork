@@ -7,7 +7,7 @@
 
 /**
  * Base class for input neurons
- * privately inherited from BaseNeuron <>
+ * Inherited from BaseNeuron
  * Contains:
  *      1. next (connections to the next layer)
  *      2. activatedValue
@@ -24,6 +24,8 @@ private:
     using BaseNeuron <NeuronType> :: getLoss;                       /// we don't use loss
     using BaseNeuron <NeuronType> :: calculateLoss;                 /// we don't use loss
     using BaseNeuron <NeuronType> :: addPreviousLayerConnection;    /// hide this function
+    using BaseNeuron <NeuronType> :: backpropagateNeuron;
+    using BaseNeuron <NeuronType> :: updateWeights;
 
 
 protected:
@@ -36,10 +38,7 @@ public:
     BaseInputNeuron( NeuronType inputValue, std::vector < BaseEdge <NeuronType>* > next = {} );
     virtual ~BaseInputNeuron() {}
 
-    using BaseNeuron <NeuronType> :: backpropagateNeuron;
     using BaseNeuron <NeuronType> :: addNextLayerConnection;
-    using BaseNeuron <NeuronType> :: updateWeights;
-
     inline const NeuronType& getValue() const   { return activatedValue; }
     inline void setValue( NeuronType value )    { activatedValue = value; }
 };

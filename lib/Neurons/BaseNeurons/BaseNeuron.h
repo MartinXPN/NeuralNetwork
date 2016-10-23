@@ -70,12 +70,12 @@ public:
     /**
      * Called to beckpropagating the neuron
      */
-    virtual void backpropagateNeuron(NeuronType learningRate, int batchSize);
+    virtual void backpropagateNeuron(NeuronType coefficient = 1);
 
     /**
      * Called to update the weights connecting the neuron to the next layer
      */
-    virtual void updateWeights();
+    virtual void updateWeights(NeuronType learningRate, int batchSize);
 };
 
 #include "BaseNeuron.tpp"
