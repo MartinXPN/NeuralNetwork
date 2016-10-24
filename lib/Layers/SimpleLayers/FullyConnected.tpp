@@ -17,7 +17,7 @@ FullyConnected <LayerType> :: FullyConnected(unsigned int numberOfNeurons,
 
 template <class LayerType>
 void FullyConnected <LayerType> :: createNeurons(unsigned numberOfNeurons,
-                                                BaseActivationFunction<LayerType> *activationFunction)  {
+                                                 BaseActivationFunction<LayerType> *activationFunction)  {
 
     for( int i=0; i < numberOfNeurons; ++i )
         neurons.push_back( new BaseNeuron <LayerType> ( activationFunction ) );
@@ -28,11 +28,11 @@ void FullyConnected <LayerType> ::connectNeurons( const BaseLayer<LayerType>& pr
 
     for( auto currentNeuron : neurons ) {
         for( auto previousNeuron : previous.getNeurons() ) {
-            NeuronOperations::connectNeurons( previousNeuron, currentNeuron, new LayerType(rand() / LayerType(RAND_MAX) - 0.5) );
+            NeuronOperations::connectNeurons( previousNeuron, currentNeuron );
         }
 
         if( bias != nullptr ) {
-            NeuronOperations::connectNeurons( bias, currentNeuron, new LayerType(rand() / LayerType(RAND_MAX) - 0.5) );
+            NeuronOperations::connectNeurons( bias, currentNeuron );
         }
     }
 }

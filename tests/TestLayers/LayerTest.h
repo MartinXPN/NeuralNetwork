@@ -20,6 +20,7 @@ void layerTestXOR() {
 
     FullyConnected <double> hidden1( 4, {&inputLayer}, new ReLU <double>(), bias );
     hidden1.createNeurons( 4, new ReLU <double>() );
+    hidden1.connectNeurons( inputLayer );
 
     BaseOutputLayer <double> outputLayer( 1,
                                           {&hidden1},
@@ -33,6 +34,8 @@ void layerTestXOR() {
     vector <BaseNeuron <double>* > inputNeurons = inputLayer.getNeurons();
     vector <BaseNeuron <double>* > hiddenNeurons = hidden1.getNeurons();
     vector <BaseNeuron <double>* > outputNeurons = outputLayer.getNeurons();
+    printf( "input: %lu\nhidden: %lu\noutput: %lu\n", inputNeurons.size(), hiddenNeurons.size(), outputNeurons.size() );
+
 
     /// learn XOR
     const int maxIterations = 10000;
@@ -57,13 +60,12 @@ void layerTestXOR() {
             /// calculate losses
             (( BaseOutputNeuron <double>* ) ( outputNeurons[0] ))-> calculateLoss( out );
             loss += (( BaseOutputNeuron <double>* ) ( outputNeurons[0] ))-> getError( out );
-            for( int i=hiddenNeurons.size()-1; i >= 0; --i )
-                hiddenNeurons[i] -> calculateLoss();
+            for( auto neuron : hiddenNeurons )  neuron -> calculateLoss();
 
 
             /// backpropagate neurons
-            for( int i=outputNeurons.size()-1; i >= 0; --i )    hiddenNeurons[i] -> backpropagateNeuron();
-            for( int i=hiddenNeurons.size()-1; i >= 0; --i )    hiddenNeurons[i] -> backpropagateNeuron();
+            outputNeurons[0] -> backpropagateNeuron();
+            for( auto neuron : hiddenNeurons )  neuron -> backpropagateNeuron();
         }
 
         if( iteration % 100 == 0 )

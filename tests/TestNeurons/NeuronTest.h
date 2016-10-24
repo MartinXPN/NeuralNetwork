@@ -15,6 +15,7 @@ using namespace std;
 #include "../../lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h"
 #include "../../lib/LossFunctions/SimpleLossFunctions/MeanSquaredError.h"
 #include "../../lib/Neurons/BaseNeurons/BaseBias.h"
+#include "../../lib/Utilities/NeuronOperations.h"
 
 
 void testNeuronsXOR() {
@@ -54,12 +55,8 @@ void testNeuronsXOR() {
     /// get values of all edges
     for( int i=0; i < numberOfEdges; ++i ) {
         int from, to;
-        double *weight = new double( rand() / double(RAND_MAX) - 0.5 );
         cin >> from >> to;
-
-        BaseEdge <double>* edge = new BaseEdge <double>( neurons[from], neurons[to], weight );
-        neurons[from] -> addNextLayerConnection( edge );
-        neurons[to] -> addPreviousLayerConnection( edge );
+        NeuronOperations::connectNeurons( neurons[from], neurons[to] );
     }
 
 

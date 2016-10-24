@@ -46,9 +46,11 @@ public:
                 std::vector < BaseEdge <NeuronType>* > previous = {} );
     virtual ~BaseNeuron();
 
-    inline const NeuronType& getActivatedValue() const     { return activatedValue; }
-    inline const NeuronType& getPreActivatedValue() const  { return preActivatedValue; }   /// get pre activated value (i.e. sum of [values of neurons from previous layer * weights connected to them ] )
-    inline const NeuronType& getLoss() const               { return loss; }
+    inline const NeuronType& getActivatedValue() const      { return activatedValue; }
+    inline const NeuronType& getPreActivatedValue() const   { return preActivatedValue; }   /// get pre activated value (i.e. sum of [values of neurons from previous layer * weights connected to them ] )
+    inline const NeuronType& getLoss() const                { return loss; }
+    inline const std::vector < BaseEdge <NeuronType>* >& getNextConnections() const         { return next; }
+    inline const std::vector < BaseEdge <NeuronType>* >& getPreviousConnections() const     { return previous; }
 
     virtual void addNextLayerConnection( BaseEdge <NeuronType>* edge )      { next.push_back( edge ); }
     virtual void addPreviousLayerConnection( BaseEdge <NeuronType> * edge ) { previous.push_back( edge ); }

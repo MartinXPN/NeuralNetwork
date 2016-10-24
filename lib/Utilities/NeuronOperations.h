@@ -8,9 +8,12 @@
 namespace NeuronOperations {
 
     template<class Type>
-    void connectNeurons(BaseNeuron<Type> *from, BaseNeuron<Type> *to, Type *weight) {
+    void connectNeurons(BaseNeuron<Type> *from, BaseNeuron<Type> *to, Type *weight = nullptr) {
 
-        BaseEdge<Type> *edge = new BaseEdge<Type>(from, to, weight);
+        if( weight == nullptr )
+            weight = new Type(rand() / Type(RAND_MAX) - 0.5);
+
+        BaseEdge<Type> *edge = new BaseEdge<Type>(from, to, weight );
 
         from->addNextLayerConnection(edge);
         to->addPreviousLayerConnection(edge);

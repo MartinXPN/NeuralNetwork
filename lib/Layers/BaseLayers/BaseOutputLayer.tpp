@@ -32,11 +32,11 @@ void BaseOutputLayer <LayerType> :: connectNeurons( const BaseLayer<LayerType>& 
 
     for( auto currentNeuron : neurons ) {
         for (auto previousNeuron : previous.getNeurons()) {
-            NeuronOperations::connectNeurons( previousNeuron, currentNeuron, new LayerType(rand() / LayerType(RAND_MAX) - 0.5) );
+            NeuronOperations::connectNeurons( previousNeuron, currentNeuron );
         }
 
         if( bias != nullptr ) {
-            NeuronOperations::connectNeurons( bias, currentNeuron, new LayerType(rand() / LayerType(RAND_MAX) - 0.5) );
+            NeuronOperations::connectNeurons( bias, currentNeuron );
         }
     }
 }
