@@ -2,57 +2,58 @@
 <module type="CPP_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/lib/Edges/BaseEdge.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/Identitiy.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/Tanh.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/ELU.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/Sigmoid.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/ReLU.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Activations/BaseActivation/BaseActivationFunction.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Edges/BaseEdge.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Utilities/NeuronOperations.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Network/BaseNeuralNetwork.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Network/BaseNeuralNetwork.tpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseOutputLayer.tpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseInputLayer.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseLayer.tpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseOutputLayer.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseInputLayer.tpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseLayer.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseHiddenLayer.tpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseHiddenLayer.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/SimpleLayers/FullyConnected.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Edges/BaseEdge.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/SimpleLossFunctions/MeanSquaredError.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/BaseLoss/BaseLossFunction.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Layers/SimpleLayers/FullyConnected.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseOutputNeuron.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/SimpleLayers/FullyConnected.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseInputLayer.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseLayer.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseLayer.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseOutputLayer.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseHiddenLayer.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseInputLayer.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseOutputLayer.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Layers/BaseLayers/BaseHiddenLayer.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseOutputNeuron.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseBias.tpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseInputNeuron.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseNeuron.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseOutputNeuron.tpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseInputNeuron.tpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseNeuron.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseBias.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseBias.tpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseOutputNeuron.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Activations/BaseActivation/BaseActivationFunction.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/Sigmoid.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/Tanh.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/ReLU.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/ELU.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/Identitiy.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/SimpleLossFunctions/MeanSquaredError.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/BaseLoss/BaseLossFunction.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/tests/TestLayers/LayerTest.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/tests/TestNeurons/NeuronTest.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Network/BaseNeuralNetwork.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Network/BaseNeuralNetwork.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Utilities/NeuronOperations.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/TestLayers/LayerTestMNIST.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/TestLayers/LayerTestXOR.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/TestNeurons/NeuronTest.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library name="Header Search Paths">
         <CLASSES>
-          <root url="file://C:/MinGW/include" />
-          <root url="file://C:/MinGW/mingw32/include" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/5.3.0/include" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/5.3.0/include-fixed" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/5/include-fixed" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/5/include" />
+          <root url="file:///usr/include" />
+          <root url="file:///usr/local/include" />
         </CLASSES>
         <SOURCES>
-          <root url="file://C:/MinGW/include" />
-          <root url="file://C:/MinGW/mingw32/include" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/5.3.0/include" />
-          <root url="file://C:/MinGW/lib/gcc/mingw32/5.3.0/include-fixed" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/5/include-fixed" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/5/include" />
+          <root url="file:///usr/include" />
+          <root url="file:///usr/local/include" />
         </SOURCES>
       </library>
     </orderEntry>

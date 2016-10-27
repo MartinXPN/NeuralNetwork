@@ -1,9 +1,11 @@
 #include "tests/TestNeurons/NeuronTest.h"
-#include "tests/TestLayers/LayerTest.h"
+#include "tests/TestLayers/LayerTestXOR.h"
+#include "tests/TestLayers/LayerTestMNIST.h"
 
 int main() {
 
 //    testNeuronsXOR();
-    layerTestXOR();
+//    layerTestXOR();
+    testMNIST();
     return 0;
 }
