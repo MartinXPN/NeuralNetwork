@@ -21,8 +21,7 @@ FullyConnected <double> fc2( 100, {&fc1}, new ReLU <double>(), bias );
 BaseOutputLayer <double> outputLayer( 10, {&fc2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
 
 using namespace std;
-int reverseInt(int i)
-{
+int reverseInt(int i) {
     unsigned char ch1, ch2, ch3, ch4;
     ch1= (unsigned char) (i & 255);
     ch2= (unsigned char) ((i >> 8) & 255);
@@ -70,12 +69,14 @@ vector <int> readLabels(string directory, int number_of_labels) {
         int magic_number = 0;
         file.read((char *)&magic_number, sizeof(magic_number));
         magic_number = reverseInt(magic_number);
-        if(magic_number != 2049) throw runtime_error("Invalid MNIST label file!");
+        if(magic_number != 2049)
+            throw runtime_error("Invalid MNIST label file!");
         file.read((char *)&number_of_labels, sizeof(number_of_labels)), number_of_labels = reverseInt(number_of_labels);
-        for(int i = 0; i < number_of_labels; i++) {
+        for(int i = 0; i < number_of_labels; i++)
             file.read((char*)&labels[i], 1);
-        }
-    } else {
+
+    }
+    else {
         cout << "Couldn't find the directory: " << directory << endl;
     }
 
@@ -83,7 +84,7 @@ vector <int> readLabels(string directory, int number_of_labels) {
     return labels;
 }
 
-void evalueateOne( vector <double> image ) {
+void evaluateOne(vector<double> image) {
 
     /// print iamge
     for( int i=0; i < 28; ++i, printf( "\n" ) )
@@ -111,8 +112,8 @@ void evalueateOne( vector <double> image ) {
     printf( "\nNetwork prediction: %d\n", maxId );
 }
 
-void testMNIST()
-{
+void testMNIST() {
+
     vector<vector<double>> trainImages = readImages("/home/ubuntu/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
     // vector<vector<double>> testImages = readImages("/home/ubuntu/Desktop/MNIST_test_images.idx3-ubyte", 100000, 28*28);
     vector <int> labels = readLabels( "/home/ubuntu/Desktop/MNIST_train_labels.idx1-ubyte", 100000 );
@@ -200,7 +201,7 @@ void testMNIST()
 
     for( int i=0; i < 5; ++i ) {
         int id = (int) (rand() % trainImages.size());
-        evalueateOne( trainImages[id] );
+        evaluateOne(trainImages[id]);
     }
 }
 
