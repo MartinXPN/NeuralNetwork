@@ -6,23 +6,30 @@
 #include "BaseLayer.h"
 #include "../../Neurons/BaseNeurons/BaseInputNeuron.h"
 
+
+/**
+ * Base class of Input layers
+ * Its only responsibility is to create neurons and populate the collection - vector <> neurons
+ */
 template <class LayerType>
 class BaseInputLayer : public BaseLayer <LayerType> {
 
 private:
-    virtual void connectNeurons( const BaseLayer<LayerType>& previous) override {}
+    /// Hide this method from subclasses
+    virtual void connectNeurons() override {}
 
 protected:
     using BaseLayer <LayerType> :: neurons;
+    using BaseLayer <LayerType> :: numberOfNeurons;
 
 public:
-    BaseInputLayer(unsigned int numberOfNeurons ) :
+    BaseInputLayer(unsigned numberOfNeurons ) :
             BaseLayer <LayerType> ( numberOfNeurons, {} ) {
 
     }
 
 
-    virtual void createNeurons(unsigned numberOfNeurons) override;
+    virtual void createNeurons() override;
 
 };
 

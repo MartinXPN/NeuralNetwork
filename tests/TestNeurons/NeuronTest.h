@@ -92,12 +92,12 @@ void testNeuronsXOR() {
                      << endl;
             }
 
-            for( int i = neurons.size() - 2; i >= 3; --i ) {
+            for( size_t i = neurons.size() - 2; i >= 3; --i ) {
                 neurons[i] -> calculateLoss();
             }
 
             /// backpropagate neurons
-            for( int i = neurons.size() - 1; i >= 3; --i ) {
+            for( size_t i = neurons.size() - 1; i >= 3; --i ) {
                 neurons[i] -> backpropagateNeuron();
             }
         }
@@ -106,7 +106,7 @@ void testNeuronsXOR() {
             cout << "Loss #" << iteration << ": " << loss / batchSize << endl;
 
         /// update weights
-        for (int i = neurons.size() - 1; i >= 3; --i) {
+        for (size_t i = neurons.size() - 1; i >= 3; --i) {
             neurons[i] -> updateWeights( learningRate, batchSize );
         }
     }

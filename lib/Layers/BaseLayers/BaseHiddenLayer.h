@@ -6,6 +6,12 @@
 #include "BaseLayer.h"
 #include "../../Neurons/BaseNeurons/BaseBias.h"
 
+/**
+ * Base ABSTRACT class for all hidden layers
+ * Any class inherited from BaseHiddenLayer has to implement two functions:
+ *      1. createNeurons
+ *      2. connectNeurons
+ */
 template <class LayerType>
 class BaseHiddenLayer : public BaseLayer <LayerType> {
 
@@ -13,6 +19,8 @@ private:
 
 protected:
     using BaseLayer <LayerType> :: neurons;
+    using BaseLayer <LayerType> :: numberOfNeurons;
+    using BaseLayer <LayerType> :: previousLayers;
     BaseActivationFunction <LayerType>* activationFunction;
     BaseBias <LayerType>* bias;
 
@@ -21,10 +29,6 @@ public:
                     const std::vector< const BaseLayer<LayerType>* > &previousLayers,
                     BaseActivationFunction<LayerType> *activationFunction,
                     BaseBias <LayerType>* bias = nullptr );
-
-    virtual void createNeurons(unsigned numberOfNeurons) override;
-
-    virtual void createNeurons(unsigned numberOfNeurons, BaseActivationFunction <LayerType>* activationFunction) = 0;
 };
 
 #include "BaseHiddenLayer.tpp"

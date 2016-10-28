@@ -16,14 +16,15 @@ template <class NeuronType>
 class BaseInputNeuron : public BaseNeuron <NeuronType> {
 
 private:
-    using BaseNeuron <NeuronType> :: loss;                          /// loss is not needed for input neurons
-    using BaseNeuron <NeuronType> :: preActivatedValue;             /// input neuron only one value -> activatedValue
-    using BaseNeuron <NeuronType> :: activationFunction;            /// there is no need in having an activation function
-    using BaseNeuron <NeuronType> :: activateNeuron;                /// we don't activate the input neuron
-    using BaseNeuron <NeuronType> :: getPreActivatedValue;          /// we don't use preactivatedValue
-    using BaseNeuron <NeuronType> :: getLoss;                       /// we don't use loss
-    using BaseNeuron <NeuronType> :: calculateLoss;                 /// we don't use loss
-    using BaseNeuron <NeuronType> :: addPreviousLayerConnection;    /// hide this function
+    /// hide all these functions as we don't need them
+    using BaseNeuron <NeuronType> :: loss;
+    using BaseNeuron <NeuronType> :: preActivatedValue;
+    using BaseNeuron <NeuronType> :: activationFunction;
+    using BaseNeuron <NeuronType> :: activateNeuron;
+    using BaseNeuron <NeuronType> :: getPreActivatedValue;
+    using BaseNeuron <NeuronType> :: getLoss;
+    using BaseNeuron <NeuronType> :: calculateLoss;
+    using BaseNeuron <NeuronType> :: addPreviousLayerConnection;
     using BaseNeuron <NeuronType> :: backpropagateNeuron;
     using BaseNeuron <NeuronType> :: updateWeights;
 

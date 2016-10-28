@@ -11,6 +11,11 @@
 /**
  * Base class for output neurons
  * Inherited from BaseNeuron
+ * @Lifecycle:
+ *      1. activateNeuron
+ *      2. calculateLoss
+ *      3. backpropagateNeuron
+ *      4. updateWeights (called after the batch is processed)
  * Conteins:
  *      1. activatedValue
  *      2. preActivatedValue

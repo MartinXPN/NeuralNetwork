@@ -5,6 +5,11 @@
 
 #include "../BaseLoss/BaseLossFunction.h"
 
+
+/**
+ * Cross Entropy Cost
+ * @see https://en.wikipedia.org/wiki/Cross_entropy
+ */
 template <class Type>
 class CrossEntropyCost : public BaseLossFunction <Type> {
 

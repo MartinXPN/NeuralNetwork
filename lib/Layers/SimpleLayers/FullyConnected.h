@@ -7,10 +7,17 @@
 #include "../BaseLayers/BaseHiddenLayer.h"
 
 
+/**
+ * Fully Connected layer
+ * It connects all neurons in it to all neurons in all the previous layers
+ */
 template <class LayerType>
 class FullyConnected : public BaseHiddenLayer <LayerType> {
 
 protected:
+    using BaseHiddenLayer <LayerType> :: numberOfNeurons;
+    using BaseHiddenLayer <LayerType> :: previousLayers;
+    using BaseHiddenLayer <LayerType> :: activationFunction;
     using BaseHiddenLayer <LayerType> :: neurons;
     using BaseHiddenLayer <LayerType> :: bias;
 
@@ -20,9 +27,9 @@ public:
                    BaseActivationFunction<LayerType>* activationFunction,
                    BaseBias <LayerType>* bias = nullptr );
 
-    virtual void createNeurons(unsigned numberOfNeurons, BaseActivationFunction<LayerType> *activationFunction) override;
+    virtual void createNeurons() override;
 
-    virtual void connectNeurons( const BaseLayer<LayerType>& previous) override;
+    virtual void connectNeurons() override;
 };
 
 #include "FullyConnected.tpp"

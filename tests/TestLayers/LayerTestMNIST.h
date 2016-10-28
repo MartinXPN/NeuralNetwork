@@ -2,7 +2,6 @@
 #ifndef NEURALNETWORK_LAYERTESTMNIST_H
 #define NEURALNETWORK_LAYERTESTMNIST_H
 
-// /home/ubuntu/Desktop/MNIST_train_images.idx3-ubyte
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -38,10 +37,10 @@ vector< vector <double> > readImages(string directory, size_t numberOfImages, si
         int number_of_images=0;
         int n_rows=0;
         int n_cols=0;
-        file.read((char*)&magic_number,sizeof(magic_number));           printf( "magic number: %d\n", magic_number );           magic_number= reverseInt(magic_number);
-        file.read((char*)&number_of_images,sizeof(number_of_images));   printf( "number of images: %d\n", number_of_images );   number_of_images= reverseInt(number_of_images);
-        file.read((char*)&n_rows,sizeof(n_rows));                       printf( "number of rows: %d\n", n_rows );               n_rows= reverseInt(n_rows);
-        file.read((char*)&n_cols,sizeof(n_cols));                       printf( "number of columns: %d\n", n_cols );            n_cols= reverseInt(n_cols);
+        file.read( (char*)&magic_number, sizeof(magic_number) );            magic_number= reverseInt( magic_number );
+        file.read( (char*)&number_of_images, sizeof(number_of_images) );    number_of_images= reverseInt( number_of_images );
+        file.read( (char*)&n_rows, sizeof(n_rows) );                        n_rows= reverseInt( n_rows );
+        file.read( (char*)&n_cols, sizeof(n_cols) );                        n_cols= reverseInt( n_cols );
 
         images.resize( (size_t) number_of_images );
         for(int i=0;i < min(number_of_images, (const int &) numberOfImages); ++i) {
@@ -60,10 +59,9 @@ vector< vector <double> > readImages(string directory, size_t numberOfImages, si
     file.close();
     return images;
 }
+vector <int> readLabels(string directory, int numberOfLabels) {
 
-vector <int> readLabels(string directory, int number_of_labels) {
-
-    vector <int> labels( (size_t)number_of_labels );
+    vector <int> labels( (size_t)numberOfLabels );
     ifstream file(directory, ios::binary);
     if(file.is_open()) {
         int magic_number = 0;
@@ -71,10 +69,9 @@ vector <int> readLabels(string directory, int number_of_labels) {
         magic_number = reverseInt(magic_number);
         if(magic_number != 2049)
             throw runtime_error("Invalid MNIST label file!");
-        file.read((char *)&number_of_labels, sizeof(number_of_labels)), number_of_labels = reverseInt(number_of_labels);
-        for(int i = 0; i < number_of_labels; i++)
+        file.read((char *)&numberOfLabels, sizeof(numberOfLabels)), numberOfLabels = reverseInt(numberOfLabels);
+        for(int i = 0; i < numberOfLabels; i++)
             file.read((char*)&labels[i], 1);
-
     }
     else {
         cout << "Couldn't find the directory: " << directory << endl;
@@ -138,14 +135,14 @@ void testMNIST() {
 
     /// construct the network
 
-    inputLayer.createNeurons( 28*28 );
-    fc1.createNeurons( 100, new ReLU <double>() );
-    fc2.createNeurons( 100, new ReLU <double>() );
-    outputLayer.createNeurons( 10 );
+    inputLayer.createNeurons();
+    fc1.createNeurons();
+    fc2.createNeurons();
+    outputLayer.createNeurons();
 
-    fc1.connectNeurons( inputLayer );
-    fc2.connectNeurons( fc1 );
-    outputLayer.connectNeurons( fc2 );
+    fc1.connectNeurons();
+    fc2.connectNeurons();
+    outputLayer.connectNeurons();
 
 
 

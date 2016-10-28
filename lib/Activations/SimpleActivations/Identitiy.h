@@ -15,10 +15,17 @@ class Identity : public BaseActivationFunction <Type> {
 
 public:
 
+    /**
+     * @param x input of the neuron
+     * @returns x
+     */
     virtual Type activation(Type x) override {
         return x;
     }
 
+    /**
+     * @returns 1
+     */
     virtual Type activationDerivative(Type x) override {
         return 1;
     }

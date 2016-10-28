@@ -3,6 +3,10 @@
 #define NEURALNETWORK_BASELOSSFUNCTION_H
 
 
+/**
+ * Interface for Loss functions
+ * @see https://en.wikipedia.org/wiki/Loss_function
+ */
 template <class Type>
 class BaseLossFunction {
 

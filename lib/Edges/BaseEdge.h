@@ -26,7 +26,13 @@ protected:
     WeightType *deltaWeight;    /// how much to update weight on backpropagation    | we keep pointer because weights can be shared (in convolutions for isntance)
 
 public:
-    BaseEdge( BaseNeuron <WeightType> * from, BaseNeuron <WeightType>* to, WeightType* weight );
+    /**
+     * @param from: Neuron which is connected by this edge to To
+     * @param to: Neuron which is connected by this edge to From
+     * @param weight: weight of this edge. It's pointer because weights can be shared sometimes (Convolutions for example)
+     * @param deltaWeight: buffer that is responsible for the update of the weight. It's pointer because weights can be shared sometimes (Convolutions for example)
+     */
+    BaseEdge( BaseNeuron <WeightType> * from, BaseNeuron <WeightType>* to, WeightType* weight, WeightType* deltaWeight = nullptr );
     virtual ~BaseEdge();
 
     /**
@@ -59,6 +65,9 @@ public:
     inline void setDeltaWeight( WeightType deltaWeight ) { *(this -> deltaWeight) = deltaWeight; }
 
 
+    /**
+     * Update the weight by subtracting deltaWeight from the current weight
+     */
     virtual void updateWeight();
 };
 

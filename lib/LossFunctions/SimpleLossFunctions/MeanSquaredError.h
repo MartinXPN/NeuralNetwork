@@ -5,6 +5,11 @@
 
 #include "../BaseLoss/BaseLossFunction.h"
 
+
+/**
+ * Mean Squared Error
+ * @see https://en.wikipedia.org/wiki/Mean_squared_error
+ */
 template <class Type>
 class MeanSquaredError : public BaseLossFunction <Type> {
 

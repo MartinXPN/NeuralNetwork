@@ -9,26 +9,31 @@
 
 /**
  * Base ABSTRACT class for Layers
+ * Layers is responsible for only 2 things, nothing more or less:
+ *      1. create neurons
+ *      2. connect neurons
+ * Layer is not responsible for activating neurons or backpropagarion...
+ *
  * Type has to indicate the type of neurons that are kept in it, example : Layer <double> l;
  * Contains 1D collection of neurons, i.e even if we use convolutional layers,
  *      they have to be implemented in a way to be stored in 1D array
- *
- * The constructor of BaseLayer calls 2 abstract functions
- *      1. createNeurons
- *      2. connectNeurons
  */
 template <class LayerType>
 class BaseLayer {
 
 protected:
-    std :: vector< BaseNeuron <LayerType>* > neurons;        /// collections of neurons in this layer
+    /// collections of neurons in this layer
+    std :: vector< BaseNeuron <LayerType>* > neurons;
+
+    /// number of neurons in this layer
+    unsigned numberOfNeurons;
+
+    /// all the previous layer that have connection to this layer
+    std :: vector< const BaseLayer <LayerType>* > previousLayers;
+
 
 public:
     /**
-     * Calls 2 abstract functions
-     *      1. createNeurons
-     *      2. connectNeurons
-     *
      * @param numberOfNeurons number of neurons in the layer
      * @param previousLayers all previous layers that are connected to this layer
      */
@@ -44,21 +49,18 @@ public:
 
 
     /**
-     * Has to create neurons and push them in vector< BaseNeuron <LayerType>* > neurons
-     * @param numberOfNeurons number of neurons to create (equal to the number of neurons in this layer given to constructor)
+     * Has to create neurons and populate the vector< BaseNeuron <LayerType>* > neurons
      */
-    virtual void createNeurons( unsigned numberOfNeurons ) = 0;
+    virtual void createNeurons() = 0;
 
 
 
     /**
      * Has to connect all neurons in this layer to the neurons of the previous layer
-     * To create a connection use function addPreviousLayerConnection( edge );          (the same edge as below)
-     * And add connection from the previous layer too addNextLayerConnection( edge );   (the same edge as the above)
-     *
-     * @param previous previous layer which is connected to this layer
+     * To create a connection manually use function addPreviousLayerConnection( edge ); (the same edge as below)
+     * And add connection from the previous layer too addNextLayerConnection( edge );   (the same edge as above)
      */
-    virtual void connectNeurons( const BaseLayer <LayerType>& previous ) = 0;
+    virtual void connectNeurons() = 0;
 };
 
 

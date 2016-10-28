@@ -16,20 +16,21 @@ FullyConnected <LayerType> :: FullyConnected(unsigned int numberOfNeurons,
 }
 
 template <class LayerType>
-void FullyConnected <LayerType> :: createNeurons(unsigned numberOfNeurons,
-                                                 BaseActivationFunction<LayerType> *activationFunction)  {
+void FullyConnected <LayerType> :: createNeurons()  {
 
     for( int i=0; i < numberOfNeurons; ++i )
         neurons.push_back( new BaseNeuron <LayerType> ( activationFunction ) );
 }
 
 template <class LayerType>
-void FullyConnected <LayerType> ::connectNeurons( const BaseLayer<LayerType>& previous) {
+void FullyConnected <LayerType> ::connectNeurons() {
 
     for( auto currentNeuron : neurons ) {
-        for( auto previousNeuron : previous.getNeurons() ) {
-            NeuronOperations::connectNeurons( previousNeuron, currentNeuron );
-        }
+
+        /// connect neuron to all neurons in all previous layers
+        for( auto previousLayer : previousLayers )
+            for (auto previousNeuron : previousLayer -> getNeurons())
+                NeuronOperations::connectNeurons( previousNeuron, currentNeuron );
 
         if( bias != nullptr ) {
             NeuronOperations::connectNeurons( bias, currentNeuron );
