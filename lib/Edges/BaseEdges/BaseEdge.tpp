@@ -24,8 +24,8 @@ BaseEdge <WeightType> :: ~BaseEdge() {
 
 
 template <class WeightType>
-void BaseEdge <WeightType> :: updateWeight() {
+void BaseEdge <WeightType> :: updateWeight( WeightType coefficient ) {
 
-    *weight -= *deltaWeight;
+    *weight -= *deltaWeight * coefficient;
     *deltaWeight = 0;
 }

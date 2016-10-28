@@ -8,8 +8,10 @@
       <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/Sigmoid.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Activations/SimpleActivations/ReLU.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Activations/BaseActivation/BaseActivationFunction.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Edges/BaseEdge.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Edges/BaseEdge.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Edges/SimpleEdges/ConvolutionalEdge.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Edges/SimpleEdges/ConvolutionalEdge.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Edges/BaseEdges/BaseEdge.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Edges/BaseEdges/BaseEdge.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/SimpleLossFunctions/MeanSquaredError.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/BaseLoss/BaseLossFunction.h" isTestSource="false" />

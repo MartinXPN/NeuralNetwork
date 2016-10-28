@@ -3,7 +3,7 @@
 #define NEURALNETWORK_BASENEURON_H
 
 #include <vector>
-#include "../../Edges/BaseEdge.h"
+#include "../../Edges/BaseEdges/BaseEdge.h"
 #include "../../Activations/BaseActivation/BaseActivationFunction.h"
 
 
@@ -72,7 +72,7 @@ public:
     /**
      * Called to beckpropagating the neuron
      */
-    virtual void backpropagateNeuron(NeuronType coefficient = 1);
+    virtual void backpropagateNeuron();
 
     /**
      * Called to update the weights connecting the neuron to the next layer

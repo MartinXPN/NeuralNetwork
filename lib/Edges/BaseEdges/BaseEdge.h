@@ -3,7 +3,7 @@
 #define NEURALNETWORK_BASEEDGE_H
 
 
-#include "../Neurons/BaseNeurons/BaseNeuron.h"
+#include "../../Neurons/BaseNeurons/BaseNeuron.h"
 
 template <class NeuronType>
 class BaseNeuron;   /// say that this class exists but don't declare what's inside
@@ -67,8 +67,9 @@ public:
 
     /**
      * Update the weight by subtracting deltaWeight from the current weight
+     * @param coefficient may include regularization terms, learning rate, (1/numberOfSharedEdges for convolutional neurons), etc...
      */
-    virtual void updateWeight();
+    virtual void updateWeight( WeightType coefficient = 1 );
 };
 
 #include "BaseEdge.tpp"

@@ -194,12 +194,31 @@ void testMNIST() {
         }
     }
 
-    cout << "Everything is done" << endl;
-
+    cout << "Training is done" << endl;
     for( int i=0; i < 5; ++i ) {
         int id = (int) (rand() % trainImages.size());
         evaluateOne(trainImages[id]);
     }
+
+
+    /// calculate number of very small weights
+    int smallWeights = 0;
+    for( auto neuron : fc1.getNeurons() )
+        for( auto edge : neuron -> getPreviousConnections() )
+            if( fabs( edge -> getWeight() ) < 0.001 )
+                ++smallWeights;
+
+    for( auto neuron : fc2.getNeurons() )
+        for( auto edge : neuron -> getPreviousConnections() )
+            if( fabs( edge -> getWeight() ) < 0.001 )
+                ++smallWeights;
+
+    for( auto neuron : outputLayer.getNeurons() )
+        for( auto edge : neuron -> getPreviousConnections() )
+            if( fabs( edge -> getWeight() ) < 0.001 )
+                ++smallWeights;
+
+    cout << "Number of edges smaller than 0.001: " << smallWeights;
 }
 
 #endif //NEURALNETWORK_LAYERTESTMNIST_H
