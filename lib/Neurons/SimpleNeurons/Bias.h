@@ -3,7 +3,7 @@
 #define NEURALNETWORK_BASEBIAS_H
 
 
-#include "BaseInputNeuron.h"
+#include "../BaseNeurons/BaseInputNeuron.h"
 #include <vector>
 
 /**
@@ -13,13 +13,14 @@
  *      to every neuron that needs a bias
  */
 template <class NeuronType>
-class BaseBias : public BaseInputNeuron <NeuronType> {
+class Bias : public BaseInputNeuron <NeuronType> {
 
 public:
-    BaseBias( std::vector < BaseEdge <NeuronType>* > next = {} ) : BaseInputNeuron <NeuronType> ( 1, next ){};
+    Bias( std::vector < BaseEdge <NeuronType>* > next = {} );
     using BaseInputNeuron <NeuronType> :: addNextLayerConnection;
+    virtual ~Bias();
 };
 
-#include "BaseBias.tpp"
+#include "Bias.tpp"
 
 #endif //NEURALNETWORK_BASEBIAS_H

@@ -23,9 +23,9 @@ protected:
 
 public:
     FullyConnected(unsigned int numberOfNeurons,
-                   const std::vector< const BaseLayer<LayerType>* > &previousLayers,
                    BaseActivationFunction<LayerType>* activationFunction,
-                   BaseBias <LayerType>* bias = nullptr );
+                   const std::vector< const BaseLayer<LayerType>* > &previousLayers,
+                   Bias <LayerType>* bias = nullptr );
 
     virtual void createNeurons() override;
 

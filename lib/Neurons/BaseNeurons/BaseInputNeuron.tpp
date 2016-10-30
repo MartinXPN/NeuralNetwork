@@ -1,6 +1,5 @@
 
 #include "BaseInputNeuron.h"
-#include "../../Activations/SimpleActivations/Identitiy.h"
 
 
 template <class NeuronType>

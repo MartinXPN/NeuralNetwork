@@ -14,7 +14,7 @@ using namespace std;
 #include "../../lib/Activations/SimpleActivations/Sigmoid.h"
 #include "../../lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h"
 #include "../../lib/LossFunctions/SimpleLossFunctions/MeanSquaredError.h"
-#include "../../lib/Neurons/BaseNeurons/BaseBias.h"
+#include "../../lib/Neurons/SimpleNeurons/Bias.h"
 #include "../../lib/Utilities/NeuronOperations.h"
 
 
@@ -25,7 +25,7 @@ void testNeuronsXOR() {
     vector< BaseNeuron <double>* > neurons;
     neurons.push_back( new BaseInputNeuron <double>() );                    // layer{1}     [0]
     neurons.push_back( new BaseInputNeuron <double>() );                    // layer{1}     [1]
-    neurons.push_back( new BaseBias <double>() );                           // [2] bias
+    neurons.push_back( new Bias <double>() );                               // [2] bias
 
     neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );    // layer{2}     [3]
     neurons.push_back( new BaseNeuron <double>( new ReLU <double>() ) );    // layer{2}     [4]

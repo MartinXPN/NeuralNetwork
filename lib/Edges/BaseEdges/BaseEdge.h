@@ -32,7 +32,10 @@ public:
      * @param weight: weight of this edge. It's pointer because weights can be shared sometimes (Convolutions for example)
      * @param deltaWeight: buffer that is responsible for the update of the weight. It's pointer because weights can be shared sometimes (Convolutions for example)
      */
-    BaseEdge( BaseNeuron <WeightType> * from, BaseNeuron <WeightType>* to, WeightType* weight, WeightType* deltaWeight = nullptr );
+    BaseEdge( BaseNeuron <WeightType> * from,
+              BaseNeuron <WeightType>* to,
+              WeightType* weight,
+              WeightType* deltaWeight = nullptr );
     virtual ~BaseEdge();
 
     /**
@@ -67,7 +70,7 @@ public:
 
     /**
      * Update the weight by subtracting deltaWeight from the current weight
-     * @param coefficient may include regularization terms, learning rate, (1/numberOfSharedEdges for convolutional neurons), etc...
+     * @param coefficient may include regularization terms, learning rate etc...
      */
     virtual void updateWeight( WeightType coefficient = 1 );
 };

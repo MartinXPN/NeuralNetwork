@@ -2,6 +2,7 @@
 #ifndef NEURALNETWORK_LAYERTEST_H
 #define NEURALNETWORK_LAYERTEST_H
 
+#include <cstdio>
 #include "../../lib/Layers/BaseLayers/BaseHiddenLayer.h"
 #include "../../lib/Layers/BaseLayers/BaseOutputLayer.h"
 #include "../../lib/Layers/BaseLayers/BaseInputLayer.h"
@@ -14,11 +15,11 @@ void layerTestXOR() {
 
     srand( 1 );
     /// construct the Network
-    BaseBias <double>* bias = new BaseBias <double>();
+    Bias <double>* bias = new Bias <double>();
     BaseInputLayer <double> inputLayer( 2 );
     inputLayer.createNeurons();
 
-    FullyConnected <double> hidden1( 4, {&inputLayer}, new ReLU <double>(), bias );
+    FullyConnected <double> hidden1( 4, new ReLU <double>(), {&inputLayer}, bias );
     hidden1.createNeurons();
     hidden1.connectNeurons();
 
@@ -34,7 +35,7 @@ void layerTestXOR() {
     vector <BaseNeuron <double>* > inputNeurons = inputLayer.getNeurons();
     vector <BaseNeuron <double>* > hiddenNeurons = hidden1.getNeurons();
     vector <BaseNeuron <double>* > outputNeurons = outputLayer.getNeurons();
-    printf( "input: %lu\nhidden: %lu\noutput: %lu\n", inputNeurons.size(), hiddenNeurons.size(), outputNeurons.size() );
+    printf( "input: %u\nhidden: %u\noutput: %u\n", inputNeurons.size(), hiddenNeurons.size(), outputNeurons.size() );
 
 
     /// learn XOR

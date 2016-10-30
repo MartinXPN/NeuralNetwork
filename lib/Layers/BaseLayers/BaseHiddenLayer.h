@@ -4,7 +4,7 @@
 
 
 #include "BaseLayer.h"
-#include "../../Neurons/BaseNeurons/BaseBias.h"
+#include "../../Neurons/SimpleNeurons/Bias.h"
 
 /**
  * Base ABSTRACT class for all hidden layers
@@ -22,13 +22,13 @@ protected:
     using BaseLayer <LayerType> :: numberOfNeurons;
     using BaseLayer <LayerType> :: previousLayers;
     BaseActivationFunction <LayerType>* activationFunction;
-    BaseBias <LayerType>* bias;
+    Bias <LayerType>* bias;
 
 public:
     BaseHiddenLayer(unsigned int numberOfNeurons,
                     const std::vector< const BaseLayer<LayerType>* > &previousLayers,
                     BaseActivationFunction<LayerType> *activationFunction,
-                    BaseBias <LayerType>* bias = nullptr );
+                    Bias <LayerType>* bias = nullptr );
 };
 
 #include "BaseHiddenLayer.tpp"

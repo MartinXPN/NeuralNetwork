@@ -10,7 +10,7 @@ BaseOutputLayer <LayerType> :: BaseOutputLayer(unsigned int numberOfNeurons,
                                                const std::vector< const BaseLayer<LayerType>* > &previousLayers,
                                                BaseLossFunction<LayerType> *lossFunction,
                                                BaseActivationFunction<LayerType> *activationFunction,
-                                               BaseBias <LayerType>* bias)
+                                               Bias <LayerType>* bias)
         : activationFunction( activationFunction ),
           lossFunction( lossFunction ),
           bias( bias ),

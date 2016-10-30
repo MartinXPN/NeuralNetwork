@@ -13,10 +13,10 @@
 #include "../../lib/Activations/SimpleActivations/Sigmoid.h"
 
 
-BaseBias <double>* bias = new BaseBias <double>();
+Bias <double>* bias = new Bias <double>();
 BaseInputLayer <double> inputLayer( 28*28 );
-FullyConnected <double> fc1( 100, {&inputLayer}, new ReLU <double>(), bias );
-FullyConnected <double> fc2( 100, {&fc1}, new ReLU <double>(), bias );
+FullyConnected <double> fc1( 100, new ReLU <double>(), {&inputLayer}, bias );
+FullyConnected <double> fc2( 100, new ReLU <double>(), {&fc1}, bias );
 BaseOutputLayer <double> outputLayer( 10, {&fc2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
 
 using namespace std;

@@ -7,7 +7,7 @@
 #include "../../LossFunctions/BaseLoss/BaseLossFunction.h"
 #include "../../Activations/BaseActivation/BaseActivationFunction.h"
 #include "../../Activations/SimpleActivations/Identitiy.h"
-#include "../../Neurons/BaseNeurons/BaseBias.h"
+#include "../../Neurons/SimpleNeurons/Bias.h"
 
 /**
  * Base class for all output layers
@@ -23,7 +23,7 @@ protected:
     using BaseLayer <LayerType> :: neurons;
     BaseActivationFunction <LayerType>* activationFunction;
     BaseLossFunction <LayerType>* lossFunction;
-    BaseBias <LayerType>* bias;
+    Bias <LayerType>* bias;
 
 public:
     /**
@@ -37,7 +37,7 @@ public:
                     const std::vector< const BaseLayer<LayerType> *> &previousLayers,
                     BaseLossFunction <LayerType>* lossFunction,
                     BaseActivationFunction <LayerType> * activationFunction = new Identity <LayerType>(),
-                    BaseBias <LayerType>* bias = nullptr);
+                    Bias <LayerType>* bias = nullptr);
 
     virtual void createNeurons() override;
 
