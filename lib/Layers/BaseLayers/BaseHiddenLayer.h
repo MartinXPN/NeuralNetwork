@@ -29,6 +29,8 @@ public:
                     const std::vector< const BaseLayer<LayerType>* > &previousLayers,
                     BaseActivationFunction<LayerType> *activationFunction,
                     Bias <LayerType>* bias = nullptr );
+
+    virtual void createNeurons() override;
 };
 
 #include "BaseHiddenLayer.tpp"

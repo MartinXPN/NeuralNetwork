@@ -27,8 +27,6 @@ public:
                    const std::vector< const BaseLayer<LayerType>* > &previousLayers,
                    Bias <LayerType>* bias = nullptr );
 
-    virtual void createNeurons() override;
-
     virtual void connectNeurons() override;
 };
 

@@ -16,13 +16,6 @@ FullyConnected <LayerType> :: FullyConnected(const std :: vector <unsigned>& dim
 }
 
 template <class LayerType>
-void FullyConnected <LayerType> :: createNeurons()  {
-
-    for( int i=0; i < numberOfNeurons; ++i )
-        neurons.push_back( new BaseNeuron <LayerType> ( activationFunction ) );
-}
-
-template <class LayerType>
 void FullyConnected <LayerType> ::connectNeurons() {
 
     for( auto currentNeuron : neurons ) {

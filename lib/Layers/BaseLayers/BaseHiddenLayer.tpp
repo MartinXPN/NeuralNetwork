@@ -11,3 +11,11 @@ BaseHiddenLayer <LayerType> :: BaseHiddenLayer(const std :: vector <unsigned>& d
           bias( bias ) {
 
 }
+
+
+template <class LayerType>
+void BaseHiddenLayer <LayerType> :: createNeurons() {
+
+    for( int i=0; i < numberOfNeurons; ++i )
+        neurons.push_back( new BaseNeuron <LayerType> ( activationFunction ) );
+}

@@ -12,9 +12,8 @@
       <sourceFolder url="file://$MODULE_DIR$/lib/Edges/SimpleEdges/SharedEdge.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Edges/BaseEdges/BaseEdge.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Edges/BaseEdges/BaseEdge.tpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/SimpleLossFunctions/MeanSquaredError.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/BaseLoss/BaseLossFunction.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Network/BaseNeuralNetwork.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Network/BaseNeuralNetwork.tpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Layers/SimpleLayers/Convolution.tpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Layers/SimpleLayers/FullyConnected.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Layers/SimpleLayers/Convolution.h" isTestSource="false" />
@@ -35,9 +34,11 @@
       <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/BaseNeurons/BaseNeuron.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/SimpleNeurons/Bias.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Neurons/SimpleNeurons/Bias.tpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Network/BaseNeuralNetwork.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lib/Network/BaseNeuralNetwork.tpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/SimpleLossFunctions/MeanSquaredError.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/LossFunctions/BaseLoss/BaseLossFunction.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Utilities/NeuronOperations.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/Utilities/MathOperations.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests/TestLayers/LayerTestMNIST.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests/TestLayers/LayerTestXOR.h" isTestSource="false" />
