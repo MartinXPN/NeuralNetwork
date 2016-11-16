@@ -1,6 +1,8 @@
 
+#include <cstdlib>
 #include "Convolution.h"
 #include "../../Utilities/MathOperations.h"
+#include "../../Utilities/NeuronOperations.h"
 
 
 template <class LayerType>
@@ -20,12 +22,21 @@ Convolution <LayerType> ::Convolution(std::vector<unsigned> dimensions,
 
     for( unsigned item : stride )
         assert( item != 0 );
+
+    int numberOfWeights = math :: multiply( kernel );
+    for( int i=0; i < numberOfWeights; ++i ) {
+        weights.push_back(LayerType(rand() / LayerType(RAND_MAX) - 0.5));
+        deltaWeights.push_back( 0 );
+    }
 }
 
 
 template <class LayerType>
 void Convolution <LayerType> :: connectNeurons() {
 
+    for( auto previousLayer : previousLayers ) {
+        connectLayer( previousLayer, 0, 0, 0 );
+    }
 
 }
 
@@ -33,18 +44,25 @@ template <class LayerType>
 void Convolution <LayerType> :: connectOne( BaseInputNeuron<LayerType> *&neuron,
                                             BaseLayer <LayerType>* previousLayer,
                                             int previousLayerStart,
-                                            int currentDimension ) {
+                                            int currentDimension,
+                                            int weightIndex ) {
 
     if( currentDimension == previousLayer -> dimensions.size() ) {
         /// connect neuron to the neuron in the previous layer at position [previousLayerStart]
+        NeuronOperations :: connectNeurons( previousLayer -> neurons[previousLayerStart],
+                                            neuron,
+                                            &weights[ weightIndex ],
+                                            &deltaWeights[ weightIndex ] );
     }
     else {
         int step = math :: multiply( previousLayer -> dimensions, (size_t) currentDimension + 1 );
+        int weightStep = math :: multiply( kernel, (size_t) (currentDimension + 1) );
         for( int i=0; i < kernel[ currentDimension ]; ++i ) {
             connectOne( neuron,
                         previousLayer,
                         previousLayerStart + i * step,
-                        currentDimension + 1 );
+                        currentDimension + 1,
+                        weightIndex + weightStep );
         }
     }
 }

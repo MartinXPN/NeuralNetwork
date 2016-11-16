@@ -13,7 +13,7 @@ namespace math {
             res *= v[i];
         return res;
     }
-    unsigned multiply( const std :: vector <unsigned> v, size_t start ) {
+    unsigned multiply( const std :: vector <unsigned> v, size_t start = 0 ) {
         return multiply( v, start, v.size() );
     }
 
