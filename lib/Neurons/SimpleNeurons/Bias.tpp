@@ -8,5 +8,5 @@ Bias <NeuronType> :: Bias( std::vector < BaseEdge <NeuronType>* > next )
 }
 
 template <class NeuronType>
-Bias :: ~Bias() {
+Bias <NeuronType> :: ~Bias() {
 }

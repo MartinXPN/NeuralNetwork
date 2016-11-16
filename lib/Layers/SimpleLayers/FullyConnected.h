@@ -22,7 +22,7 @@ protected:
     using BaseHiddenLayer <LayerType> :: bias;
 
 public:
-    FullyConnected(unsigned int numberOfNeurons,
+    FullyConnected(const std :: vector <unsigned>& dimensions,
                    BaseActivationFunction<LayerType>* activationFunction,
                    const std::vector< const BaseLayer<LayerType>* > &previousLayers,
                    Bias <LayerType>* bias = nullptr );

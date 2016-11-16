@@ -4,11 +4,11 @@
 
 
 template <class LayerType>
-FullyConnected <LayerType> :: FullyConnected(unsigned int numberOfNeurons,
+FullyConnected <LayerType> :: FullyConnected(const std :: vector <unsigned>& dimensions,
                                              BaseActivationFunction<LayerType> *activationFunction,
                                              const std::vector< const BaseLayer<LayerType>* > &previousLayers,
                                              Bias <LayerType>* bias) :
-        BaseHiddenLayer <LayerType> ( numberOfNeurons,
+        BaseHiddenLayer <LayerType> ( dimensions,
                                       previousLayers,
                                       activationFunction,
                                       bias ) {

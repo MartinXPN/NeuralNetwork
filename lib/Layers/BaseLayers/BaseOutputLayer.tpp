@@ -6,7 +6,7 @@
 
 
 template <class LayerType>
-BaseOutputLayer <LayerType> :: BaseOutputLayer(unsigned int numberOfNeurons,
+BaseOutputLayer <LayerType> :: BaseOutputLayer(const std :: vector <unsigned>& dimensions,
                                                const std::vector< const BaseLayer<LayerType>* > &previousLayers,
                                                BaseLossFunction<LayerType> *lossFunction,
                                                BaseActivationFunction<LayerType> *activationFunction,
@@ -14,7 +14,7 @@ BaseOutputLayer <LayerType> :: BaseOutputLayer(unsigned int numberOfNeurons,
         : activationFunction( activationFunction ),
           lossFunction( lossFunction ),
           bias( bias ),
-          BaseLayer <LayerType> (numberOfNeurons, previousLayers) {
+          BaseLayer <LayerType> (dimensions, previousLayers) {
 
 }
 

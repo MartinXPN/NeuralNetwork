@@ -23,8 +23,8 @@ protected:
     using BaseLayer <LayerType> :: numberOfNeurons;
 
 public:
-    BaseInputLayer(unsigned numberOfNeurons ) :
-            BaseLayer <LayerType> ( numberOfNeurons, {} ) {
+    BaseInputLayer(const std :: vector <unsigned>& dimensions ) :
+            BaseLayer <LayerType> ( dimensions, {} ) {
 
     }
 

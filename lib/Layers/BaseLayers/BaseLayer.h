@@ -28,17 +28,20 @@ protected:
     /// number of neurons in this layer
     unsigned numberOfNeurons;
 
+    /// dimensions of the layer
+    std :: vector <unsigned> dimensions;
+
     /// all the previous layer that have connection to this layer
     std :: vector< const BaseLayer <LayerType>* > previousLayers;
 
 
 public:
     /**
-     * @param numberOfNeurons number of neurons in the layer
+     * @param dimensions every layer may have different dimensions. For example when training a model on pictures one may use 2D convolutions + 1 dimensions for filters
      * @param previousLayers all previous layers that are connected to this layer
      */
-    BaseLayer( unsigned numberOfNeurons,
-               const std :: vector< const BaseLayer <LayerType>* > previousLayers );
+    BaseLayer( const std :: vector <unsigned>& dimensions,
+               const std :: vector< const BaseLayer <LayerType>* >& previousLayers );
 
 
     /**

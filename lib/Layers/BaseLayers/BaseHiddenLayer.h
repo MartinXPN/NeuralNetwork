@@ -25,7 +25,7 @@ protected:
     Bias <LayerType>* bias;
 
 public:
-    BaseHiddenLayer(unsigned int numberOfNeurons,
+    BaseHiddenLayer(const std :: vector <unsigned>& dimensions,
                     const std::vector< const BaseLayer<LayerType>* > &previousLayers,
                     BaseActivationFunction<LayerType> *activationFunction,
                     Bias <LayerType>* bias = nullptr );

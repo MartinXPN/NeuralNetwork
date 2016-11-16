@@ -16,14 +16,14 @@ void layerTestXOR() {
     srand( 1 );
     /// construct the Network
     Bias <double>* bias = new Bias <double>();
-    BaseInputLayer <double> inputLayer( 2 );
+    BaseInputLayer <double> inputLayer( {2} );
     inputLayer.createNeurons();
 
-    FullyConnected <double> hidden1( 4, new ReLU <double>(), {&inputLayer}, bias );
+    FullyConnected <double> hidden1( {4}, new ReLU <double>(), {&inputLayer}, bias );
     hidden1.createNeurons();
     hidden1.connectNeurons();
 
-    BaseOutputLayer <double> outputLayer( 1,
+    BaseOutputLayer <double> outputLayer( {1},
                                           {&hidden1},
                                           new CrossEntropyCost <double>(),
                                           new Sigmoid <double>(), bias );

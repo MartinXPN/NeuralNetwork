@@ -22,14 +22,11 @@ protected:
     std :: vector <unsigned> dimensions;    /// number of rows, columns, etc.   | example {100, 200} -> 100 rows 200 columns
     std :: vector <unsigned> windowSize;    /// size of the sliding window      | example {2, 3}
     std :: vector <unsigned> stride;        /// step of the sliding window      | example {1, 3} -> step 1 in direction of rows and 3 in direction of columns
-    std :: vector <unsigned> padding;       /// padding from edges              | example {1, 2} -> pad rows by 1 and columns by 2
 
-    unsigned calculateNumberOfNeurons();
     void connectOne( int dimension );
 
 public:
-    Convolution( unsigned numberOfFilters,
-                 std :: vector <unsigned> dimensions,
+    Convolution( std :: vector <unsigned> dimensions,
                  std :: vector <unsigned> windowSize,
                  BaseActivationFunction<LayerType> *activationFunction,
                  const std::vector<const BaseLayer<LayerType> *> &previousLayers,

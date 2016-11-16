@@ -33,7 +33,7 @@ public:
      * @param activationFunction: actuvatuib function of all neurons in this layer      | to have different activations for different neurons we need to create multiple output layers
      * @param bias: pointer to the bias neuron, as it's more efficient to have only one instance of bias for the whole network it's recommended to pass this one instance to all layers
      */
-    BaseOutputLayer(unsigned int numberOfNeurons,
+    BaseOutputLayer(const std :: vector <unsigned>& dimensions,
                     const std::vector< const BaseLayer<LayerType> *> &previousLayers,
                     BaseLossFunction <LayerType>* lossFunction,
                     BaseActivationFunction <LayerType> * activationFunction = new Identity <LayerType>(),

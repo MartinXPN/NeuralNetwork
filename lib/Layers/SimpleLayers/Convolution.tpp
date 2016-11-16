@@ -3,36 +3,23 @@
 
 
 template <class LayerType>
-Convolution <LayerType> ::Convolution(unsigned numberOfFilters,
-                                      std::vector<unsigned> dimensions,
+Convolution <LayerType> ::Convolution(std::vector<unsigned> dimensions,
                                       std::vector<unsigned> windowSize,
                                       BaseActivationFunction<LayerType> *activationFunction,
                                       const std::vector<const BaseLayer<LayerType> *> &previousLayers,
                                       std::vector<unsigned> stride,
                                       std::vector<unsigned> padding,
                                       Bias<LayerType> *bias)
-        : numberOfFilters( numberOfFilters ),
-          dimensions( dimensions ),
+        : dimensions( dimensions ),
           windowSize( windowSize ),
           stride( stride ),
-          padding( padding ),
-          BaseHiddenLayer( calculateNumberOfNeurons(), previousLayers, activationFunction, bias ) {
+          BaseHiddenLayer( dimensions, previousLayers, activationFunction, bias ) {
 
-    if( this -> stride.empty() )    stride  = std :: vector <unsigned> ( dimensions.size(), 1 );
-    if( this -> padding.empty() )   padding = std :: vector <unsigned> ( dimensions.size(), 0 );
+    if( this -> stride.empty() )
+        stride  = std :: vector <unsigned> ( dimensions.size(), 1 );
 
     for( unsigned item : stride )
         assert( item != 0 );
-}
-
-template <class LayerType>
-unsigned Convolution <LayerType> :: calculateNumberOfNeurons() {
-
-    unsigned res = numberOfFilters;
-    for( unsigned dimension : dimensions ) {
-        res *= dimension;
-    }
-    return res;
 }
 
 

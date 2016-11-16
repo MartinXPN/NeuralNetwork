@@ -14,10 +14,10 @@
 
 
 Bias <double>* bias = new Bias <double>();
-BaseInputLayer <double> inputLayer( 28*28 );
-FullyConnected <double> fc1( 100, new ReLU <double>(), {&inputLayer}, bias );
-FullyConnected <double> fc2( 100, new ReLU <double>(), {&fc1}, bias );
-BaseOutputLayer <double> outputLayer( 10, {&fc2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
+BaseInputLayer <double> inputLayer( {28*28} );
+FullyConnected <double> fc1( {100}, new ReLU <double>(), {&inputLayer}, bias );
+FullyConnected <double> fc2( {100}, new ReLU <double>(), {&fc1}, bias );
+BaseOutputLayer <double> outputLayer( {10}, {&fc2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
 
 using namespace std;
 int reverseInt(int i) {
