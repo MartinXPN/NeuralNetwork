@@ -40,7 +40,9 @@
       <sourceFolder url="file://$MODULE_DIR$/lib/Utilities/NeuronOperations.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/Utilities/MathOperations.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/TestLayers/ConvolutionTestConnections.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests/TestLayers/LayerTestMNIST.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/TestLayers/ConvolutionTestMNIST.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests/TestLayers/LayerTestXOR.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests/TestNeurons/NeuronTest.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />

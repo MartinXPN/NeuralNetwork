@@ -2,7 +2,7 @@
 #ifndef NEURALNETWORK_CROSSENTROPYCOST_H
 #define NEURALNETWORK_CROSSENTROPYCOST_H
 
-
+#include <cmath>
 #include "../BaseLoss/BaseLossFunction.h"
 
 

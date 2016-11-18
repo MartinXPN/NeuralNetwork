@@ -1,6 +1,6 @@
 
-#ifndef NEURALNETWORK_CONVOLUTION2D_H
-#define NEURALNETWORK_CONVOLUTION2D_H
+#ifndef NEURALNETWORK_CONVOLUTION_H
+#define NEURALNETWORK_CONVOLUTION_H
 
 
 #include <cassert>
@@ -17,20 +17,21 @@ protected:
     using BaseHiddenLayer <LayerType> :: activationFunction;
     using BaseHiddenLayer <LayerType> :: bias;
     using BaseHiddenLayer <LayerType> :: previousLayers;
+    using BaseHiddenLayer <LayerType> :: dimensions;
 
-    std :: vector <unsigned> dimensions;    /// number of rows, columns, etc.   | example {100, 200} -> 100 rows 200 columns
     std :: vector <unsigned> kernel;        /// size of the sliding window      | example {2, 3}
     std :: vector <unsigned> stride;        /// step of the sliding window      | example {1, 3} -> step 1 in direction of rows and 3 in direction of columns
     std :: vector <LayerType> weights;
     std :: vector <LayerType> deltaWeights;
+    std :: vector <int> numberOfUsages;     /// number of the usages of the same weight
 
-    virtual void connectOne( BaseInputNeuron <LayerType>* &neuron,
-                             BaseLayer <LayerType>* previousLayer,
+    virtual void connectOne( BaseNeuron <LayerType>* neuron,
+                             const BaseLayer <LayerType>* previousLayer,
                              int previousLayerStart,
                              int currentDimension,
                              int weightIndex = 0 );
 
-    virtual void connectLayer( BaseLayer <LayerType>* previousLayer,
+    virtual void connectLayer( const BaseLayer <LayerType>* previousLayer,
                                int currentLayerStart,
                                int previousLayerStart,
                                int currentDimension );
@@ -51,4 +52,4 @@ public:
 
 #include "Convolution.tpp"
 
-#endif //NEURALNETWORK_CONVOLUTION2D_H
+#endif //NEURALNETWORK_CONVOLUTION_H

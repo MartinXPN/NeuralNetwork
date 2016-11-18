@@ -47,7 +47,18 @@ public:
     /**
      * @returns read-only collection of neurons in this layer
      */
-    virtual const std :: vector< BaseNeuron <LayerType>* >& getNeurons() const { return neurons; }
+    virtual const std :: vector< BaseNeuron <LayerType>* >& getNeurons() const {
+        return neurons;
+    }
+
+
+    virtual unsigned size() const {
+        return numberOfNeurons;
+    }
+
+    virtual const std :: vector <unsigned>& getDimensions() const {
+        return dimensions;
+    }
 
 
 
