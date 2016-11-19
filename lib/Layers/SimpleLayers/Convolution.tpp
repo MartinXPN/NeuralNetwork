@@ -28,7 +28,7 @@ Convolution <LayerType> ::Convolution(std::vector<unsigned> dimensions,
         numberOfUsages.push_back( numberOfNeurons );
     }
 
-    printf( "Weights:->\t" );
+    printf( "\nWeights:->\t" );
     for( auto item : weights ) {
         printf( "%lf\t", item );
     }
@@ -82,7 +82,7 @@ void Convolution <LayerType> :: connectOne( BaseNeuron<LayerType> *neuron,
                         previousLayer,
                         previousLayerStart + i * step,
                         currentDimension + 1,
-                        weightIndex + weightStep );
+                        weightIndex + i * weightStep );
         }
     }
 }
