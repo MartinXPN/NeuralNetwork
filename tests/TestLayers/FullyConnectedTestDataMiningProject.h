@@ -15,6 +15,7 @@
 #include "../../lib/Layers/BaseLayers/BaseOutputLayer.h"
 #include "../../lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h"
 #include "../../lib/Activations/SimpleActivations/Sigmoid.h"
+#include "../../lib/LossFunctions/SimpleLossFunctions/MeanSquaredError.h"
 
 
 using namespace std;
@@ -40,7 +41,7 @@ vector< vector <double> > readTest( string fileDirectory ) {
 
 
     vector< vector <double> > data;
-    for( int i=0; i < 10; ++i ) {
+    for( int i=0; i < 20352; ++i ) {
         vector <double> variables;
         double var;
         for( int j=0; j < names.size()-1; ++j ) {
@@ -68,7 +69,7 @@ pair< vector< vector <double> >, vector <double> > readTrain( string fileDirecto
 
     vector< vector <double> > data;
     vector <double> labels;
-    for( int i=0; i < 81000; ++i ) {
+    for( int i=0; i < 81414; ++i ) {
         vector <double> variables;
         double var;
         for( int j=0; j < names.size()-1; ++j ) {
@@ -123,8 +124,8 @@ void test() {
     Bias <double> *bias = new Bias <double>();
     BaseInputLayer <double> in( {trainData[0].size()} );
     FullyConnected <double> fc1( {100}, new ReLU <double>(), {&in}, bias );
-    FullyConnected <double> fc2( {200}, new ReLU <double>(), {&in}, bias );
-    BaseOutputLayer <double> out( {1}, {&fc2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
+    FullyConnected <double> fc2( {200}, new ReLU <double>(), {&fc1}, bias );
+    BaseOutputLayer <double> out( {1}, {&fc2}, new MeanSquaredError <double>(), new Sigmoid <double>(), bias );
 
     //////////////////////// INITIALIZATION //////////////////////////////
     in.createNeurons();
@@ -140,9 +141,9 @@ void test() {
     auto outputNeurons = out.getNeurons();
 
     ////////////////////// TRAINING //////////////////////////////////////
-    const int maxEpochs = 2;
-    const int batchSize = 500;
-    double learningRate = 0.01;
+    const int maxEpochs = 50;
+    const int batchSize = 200;
+    double learningRate = 0.05;
     for( int epoch = 0; epoch < maxEpochs; ++epoch ) {
 
         for (int batch = 0; batch < trainData.size(); batch += batchSize) {
@@ -193,6 +194,7 @@ void test() {
     }
 
 
+    //////////////////// SAVE RESULTS TO FILE //////////////////
     ofstream fout;
     fout.open ("/home/martin/Desktop/Projects/DataMining/neural_network.csv");
     fout << "ID,Class\n";
