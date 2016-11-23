@@ -3,15 +3,22 @@
 #define NEURALNETWORK_LAYERTEST_H
 
 #include <cstdio>
+#include <vector>
+#include <iostream>
+
 #include "../../lib/Layers/BaseLayers/BaseHiddenLayer.h"
 #include "../../lib/Layers/BaseLayers/BaseOutputLayer.h"
 #include "../../lib/Layers/BaseLayers/BaseInputLayer.h"
 #include "../../lib/Layers/SimpleLayers/FullyConnected.h"
+#include "../../lib/Activations/SimpleActivations/ReLU.h"
+#include "../../lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h"
+#include "../../lib/Activations/SimpleActivations/Sigmoid.h"
 
 /**
  * Define a simple network with input, hidden, and output layers
  */
 void layerTestXOR() {
+    using namespace std;
 
     srand( 1 );
     /// construct the Network

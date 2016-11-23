@@ -35,7 +35,7 @@ public:
      * @param x the input of the neuron
      */
     virtual Type activation(Type x) override {
-        if( x < 0 ) return alpha * ( exp( x ) - 1 );
+        if( x < 0 ) return alpha * ( std::exp( x ) - 1 );
         else        return x;
     }
 
@@ -43,7 +43,7 @@ public:
     /**
      * @returns
      *      x >= 0 => 1
-     *      x <  0 => alpha * ELU( X )
+     *      x <  0 => alpha + ELU( X )
      */
     virtual Type activationDerivative(Type x) override {
         if( x < 0 ) return alpha + activation( x );

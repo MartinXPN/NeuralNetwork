@@ -33,6 +33,7 @@ namespace NeuronOperations {
                                      Type *weight,
                                      Type *deltaWeight) {
 
+//        printf( "connect -> %d %d %d(%d) %d(%lf) %d(%lf)\n", from, to, numberOfUsages, *numberOfUsages, weight, *weight, deltaWeight, *deltaWeight );
         SharedEdge <Type>* edge = new SharedEdge <Type> ( from, to, numberOfUsages, weight, deltaWeight );
         from -> addNextLayerConnection( edge );
         to -> addPreviousLayerConnection( edge );
