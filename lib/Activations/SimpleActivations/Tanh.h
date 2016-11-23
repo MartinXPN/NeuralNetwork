@@ -21,8 +21,8 @@ public:
      * @returns ( 1 - e^(-2x) ) / ( 1 + e^(-2x) )
      */
     virtual Type activation(Type x) override {
-        return  ( 1. - exp( -2. * x ) ) /
-                ( 1. + exp( -2. * x ) );
+        return  ( 1. - std::exp( -2. * x ) ) /
+                ( 1. + std::exp( -2. * x ) );
     }
 
     /**
@@ -30,8 +30,8 @@ public:
      */
     virtual Type activationDerivative(Type x) override {
         return 1. -
-                pow( ( 1. - exp( -2. * x ) ) /
-                     ( 1. + exp( -2. * x ) ), 2. );
+                pow( ( 1. - std::exp( -2. * x ) ) /
+                     ( 1. + std::exp( -2. * x ) ), 2. );
     }
 };
 

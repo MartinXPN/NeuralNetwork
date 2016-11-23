@@ -28,7 +28,7 @@ Convolution <LayerType> ::Convolution(std::vector<unsigned> dimensions,
         numberOfUsages.push_back( numberOfNeurons );
     }
 
-    printf( "\nWeights:->\t" );
+    printf( "\nWeights:->\n" );
     for( auto item : weights ) {
         printf( "%lf\t", item );
     }
@@ -39,10 +39,8 @@ Convolution <LayerType> ::Convolution(std::vector<unsigned> dimensions,
 template <class LayerType>
 void Convolution <LayerType> :: connectNeurons() {
 
-    for( const BaseLayer <LayerType>* previousLayer : previousLayers ) {
-        connectLayer( previousLayer, 0, 0, 0 );
-    }
-
+    /// add elements to vector before creating connections as when adding connections, we may lose pointers
+    /// to the weights (if capacity changes => new memory block is allocated)
     if( bias != nullptr ) {
         weights.push_back( LayerType(rand() / LayerType(RAND_MAX) - 0.5) );
         deltaWeights.push_back( 0 );
@@ -56,6 +54,11 @@ void Convolution <LayerType> :: connectNeurons() {
                                                           &deltaWeights.back());
         }
     }
+
+
+    for( const BaseLayer <LayerType>* previousLayer : previousLayers ) {
+        connectLayer( previousLayer, 0, 0, 0 );
+    }
 }
 
 template <class LayerType>
@@ -67,7 +70,7 @@ void Convolution <LayerType> :: connectOne( BaseNeuron<LayerType> *neuron,
 
     if( currentDimension == previousLayer -> getDimensions().size() ) {
         /// connect neuron to the neuron in the previous layer at position [previousLayerStart]
-//        printf( "Connect *%d to prev[%d]   --with [%d]--\n", neuron, previousLayerStart, weightIndex );
+        printf( "Connect *%d to prev[%d]   --with [%d]--> %lf\n", neuron, previousLayerStart, weightIndex, weights[weightIndex] );
         NeuronOperations::connectConvolutionalNeurons(previousLayer->getNeurons()[previousLayerStart],
                                                       neuron,
                                                       &numberOfUsages[weightIndex],
@@ -94,7 +97,7 @@ void Convolution <LayerType> :: connectLayer( const BaseLayer <LayerType>* previ
                                               int currentDimension) {
 
     if( currentDimension == dimensions.size() ) {
-//        printf( "\n\nConnect this[%d]!!!\n", currentLayerStart );
+        printf( "\n\nConnect this[%d]...\n", currentLayerStart );
         connectOne( neurons[ currentLayerStart ], previousLayer, previousLayerStart, 0 );
     }
     else {

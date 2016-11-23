@@ -23,16 +23,16 @@ public:
         if( x < -5 )    return 0.0000001; /// done for optimization purpouses as exp( -x ) will be a huge number when x < -5
         if( x > 5 )     return 0.9999999; /// done for optimization purpouses as exp( x ) will be negligible when x > 5
         return  1. /
-                ( 1. + exp( -x ) );
+                ( 1. + std::exp( -x ) );
     }
 
     /**
      * @returns e^x / ( 1 + e^x )^2
      */
     virtual Type activationDerivative(Type x) override {
-        if( abs(x) > 5 )    return 0.0000001;   /// done for optimization purpouses as derivative tends to 0 when |x| > 5
-        return exp( x ) /
-               pow( ( 1. + exp( x ) ), 2 );
+        if( std::abs(x) > 5 )    return 0.0000001;   /// done for optimization purpouses as derivative tends to 0 when |x| > 5
+        return std::exp( x ) /
+               std::pow( ( 1. + std::exp( x ) ), 2 );
     }
 };
 

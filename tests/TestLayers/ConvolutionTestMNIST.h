@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <zconf.h>
 #include "../../lib/Layers/BaseLayers/BaseInputLayer.h"
 #include "../../lib/Layers/SimpleLayers/FullyConnected.h"
 #include "../../lib/Activations/SimpleActivations/ReLU.h"
@@ -16,8 +17,8 @@
 
 Bias <double>* bias = new Bias <double>();
 BaseInputLayer <double> inputLayer( {1, 28, 28} );
-Convolution <double> conv1( { 10, 8, 8 }, { 1, 4, 4 }, new ReLU <double>(), {&inputLayer}, {0, 2, 2}, bias );
-Convolution <double> conv2( { 5, 6, 6 }, { 10, 3, 3 }, new ReLU <double>(), {&conv1}, {0, 1, 1}, bias );
+Convolution <double> conv1( { 10, 13, 13 }, { 1, 4, 4 }, new ReLU <double>(), {&inputLayer}, {0, 2, 2}, bias );
+Convolution <double> conv2( { 5, 10, 10 }, { 10, 4, 4 }, new ReLU <double>(), {&conv1}, {0, 1, 1}, bias );
 BaseOutputLayer <double> outputLayer( {10}, {&conv2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
 
 using namespace std;
@@ -121,13 +122,13 @@ void testConvolutionMNIST() {
         for( int j=0; j < trainImages[i].size(); ++j )
             trainImages[i][j] /= 255.;
 
-    cout << "Image: \n";
-    for( int i=0; i < 28; ++i, printf( "\n" ) )
-        for( int j=0; j < 28; ++j ) {
-            double current_number = trainImages[7][ i * 28 + j ];
-            if( current_number != 0. )  printf("%.1lf  ", current_number);
-            else                        printf( "    " );
-        }
+//    cout << "Image: \n";
+//    for( int i=0; i < 28; ++i, printf( "\n" ) )
+//        for( int j=0; j < 28; ++j ) {
+//            double current_number = trainImages[7][ i * 28 + j ];
+//            if( current_number != 0. )  printf("%.1lf  ", current_number);
+//            else                        printf( "    " );
+//        }
 
     /// construct the network
 
@@ -137,6 +138,14 @@ void testConvolutionMNIST() {
     outputLayer.createNeurons();
 
     conv1.connectNeurons();
+    printf( "Sample connection (%d)(%d)(%d)(%d):\n", inputLayer.size(), conv1.size(), conv2.size(), outputLayer.size() );
+    for( auto item : conv1.getNeurons()[1689] -> getPreviousConnections() ) {
+        printf( "%lf\t", item -> getWeight() );
+        fflush( stdout );
+    }
+    fflush( stdout );
+
+//    sleep(10000);
     conv2.connectNeurons();
     outputLayer.connectNeurons();
 
@@ -155,7 +164,7 @@ void testConvolutionMNIST() {
         printf( "%lf\t", item -> getWeight() );
     }
     printf( "\n" );
-    for( auto item : conv1.getNeurons()[2] -> getPreviousConnections() ) {
+    for( auto item : conv2.getNeurons()[2] -> getPreviousConnections() ) {
         printf( "%lf\t", item -> getWeight() );
     }
     printf( "\n" );

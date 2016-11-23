@@ -2,8 +2,8 @@
 //#include "tests/TestLayers/LayerTestXOR.h"
 //#include "tests/TestLayers/LayerTestMNIST.h"
 //#include "tests/TestLayers/ConvolutionTestConnections.h"
-//#include "tests/TestLayers/ConvolutionTestMNIST.h"
-#include "tests/TestLayers/FullyConnectedTestDataMiningProject.h"
+#include "tests/TestLayers/ConvolutionTestMNIST.h"
+//#include "tests/TestLayers/FullyConnectedTestDataMiningProject.h"
 
 int main() {
 
@@ -11,7 +11,7 @@ int main() {
 //    layerTestXOR();
 //    testMNIST();
 //    testConvolutionConnections();
-//    testConvolutionMNIST();
-    test();
+    testConvolutionMNIST();
+//    test();
     return 0;
 }
