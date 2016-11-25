@@ -17,12 +17,11 @@ CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Layers/BaseLayers/BaseLayer.h
 CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Layers/BaseLayers/BaseLayer.tpp
 CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Layers/BaseLayers/BaseOutputLayer.h
 CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Layers/BaseLayers/BaseOutputLayer.tpp
-CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Layers/SimpleLayers/Convolution.h
-CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Layers/SimpleLayers/Convolution.tpp
 CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Layers/SimpleLayers/FullyConnected.h
 CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Layers/SimpleLayers/FullyConnected.tpp
 CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/LossFunctions/BaseLoss/BaseLossFunction.h
 CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h
+CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/LossFunctions/SimpleLossFunctions/MeanSquaredError.h
 CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Neurons/BaseNeurons/BaseInputNeuron.h
 CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Neurons/BaseNeurons/BaseInputNeuron.tpp
 CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Neurons/BaseNeurons/BaseNeuron.h
@@ -31,8 +30,7 @@ CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Neurons/BaseNeurons/BaseOutputNe
 CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Neurons/BaseNeurons/BaseOutputNeuron.tpp
 CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Neurons/SimpleNeurons/Bias.h
 CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Neurons/SimpleNeurons/Bias.tpp
-CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Utilities/MathOperations.h
 CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../lib/Utilities/NeuronOperations.h
 CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../main.cpp
-CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../tests/TestLayers/ConvolutionTestMNIST.h
+CMakeFiles/NeuralNetwork.dir/main.cpp.o: ../tests/TestLayers/FullyConnectedTestDataMiningProject.h
 
