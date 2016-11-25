@@ -1,3 +1,0 @@
-/home/ubuntu/Desktop/Projects/NeuralNetwork/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/ubuntu/Desktop/Projects/NeuralNetwork/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/ubuntu/Desktop/Projects/NeuralNetwork/cmake-build-debug/CMakeFiles/NeuralNetwork.dir
