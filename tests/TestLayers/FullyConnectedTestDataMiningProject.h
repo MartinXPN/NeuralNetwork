@@ -123,9 +123,28 @@ double evaluateOne( const vector <double> &v ) {
     return ((BaseOutputNeuron <double> *)out.getNeurons()[0])->getValue();
 }
 
+void evaluateTest( int epoch, const vector< vector <double> >& testData ) {
+
+    printf( "\nEvaluating on TESTING dataset" );
+    vector <double> testLabels;
+    for( int i=0; i < testData.size(); ++i ) {
+        testLabels.push_back( evaluateOne( testData[i] ) );
+    }
+    printf( "\nSaving results to file..." );
+    //////////////////// SAVE RESULTS TO FILE //////////////////
+    ofstream fout;
+    fout.open ("/home/ubuntu/Desktop/Projects/DataMining/neural_network_epoch_" + to_string(epoch) + ".csv");
+    fout << "ID,Class\n";
+    for( int i=0; i < testLabels.size(); ++i ) {
+        fout << i+1 << ',' << testLabels[i] << '\n';
+    }
+    fout.close();
+}
+
 void testDataMiningProject() {
 
     //////////////READ THE DATA////////////////////////////
+    const double trainProportion = 0.9;
     auto testData = readTest( "/home/ubuntu/Desktop/Projects/DataMining/filtered_scaled_test.csv" );
 //    printf( "TEST:\n" );
 //    for( int i=0; i < testData.size(); ++i, cout << endl )
@@ -138,9 +157,22 @@ void testDataMiningProject() {
         cout << testData.back()[j] << " ";
     }
 
-    auto train = readTrain( "/home/ubuntu/Desktop/Projects/DataMining/filtered_scaled_train.csv" );
-    auto trainData = train.first;
-    auto trainLabels = train.second;
+    /// train
+    auto trainData = readTrain( "/home/ubuntu/Desktop/Projects/DataMining/filtered_scaled_train.csv" );
+    vector< pair <vector <double>, double> > train;
+    for( int i=0; i < trainData.first.size(); ++i )
+        train.push_back( { trainData.first[i], trainData.second[i] } );
+
+    random_shuffle( train.begin(), train.end() );
+    vector< vector <double> > trainInputs;
+    vector< vector <double> > validInputs;
+    vector <double> trainLabels;
+    vector <double> validLabels;
+    for( int i=0; i < train.size() * trainProportion; ++i )                 trainInputs.push_back( train[i].first );
+    for( int i=0; i < train.size() * trainProportion; ++i )                 trainLabels.push_back( train[i].second );
+    for( int i=train.size() * trainProportion; i < train.size(); ++i )      validInputs.push_back( train[i].first );
+    for( int i=train.size() * trainProportion; i < train.size(); ++i )      validLabels.push_back( train[i].second );
+
 
 //    printf( "\n\nTRAIN:\n" );
 //    for( int i=0; i < trainData.size(); ++i, cout << endl ) {
@@ -151,8 +183,8 @@ void testDataMiningProject() {
 //    }
 
     printf( "\nLast row of TRAIN dataset-->\t" );
-    for( int j=0; j < trainData.back().size(); ++j ) {
-        cout << trainData.back()[j] << " ";
+    for( int j=0; j < trainInputs.back().size(); ++j ) {
+        cout << trainInputs.back()[j] << " ";
     }
     printf( "\n---> label: %lf\n", trainLabels.back() );
 
@@ -175,19 +207,22 @@ void testDataMiningProject() {
     auto outputNeurons = out.getNeurons();
 
     ////////////////////// TRAINING //////////////////////////////////////
-    const int maxEpochs = 100;
+    const int maxDecreasingEpochs = 3;
+    const int maxEpochs = 500;
     const int batchSize = 200;
+    double bestValidLoss = 1e9;
+    int increasingEpochs = 0;
     double learningRate = 0.05;
-    for( int epoch = 0; epoch < maxEpochs; ++epoch ) {
+    for( int epoch = 0; ; ++epoch ) {
 
-        printf( "\n\nEpoch: %d --Learning rate (%lf)--\n", epoch, learningRate );
+        printf( "\n\n--Epoch: (%d)--Learning rate (%lf)--decreasing epochs (%d)--\n", epoch, learningRate, increasingEpochs );
 
-        for (int batch = 0; batch < trainData.size(); batch += batchSize) {
+        for (int batch = 0; batch < trainInputs.size(); batch += batchSize) {
             double batchLoss = 0;
-            for (int i = batch; i < batch + batchSize && i < trainData.size(); ++i) {
+            for (int i = batch; i < batch + batchSize && i < trainInputs.size(); ++i) {
                 /// set values of input neurons
-                for( int j=0; j < trainData[i].size(); ++j )
-                    ((BaseInputNeuron <double>*)inputNeurons[j]) -> setValue( trainData[i][j] );
+                for( int j=0; j < trainInputs[i].size(); ++j )
+                    ((BaseInputNeuron <double>*)inputNeurons[j]) -> setValue( trainInputs[i][j] );
 
                 /// activate neurons
                 for (auto neuron : fc1.getNeurons())    neuron->activateNeuron();
@@ -224,15 +259,64 @@ void testDataMiningProject() {
             for (auto neuron : fc1.getNeurons())    neuron->updateWeights(learningRate, batchSize);
         }
 
-        learningRate *= 0.95;
+
+        /// evaluate on validation dataset
+        double validLoss = 0;
+        for( int i=0; i < validInputs.size(); ++i ) {
+            /// set values of input neurons
+            for (int j = 0; j < validInputs[i].size(); ++j)
+                ((BaseInputNeuron<double> *) inputNeurons[j])->setValue(trainInputs[i][j]);
+
+            /// activate neurons
+            for (auto neuron : fc1.getNeurons()) neuron->activateNeuron();
+            for (auto neuron : fc2.getNeurons()) neuron->activateNeuron();
+            for (auto neuron : fc3.getNeurons()) neuron->activateNeuron();
+            for (auto neuron : fc4.getNeurons()) neuron->activateNeuron();
+            for (auto neuron : outputNeurons) neuron->activateNeuron();
+
+            /// calculate losses
+            for (int j = 0; j < outputNeurons.size(); ++j) {
+                ((BaseOutputNeuron<double> *) outputNeurons[j])->calculateLoss(validLabels[i]);
+                validLoss += ((BaseOutputNeuron<double> *) outputNeurons[j])->getError(validLabels[i]);
+            }
+        }
+        if( epoch < maxEpochs ) {
+            validLoss = 1e9;
+            increasingEpochs = 0;
+        }
+        if( epoch % 25 == 0 ) {
+            learningRate *= 0.5;
+            evaluateTest( epoch, testData );
+        }
+        if( abs(validLoss) >= abs(bestValidLoss) ) {
+            ++increasingEpochs;
+            if( increasingEpochs >= maxDecreasingEpochs && epoch > maxEpochs )
+                break;
+        }
+        else {
+            increasingEpochs = 0;
+            bestValidLoss = validLoss;
+            evaluateTest( epoch, testData );
+        }
+
+        printf( "Validation loss: %lf, Best validation loss: %lf", validLoss, bestValidLoss );
+
+        if( epoch % 30 == 0 ) {
+            printf( "\n\n---------- evaluate on TRAINING dataset ---------\n" );
+            for( int i=0; i < 15; ++i ) {
+                int id = (int) (rand() % trainInputs.size());
+                printf( "Label: %lf\t Predictions: %lf\n", trainLabels[id], evaluateOne( trainInputs[id] ) );
+            }
+            evaluateTest( epoch, testData );
+        }
     }
 
 
     printf( "\n\n\n---------- evaluate on TRAINING dataset ---------\n" );
     for( int i=0; i < 15; ++i ) {
-        int id = (int) (rand() % trainData.size());
-        printf( "\nLabel: %lf\t Predictions: %lf ----> ", trainLabels[id], evaluateOne( trainData[id] ) );
-        for( auto item : trainData[id] )
+        int id = (int) (rand() % trainInputs.size());
+        printf( "\nLabel: %lf\t Predictions: %lf ----> ", trainLabels[id], evaluateOne( trainInputs[id] ) );
+        for( auto item : trainInputs[id] )
             printf( "%lf\t", item );
     }
     printf( "\n" );
@@ -244,12 +328,10 @@ void testDataMiningProject() {
     for( int i=0; i < testData.size(); ++i ) {
         testLabels.push_back( evaluateOne( testData[i] ) );
     }
-
-
     printf( "\nSaving results to file..." );
     //////////////////// SAVE RESULTS TO FILE //////////////////
     ofstream fout;
-    fout.open ("/home/ubuntu/Desktop/Projects/DataMining/neural_network.csv");
+    fout.open ("/home/ubuntu/Desktop/Projects/DataMining/neural_network_final.csv");
     fout << "ID,Class\n";
     for( int i=0; i < testLabels.size(); ++i ) {
         fout << i+1 << ',' << testLabels[i] << '\n';
