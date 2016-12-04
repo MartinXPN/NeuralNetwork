@@ -21,9 +21,9 @@ protected:
 
     std :: vector <unsigned> kernel;        /// size of the sliding window      | example {2, 3}
     std :: vector <unsigned> stride;        /// step of the sliding window      | example {1, 3} -> step 1 in direction of rows and 3 in direction of columns
-    std :: vector <LayerType> weights;
-    std :: vector <LayerType> deltaWeights;
-    std :: vector <int> numberOfUsages;     /// number of the usages of the same weight
+    std :: vector <LayerType*> weights;
+    std :: vector <LayerType*> deltaWeights;
+    std :: vector <int*> numberOfUsages;     /// number of the usages of the same weight
 
     virtual void connectOne( BaseNeuron <LayerType>* neuron,
                              const BaseLayer <LayerType>* previousLayer,
@@ -46,6 +46,8 @@ public:
 
 
     virtual void connectNeurons() override;
+
+    virtual void createWeights() override;
 
     virtual ~Convolution() {}
 };

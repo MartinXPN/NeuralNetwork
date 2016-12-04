@@ -9,7 +9,7 @@
 
 /**
  * Base ABSTRACT class for Layers
- * Layers is responsible for only 2 things, nothing more or less:
+ * Every Layers is responsible for only 2 things:
  *      1. create neurons
  *      2. connect neurons
  * Layer is not responsible for activating neurons or backpropagarion...

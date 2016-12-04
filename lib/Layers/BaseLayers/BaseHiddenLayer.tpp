@@ -19,3 +19,10 @@ void BaseHiddenLayer <LayerType> :: createNeurons() {
     for( int i=0; i < numberOfNeurons; ++i )
         neurons.push_back( new BaseNeuron <LayerType> ( activationFunction ) );
 }
+
+template <class LayerType>
+BaseHiddenLayer <LayerType> :: ~BaseHiddenLayer() {
+
+    for( int i=0; i < weights.size(); ++i )         delete weights[i];
+    for( int i=0; i < deltaWeights.size(); ++i )    delete deltaWeights[i];
+}

@@ -19,39 +19,19 @@ Convolution <LayerType> ::Convolution(std::vector<unsigned> dimensions,
 
     if( this -> stride.empty() )
         stride  = std :: vector <unsigned> ( dimensions.size(), 1 );
-
-
-    int numberOfWeights = math :: multiply( kernel );
-    for( int i=0; i < numberOfWeights; ++i ) {
-        weights.push_back( LayerType(rand() / LayerType(RAND_MAX) - 0.5) );
-        deltaWeights.push_back( 0 );
-        numberOfUsages.push_back( numberOfNeurons );
-    }
-
-    printf( "\nWeights:->\n" );
-    for( auto item : weights ) {
-        printf( "%lf\t", item );
-    }
-    printf( "\n" );
 }
 
 
 template <class LayerType>
 void Convolution <LayerType> :: connectNeurons() {
 
-    /// add elements to vector before creating connections as when adding connections, we may lose pointers
-    /// to the weights (if capacity changes => new memory block is allocated)
     if( bias != nullptr ) {
-        weights.push_back( LayerType(rand() / LayerType(RAND_MAX) - 0.5) );
-        deltaWeights.push_back( 0 );
-        numberOfUsages.push_back( numberOfNeurons );
-
         for( auto neuron : neurons ) {
             NeuronOperations::connectConvolutionalNeurons(bias,
                                                           neuron,
-                                                          &numberOfUsages.back(),
-                                                          &weights.back(),
-                                                          &deltaWeights.back());
+                                                          numberOfUsages.back(),
+                                                          weights.back(),
+                                                          deltaWeights.back());
         }
     }
 
@@ -70,12 +50,12 @@ void Convolution <LayerType> :: connectOne( BaseNeuron<LayerType> *neuron,
 
     if( currentDimension == previousLayer -> getDimensions().size() ) {
         /// connect neuron to the neuron in the previous layer at position [previousLayerStart]
-        printf( "Connect *%d to prev[%d]   --with [%d]--> %lf\n", neuron, previousLayerStart, weightIndex, weights[weightIndex] );
+        printf( "Connect *%d to prev[%d]   --with [%d]--> %lf\n", neuron, previousLayerStart, weightIndex, *weights[weightIndex] );
         NeuronOperations::connectConvolutionalNeurons(previousLayer->getNeurons()[previousLayerStart],
                                                       neuron,
-                                                      &numberOfUsages[weightIndex],
-                                                      &weights[weightIndex],
-                                                      &deltaWeights[weightIndex]);
+                                                      numberOfUsages[weightIndex],
+                                                      weights[weightIndex],
+                                                      deltaWeights[weightIndex]);
     }
     else {
         int step = math::multiply( previousLayer -> getDimensions(), (size_t) currentDimension + 1 );
@@ -112,4 +92,23 @@ void Convolution <LayerType> :: connectLayer( const BaseLayer <LayerType>* previ
                           currentDimension + 1 );
         }
     }
+}
+
+
+template <class LayerType>
+void Convolution <LayerType> :: createWeights() {
+
+    int numberOfWeights = math :: multiply( kernel ) + ( bias != nullptr ? 1 : 0 );
+    for( int i=0; i < numberOfWeights; ++i ) {
+        weights.push_back( new LayerType( LayerType(rand() / LayerType(RAND_MAX) - 0.5) ) );
+        deltaWeights.push_back( new LayerType( 0 ) );
+        numberOfUsages.push_back( new int( numberOfNeurons ) );
+    }
+
+
+    printf( "\nWeights:->\n" );
+    for( auto item : weights ) {
+        printf( "%lf\t", item );
+    }
+    printf( "\n" );
 }

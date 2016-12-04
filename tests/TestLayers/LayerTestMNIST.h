@@ -111,9 +111,9 @@ void evaluateOne(vector<double> image) {
 
 void testMNIST() {
 
-    vector<vector<double>> trainImages = readImages("/home/ubuntu/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
+    vector<vector<double>> trainImages = readImages("/home/martin/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
     // vector<vector<double>> testImages = readImages("/home/ubuntu/Desktop/MNIST_test_images.idx3-ubyte", 100000, 28*28);
-    vector <int> labels = readLabels( "/home/ubuntu/Desktop/MNIST_train_labels.idx1-ubyte", 100000 );
+    vector <int> labels = readLabels( "/home/martin/Desktop/MNIST_train_labels.idx1-ubyte", 100000 );
 
     for( int i=0; i < trainImages.size(); ++i )
         for( int j=0; j < trainImages[i].size(); ++j )
@@ -139,6 +139,9 @@ void testMNIST() {
     fc1.createNeurons();
     fc2.createNeurons();
     outputLayer.createNeurons();
+
+    fc1.createWeights();
+    fc2.createWeights();
 
     fc1.connectNeurons();
     fc2.connectNeurons();

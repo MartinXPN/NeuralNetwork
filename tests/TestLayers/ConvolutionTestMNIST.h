@@ -114,9 +114,9 @@ void evaluateOne(vector<double> image) {
 void testConvolutionMNIST() {
 
 
-    vector<vector<double>> trainImages = readImages("/home/ubuntu/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
+    vector<vector<double>> trainImages = readImages("/home/martin/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
     // vector<vector<double>> testImages = readImages("/home/ubuntu/Desktop/MNIST_test_images.idx3-ubyte", 100000, 28*28);
-    vector <int> labels = readLabels( "/home/ubuntu/Desktop/MNIST_train_labels.idx1-ubyte", 100000 );
+    vector <int> labels = readLabels( "/home/martin/Desktop/MNIST_train_labels.idx1-ubyte", 100000 );
 
     for( int i=0; i < trainImages.size(); ++i )
         for( int j=0; j < trainImages[i].size(); ++j )
@@ -136,6 +136,9 @@ void testConvolutionMNIST() {
     conv1.createNeurons();
     conv2.createNeurons();
     outputLayer.createNeurons();
+
+    conv1.createWeights();
+    conv2.createWeights();
 
     conv1.connectNeurons();
     printf( "Sample connection (%d)(%d)(%d)(%d):\n", inputLayer.size(), conv1.size(), conv2.size(), outputLayer.size() );

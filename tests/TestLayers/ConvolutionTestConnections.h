@@ -15,6 +15,7 @@ void testConvolutionConnections() {
 
     inputLayer.createNeurons();
     conv1.createNeurons();
+    conv1.createWeights();
 
     conv1.connectNeurons();
 
