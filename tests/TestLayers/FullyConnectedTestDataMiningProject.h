@@ -23,11 +23,9 @@ using namespace std;
 //////////////////////// NETWORK CONSTRUCTION//////////////////////////////////
 Bias <double> *bias = new Bias <double>();
 BaseInputLayer <double> in( {143} );
-FullyConnected <double> fc1( {100}, new ReLU <double>(), {&in}, bias );
-FullyConnected <double> fc2( {200}, new ReLU <double>(), {&fc1}, bias );
-FullyConnected <double> fc3( {100}, new ReLU <double>(), {&fc2}, bias );
-FullyConnected <double> fc4( {32}, new ReLU <double>(), {&fc3}, bias );
-BaseOutputLayer <double> out( {1}, {&fc4}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
+FullyConnected <double> fc1( {32}, new Sigmoid <double>(), {&in}, bias );
+FullyConnected <double> fc2( {8}, new Sigmoid <double>(), {&fc1}, bias );
+BaseOutputLayer <double> out( {1}, {&fc2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
 
 
 
@@ -117,8 +115,8 @@ double evaluateOne( const vector <double> &v ) {
     /// activate neurons
     for (auto neuron : fc1.getNeurons())    neuron->activateNeuron();
     for (auto neuron : fc2.getNeurons())    neuron->activateNeuron();
-    for (auto neuron : fc3.getNeurons())    neuron->activateNeuron();
-    for (auto neuron : fc4.getNeurons())    neuron->activateNeuron();
+//    for (auto neuron : fc3.getNeurons())    neuron->activateNeuron();
+//    for (auto neuron : fc4.getNeurons())    neuron->activateNeuron();
     for (auto neuron : out.getNeurons())    neuron->activateNeuron();
     return ((BaseOutputNeuron <double> *)out.getNeurons()[0])->getValue();
 }
@@ -130,10 +128,10 @@ void evaluateTest( int epoch, const vector< vector <double> >& testData ) {
     for( int i=0; i < testData.size(); ++i ) {
         testLabels.push_back( evaluateOne( testData[i] ) );
     }
-    printf( "\nSaving results to file..." );
-    //////////////////// SAVE RESULTS TO FILE //////////////////
+
+    printf( "\nSaving results to file...\n" );
     ofstream fout;
-    fout.open ("/home/ubuntu/Desktop/Projects/DataMining/neural_network_epoch_" + to_string(epoch) + ".csv");
+    fout.open ("/home/martin/Desktop/Projects/DataMining/neural_network:(143)->(32)->(8)->(1)_epoch_" + to_string(epoch) + ".csv");
     fout << "ID,Class\n";
     for( int i=0; i < testLabels.size(); ++i ) {
         fout << i+1 << ',' << testLabels[i] << '\n';
@@ -145,7 +143,7 @@ void testDataMiningProject() {
 
     //////////////READ THE DATA////////////////////////////
     const double trainProportion = 0.9;
-    auto testData = readTest( "/home/ubuntu/Desktop/Projects/DataMining/filtered_scaled_test.csv" );
+    auto testData = readTest( "/home/martin/Desktop/Projects/DataMining/filtered_scaled_test.csv" );
 //    printf( "TEST:\n" );
 //    for( int i=0; i < testData.size(); ++i, cout << endl )
 //        for( int j=0; j < testData[i].size(); ++j ) {
@@ -158,7 +156,7 @@ void testDataMiningProject() {
     }
 
     /// train
-    auto trainData = readTrain( "/home/ubuntu/Desktop/Projects/DataMining/filtered_scaled_train.csv" );
+    auto trainData = readTrain( "/home/martin/Desktop/Projects/DataMining/filtered_scaled_train.csv" );
     vector< pair <vector <double>, double> > train;
     for( int i=0; i < trainData.first.size(); ++i )
         train.push_back( { trainData.first[i], trainData.second[i] } );
@@ -189,33 +187,43 @@ void testDataMiningProject() {
     printf( "\n---> label: %lf\n", trainLabels.back() );
 
     //////////////////////// INITIALIZATION //////////////////////////////
-    printf( "\nNetwork: (%d) -> (%d) -> (%d) -> (%d) -> (%d) -> (%d)\n\n", in.size(), fc1.size(), fc2.size(), fc3.size(), fc4.size(), out.size() );
+    printf( "\nNetwork: (%d) -> (%d) -> (%d) -> (%d) \n\n", in.size(), fc1.size(), fc2.size(), out.size() );
     in.createNeurons();
     fc1.createNeurons();
     fc2.createNeurons();
-    fc3.createNeurons();
-    fc4.createNeurons();
+//    fc3.createNeurons();
+//    fc4.createNeurons();
     out.createNeurons();
+
+    fc1.createWeights();
+    fc2.createWeights();
+//    fc3.createWeights();
+//    fc4.createWeights();
 
     fc1.connectNeurons();
     fc2.connectNeurons();
-    fc3.connectNeurons();
-    fc4.connectNeurons();
+//    fc3.connectNeurons();
+//    fc4.connectNeurons();
     out.connectNeurons();
 
     auto inputNeurons = in.getNeurons();
     auto outputNeurons = out.getNeurons();
 
     ////////////////////// TRAINING //////////////////////////////////////
-    const int maxDecreasingEpochs = 3;
-    const int maxEpochs = 500;
+    const int maxEpochs = 1500;
     const int batchSize = 200;
-    double bestValidLoss = 1e9;
-    int increasingEpochs = 0;
-    double learningRate = 0.05;
-    for( int epoch = 0; ; ++epoch ) {
+    const double initialLearningRate = 0.05;
+    const double learningRateDecay = 0.95;
+    const double minLearningRate = 0.0000001;
+    const double restoreLearningRate = 0.01;
+    double bestValidationLoss = 1e9;
 
-        printf( "\n\n--Epoch: (%d)--Learning rate (%lf)--decreasing epochs (%d)--\n", epoch, learningRate, increasingEpochs );
+    double learningRate = initialLearningRate;
+    for( int epoch = 0; epoch < maxEpochs; ++epoch ) {
+
+        double epochTrainLoss = 0;
+
+        printf( "\n\n--Epoch: (%d)--Learning rate (%lf)--\n", epoch, learningRate );
 
         for (int batch = 0; batch < trainInputs.size(); batch += batchSize) {
             double batchLoss = 0;
@@ -227,34 +235,35 @@ void testDataMiningProject() {
                 /// activate neurons
                 for (auto neuron : fc1.getNeurons())    neuron->activateNeuron();
                 for (auto neuron : fc2.getNeurons())    neuron->activateNeuron();
-                for (auto neuron : fc3.getNeurons())    neuron->activateNeuron();
-                for (auto neuron : fc4.getNeurons())    neuron->activateNeuron();
+//                for (auto neuron : fc3.getNeurons())    neuron->activateNeuron();
+//                for (auto neuron : fc4.getNeurons())    neuron->activateNeuron();
                 for( auto neuron : outputNeurons )      neuron->activateNeuron();
 
                 /// calculate losses
                 for( int j=0; j < outputNeurons.size(); ++j ) {
                     ((BaseOutputNeuron <double>*)outputNeurons[j]) -> calculateLoss( trainLabels[i] );
-                    batchLoss += ((BaseOutputNeuron <double>*)outputNeurons[j]) -> getError( trainLabels[i] );
+                    batchLoss += fabs( ((BaseOutputNeuron <double>*)outputNeurons[j]) -> getError( trainLabels[i] ) );
                 }
-                for (auto neuron : fc4.getNeurons())    neuron->calculateLoss();
-                for (auto neuron : fc3.getNeurons())    neuron->calculateLoss();
+//                for (auto neuron : fc4.getNeurons())    neuron->calculateLoss();
+//                for (auto neuron : fc3.getNeurons())    neuron->calculateLoss();
                 for (auto neuron : fc2.getNeurons())    neuron->calculateLoss();
                 for (auto neuron : fc1.getNeurons())    neuron->calculateLoss();
 
                 /// backpropagate neurons
                 for (auto neuron : outputNeurons)       neuron->backpropagateNeuron();
-                for (auto neuron : fc4.getNeurons())    neuron->backpropagateNeuron();
-                for (auto neuron : fc3.getNeurons())    neuron->backpropagateNeuron();
+//                for (auto neuron : fc4.getNeurons())    neuron->backpropagateNeuron();
+//                for (auto neuron : fc3.getNeurons())    neuron->backpropagateNeuron();
                 for (auto neuron : fc2.getNeurons())    neuron->backpropagateNeuron();
                 for (auto neuron : fc1.getNeurons())    neuron->backpropagateNeuron();
             }
 
-            cout << "Loss #" << batch << ": " << batchLoss / batchSize << endl;
+            epochTrainLoss += batchLoss;
+//            cout << "Loss #" << batch << ": " << batchLoss / batchSize << endl;
 
             /// update weights
             for (auto neuron : outputNeurons)       neuron->updateWeights(learningRate, batchSize);
-            for (auto neuron : fc4.getNeurons())    neuron->updateWeights(learningRate, batchSize);
-            for (auto neuron : fc3.getNeurons())    neuron->updateWeights(learningRate, batchSize);
+//            for (auto neuron : fc4.getNeurons())    neuron->updateWeights(learningRate, batchSize);
+//            for (auto neuron : fc3.getNeurons())    neuron->updateWeights(learningRate, batchSize);
             for (auto neuron : fc2.getNeurons())    neuron->updateWeights(learningRate, batchSize);
             for (auto neuron : fc1.getNeurons())    neuron->updateWeights(learningRate, batchSize);
         }
@@ -270,73 +279,43 @@ void testDataMiningProject() {
             /// activate neurons
             for (auto neuron : fc1.getNeurons()) neuron->activateNeuron();
             for (auto neuron : fc2.getNeurons()) neuron->activateNeuron();
-            for (auto neuron : fc3.getNeurons()) neuron->activateNeuron();
-            for (auto neuron : fc4.getNeurons()) neuron->activateNeuron();
+//            for (auto neuron : fc3.getNeurons()) neuron->activateNeuron();
+//            for (auto neuron : fc4.getNeurons()) neuron->activateNeuron();
             for (auto neuron : outputNeurons) neuron->activateNeuron();
 
             /// calculate losses
             for (int j = 0; j < outputNeurons.size(); ++j) {
                 ((BaseOutputNeuron<double> *) outputNeurons[j])->calculateLoss(validLabels[i]);
-                validLoss += ((BaseOutputNeuron<double> *) outputNeurons[j])->getError(validLabels[i]);
+                validLoss += fabs( ((BaseOutputNeuron<double> *) outputNeurons[j])->getError(validLabels[i]) );
             }
         }
-        if( epoch < maxEpochs ) {
-            validLoss = 1e9;
-            increasingEpochs = 0;
-        }
-        if( epoch % 25 == 0 ) {
-            learningRate *= 0.5;
+        if( epoch % 50 == 0 ) {
             evaluateTest( epoch, testData );
-        }
-        if( abs(validLoss) >= abs(bestValidLoss) ) {
-            ++increasingEpochs;
-            if( increasingEpochs >= maxDecreasingEpochs && epoch > maxEpochs )
-                break;
-        }
-        else {
-            increasingEpochs = 0;
-            bestValidLoss = validLoss;
-            evaluateTest( epoch, testData );
-        }
 
-        printf( "Validation loss: %lf, Best validation loss: %lf", validLoss, bestValidLoss );
-
-        if( epoch % 30 == 0 ) {
             printf( "\n\n---------- evaluate on TRAINING dataset ---------\n" );
             for( int i=0; i < 15; ++i ) {
                 int id = (int) (rand() % trainInputs.size());
                 printf( "Label: %lf\t Predictions: %lf\n", trainLabels[id], evaluateOne( trainInputs[id] ) );
             }
+        }
+
+
+        learningRate *= learningRateDecay;
+        if( learningRate < minLearningRate ) {
+            learningRate = restoreLearningRate;
+            learningRate /= epoch;
             evaluateTest( epoch, testData );
         }
+
+        if( bestValidationLoss > validLoss ) {
+            bestValidationLoss = validLoss;
+            evaluateTest( 19971997, testData );
+        }
+
+        printf( "\nValidation loss: %lf\tTrain loss: %lf\n", validLoss / validInputs.size(), epochTrainLoss / trainInputs.size() );
     }
 
-
-    printf( "\n\n\n---------- evaluate on TRAINING dataset ---------\n" );
-    for( int i=0; i < 15; ++i ) {
-        int id = (int) (rand() % trainInputs.size());
-        printf( "\nLabel: %lf\t Predictions: %lf ----> ", trainLabels[id], evaluateOne( trainInputs[id] ) );
-        for( auto item : trainInputs[id] )
-            printf( "%lf\t", item );
-    }
-    printf( "\n" );
-
-
-
-    printf( "\nEvaluating on TESTING dataset" );
-    vector <double> testLabels;
-    for( int i=0; i < testData.size(); ++i ) {
-        testLabels.push_back( evaluateOne( testData[i] ) );
-    }
-    printf( "\nSaving results to file..." );
-    //////////////////// SAVE RESULTS TO FILE //////////////////
-    ofstream fout;
-    fout.open ("/home/ubuntu/Desktop/Projects/DataMining/neural_network_final.csv");
-    fout << "ID,Class\n";
-    for( int i=0; i < testLabels.size(); ++i ) {
-        fout << i+1 << ',' << testLabels[i] << '\n';
-    }
-    fout.close();
+    evaluateTest( 100000, testData );
 }
 
 #endif //NEURALNETWORK_FULLYCONNECTEDTESTDATAMININGPROJECT_H

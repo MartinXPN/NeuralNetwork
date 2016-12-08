@@ -16,7 +16,9 @@ class BaseInputLayer : public BaseLayer <LayerType> {
 
 private:
     /// Hide this method from subclasses
-    virtual void connectNeurons() override {}
+    virtual void connectNeurons() override {
+        throw "Input layer does not have previous layer to connect neurons";
+    }
 
 protected:
     using BaseLayer <LayerType> :: neurons;
