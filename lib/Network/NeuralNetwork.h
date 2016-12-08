@@ -24,16 +24,26 @@ template <class NetworkType>
 class NeuralNetwork {
 
 protected:
-    std :: vector <BaseInputLayer> inputLayers;
-    std :: vector <BaseHiddenLayer> hiddenLayers;
-    std :: vector <BaseOutputLayer> outputLayer;
+    std :: vector <BaseInputLayer <NetworkType>* > inputLayers;
+    std :: vector <BaseHiddenLayer <NetworkType>* > hiddenLayers;
+    std :: vector <BaseOutputLayer <NetworkType>* > outputLayers;
+
+    std :: vector< std :: vector <BaseNeuron <NetworkType>* > > buckets;
 
 public:
-    NeuralNetwork( std :: vector <BaseInputLayer> inputLayers,
-                   std :: vector <BaseHiddenLayer> hiddenLayers,
-                   std :: vector <BaseOutputLayer> outputLayers );
+    NeuralNetwork( std :: vector <BaseInputLayer <NetworkType>* > inputLayers,
+                   std :: vector <BaseHiddenLayer <NetworkType>* > hiddenLayers,
+                   std :: vector <BaseOutputLayer <NetworkType>* > outputLayers );
 
 
+    const std::vector< std :: vector <BaseNeuron <NetworkType>* > >& getBuckets() {
+        return buckets;
+    }
+    virtual void initializeNetwork();
+    virtual void calculatePropagationOrder();
+
+    virtual std :: vector< BaseNeuron <NetworkType>* > getInputNeuronsAndBiases();
+    virtual std :: vector< std :: vector <BaseNeuron <NetworkType>* > > divideIntoBuckets( std :: vector< BaseNeuron <NetworkType>* > startOffNeurons );
 };
 
 

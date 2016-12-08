@@ -23,8 +23,8 @@ using namespace std;
 //////////////////////// NETWORK CONSTRUCTION//////////////////////////////////
 Bias <double> *bias = new Bias <double>();
 BaseInputLayer <double> in( {143} );
-FullyConnected <double> fc1( {32}, new Sigmoid <double>(), {&in}, bias );
-FullyConnected <double> fc2( {8}, new Sigmoid <double>(), {&fc1}, bias );
+FullyConnected <double> fc1( {16}, new Sigmoid <double>(), {&in}, bias );
+FullyConnected <double> fc2( {4}, new Sigmoid <double>(), {&fc1}, bias );
 BaseOutputLayer <double> out( {1}, {&fc2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
 
 
@@ -131,7 +131,7 @@ void evaluateTest( int epoch, const vector< vector <double> >& testData ) {
 
     printf( "\nSaving results to file...\n" );
     ofstream fout;
-    fout.open ("/home/martin/Desktop/Projects/DataMining/neural_network:(143)->(32)->(8)->(1)_epoch_" + to_string(epoch) + ".csv");
+    fout.open ("/home/ubuntu/Desktop/Projects/DataMining/neural_network:(143)->(32)->(8)->(1)_epoch_" + to_string(epoch) + ".csv");
     fout << "ID,Class\n";
     for( int i=0; i < testLabels.size(); ++i ) {
         fout << i+1 << ',' << testLabels[i] << '\n';
@@ -143,7 +143,7 @@ void testDataMiningProject() {
 
     //////////////READ THE DATA////////////////////////////
     const double trainProportion = 0.9;
-    auto testData = readTest( "/home/martin/Desktop/Projects/DataMining/filtered_scaled_test.csv" );
+    auto testData = readTest( "/home/ubuntu/Desktop/Projects/DataMining/filtered_scaled_test.csv" );
 //    printf( "TEST:\n" );
 //    for( int i=0; i < testData.size(); ++i, cout << endl )
 //        for( int j=0; j < testData[i].size(); ++j ) {
@@ -156,7 +156,7 @@ void testDataMiningProject() {
     }
 
     /// train
-    auto trainData = readTrain( "/home/martin/Desktop/Projects/DataMining/filtered_scaled_train.csv" );
+    auto trainData = readTrain( "/home/ubuntu/Desktop/Projects/DataMining/filtered_scaled_train.csv" );
     vector< pair <vector <double>, double> > train;
     for( int i=0; i < trainData.first.size(); ++i )
         train.push_back( { trainData.first[i], trainData.second[i] } );
@@ -214,7 +214,7 @@ void testDataMiningProject() {
     const int batchSize = 200;
     const double initialLearningRate = 0.05;
     const double learningRateDecay = 0.95;
-    const double minLearningRate = 0.0000001;
+    const double minLearningRate = 0.000001;
     const double restoreLearningRate = 0.01;
     double bestValidationLoss = 1e9;
 
@@ -223,7 +223,7 @@ void testDataMiningProject() {
 
         double epochTrainLoss = 0;
 
-        printf( "\n\n--Epoch: (%d)--Learning rate (%lf)--\n", epoch, learningRate );
+        printf( "\n--Epoch: (%d)--Learning rate (%lf)--", epoch, learningRate );
 
         for (int batch = 0; batch < trainInputs.size(); batch += batchSize) {
             double batchLoss = 0;
@@ -312,7 +312,7 @@ void testDataMiningProject() {
             evaluateTest( 19971997, testData );
         }
 
-        printf( "\nValidation loss: %lf\tTrain loss: %lf\n", validLoss / validInputs.size(), epochTrainLoss / trainInputs.size() );
+        printf( "\tValidation loss: %lf\tTrain loss: %lf", validLoss / validInputs.size(), epochTrainLoss / trainInputs.size() );
     }
 
     evaluateTest( 100000, testData );

@@ -3,7 +3,8 @@
 //#include "tests/TestLayers/LayerTestMNIST.h"
 //#include "tests/TestLayers/ConvolutionTestConnections.h"
 //#include "tests/TestLayers/ConvolutionTestMNIST.h"
-#include "tests/TestLayers/FullyConnectedTestDataMiningProject.h"
+//#include "tests/TestLayers/FullyConnectedTestDataMiningProject.h"
+#include "tests/TestNetwork/NetworkBucketTest.h"
 
 int main() {
 
@@ -12,6 +13,7 @@ int main() {
 //    testMNIST();
 //    testConvolutionConnections();
 //    testConvolutionMNIST();
-    testDataMiningProject();
+//    testDataMiningProject();
+    testBuckets();
     return 0;
 }
