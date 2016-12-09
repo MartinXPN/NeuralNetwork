@@ -20,11 +20,12 @@ void testBuckets() {
     auto in2 = BaseInputLayer <double>( {20, 30} );
     auto fc1 = FullyConnected <double> ( {20}, new ReLU <double>(), {&in1, &in2}, bias );
     auto fc2 = FullyConnected <double> ( {30}, new ReLU <double>(), {&in2} );
-    auto out = BaseOutputLayer <double> ( {10}, {&fc1, &fc2}, new CrossEntropyCost <double>(), new ReLU <double>(), bias );
+    auto out1 = BaseOutputLayer <double> ( {10}, {&fc1, &fc2}, new CrossEntropyCost <double>(), new ReLU <double>(), bias );
+    auto out2 = BaseOutputLayer <double> ( {10}, {&in1}, new CrossEntropyCost <double>(), new ReLU <double>(), bias );
 
     NeuralNetwork <double> net( { &in1, &in2 },
                                 { &fc1, &fc2 },
-                                { &out } );
+                                { &out1, &out2 } );
 
 
     net.initializeNetwork();
