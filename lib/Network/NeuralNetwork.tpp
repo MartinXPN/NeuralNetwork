@@ -12,8 +12,14 @@ NeuralNetwork <NetworkType> ::NeuralNetwork(std::vector<BaseInputLayer <NetworkT
                                             std::vector<BaseHiddenLayer <NetworkType>* > hiddenLayers,
                                             std::vector<BaseOutputLayer <NetworkType>* > outputLayers) :
         inputLayers( inputLayers ), hiddenLayers( hiddenLayers ), outputLayers( outputLayers ) {
+}
 
 
+
+template <class NetworkType>
+void NeuralNetwork <NetworkType> :: initializeNetwork() {
+
+    /// initialize all layers by calling 3 vital function -> ( createNeurons, createWeights, connectNeurons )
     for( auto layer : inputLayers )     layer -> createNeurons();
     for( auto layer : hiddenLayers )    layer -> createNeurons();
     for( auto layer : outputLayers )    layer -> createNeurons();
@@ -22,12 +28,7 @@ NeuralNetwork <NetworkType> ::NeuralNetwork(std::vector<BaseInputLayer <NetworkT
 
     for( auto layer : hiddenLayers )    layer -> connectNeurons();
     for( auto layer : outputLayers )    layer -> connectNeurons();
-}
 
-
-
-template <class NetworkType>
-void NeuralNetwork <NetworkType> :: initializeNetwork() {
 
     calculatePropagationOrder();
 }
@@ -63,7 +64,7 @@ std::vector<BaseNeuron<NetworkType> *> NeuralNetwork <NetworkType> :: getInputNe
         }
 
         for( BaseEdge <NetworkType>* edge : neuron -> getNextConnections() ) {
-            auto next = ( (BaseNeuron <NetworkType>*) &edge->getTo() );
+            auto next = (BaseNeuron <NetworkType>*) &edge->getTo();
             if (used.find(next) == used.end()) {
                 used.insert(next);
                 q.push(next);
@@ -71,7 +72,7 @@ std::vector<BaseNeuron<NetworkType> *> NeuralNetwork <NetworkType> :: getInputNe
         }
 
         for( BaseEdge <NetworkType>* edge : neuron -> getPreviousConnections() ) {
-            auto previous = ( (BaseNeuron <NetworkType>*) &edge->getFrom() );
+            auto previous = (BaseNeuron <NetworkType>*) &edge->getFrom();
             if (used.find(previous) == used.end()) {
                 used.insert(previous);
                 q.push(previous);
@@ -107,20 +108,23 @@ std :: vector< std :: vector <BaseNeuron<NetworkType>* > > NeuralNetwork <Networ
 
         for( BaseEdge <NetworkType>* edge : neuron -> getNextConnections() ) {
             auto nextNeuron = ( (BaseNeuron <NetworkType>*) &edge->getTo() );
-            if( used.find( nextNeuron ) == used.end() ) {
-                used[nextNeuron] = { 0, used[neuron].second + 1 };
-            }
             if( ++used[nextNeuron].first == nextNeuron->getPreviousConnections().size() ) {
                 q.push(nextNeuron);
                 used[nextNeuron].second = used[neuron].second + 1;
+
                 /// add neuron to corresponding bucket
-                if( buckets.size() <= used[nextNeuron].second ) {
-                    buckets.push_back({});
-                }
+                if( buckets.size() <= used[nextNeuron].second )
+                    buckets.push_back( {} );
                 buckets[ used[nextNeuron].second ].push_back( nextNeuron );
             }
         }
     }
 
     return buckets;
+}
+
+
+template <class NetworkType>
+void NeuralNetwork <NetworkType> :: train() {
+
 }

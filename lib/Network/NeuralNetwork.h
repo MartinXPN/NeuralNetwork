@@ -44,6 +44,7 @@ public:
 
     virtual std :: vector< BaseNeuron <NetworkType>* > getInputNeuronsAndBiases();
     virtual std :: vector< std :: vector <BaseNeuron <NetworkType>* > > divideIntoBuckets( std :: vector< BaseNeuron <NetworkType>* > startOffNeurons );
+    virtual void train();
 };
 
 
