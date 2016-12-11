@@ -1,6 +1,6 @@
 
-#ifndef NEURALNETWORK_FULLYCONNECTEDTESTDATAMININGPROJECT_H
-#define NEURALNETWORK_FULLYCONNECTEDTESTDATAMININGPROJECT_H
+#ifndef NEURALNETWORK_DATAMINING_H
+#define NEURALNETWORK_DATAMINING_H
 
 #include <iostream>
 #include <string>
@@ -16,6 +16,7 @@
 #include "../../lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h"
 #include "../../lib/Activations/SimpleActivations/Sigmoid.h"
 #include "../../lib/LossFunctions/SimpleLossFunctions/MeanSquaredError.h"
+#include "../../lib/Layers/SimpleLayers/OneToOne.h"
 
 
 using namespace std;
@@ -23,7 +24,8 @@ using namespace std;
 //////////////////////// NETWORK CONSTRUCTION//////////////////////////////////
 Bias <double> *bias = new Bias <double>();
 BaseInputLayer <double> in( {143} );
-FullyConnected <double> fc1( {32}, new Sigmoid <double>(), {&in}, bias );
+OneToOne <double> oto ( {143}, {&in}, new Sigmoid <double>() );
+FullyConnected <double> fc1( {32}, new ReLU <double>(), {&oto}, bias );
 FullyConnected <double> fc2( {8}, new ReLU <double>(), {&fc1}, bias );
 BaseOutputLayer <double> out( {1}, {&fc2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
 
@@ -113,6 +115,7 @@ double evaluateOne( const vector <double> &v ) {
         ((BaseInputNeuron <double>*)in.getNeurons()[j]) -> setValue( v[j] );
 
     /// activate neurons
+    for (auto neuron : oto.getNeurons())    neuron->activateNeuron();
     for (auto neuron : fc1.getNeurons())    neuron->activateNeuron();
     for (auto neuron : fc2.getNeurons())    neuron->activateNeuron();
 //    for (auto neuron : fc3.getNeurons())    neuron->activateNeuron();
@@ -139,7 +142,7 @@ void evaluateTest( int epoch, const vector< vector <double> >& testData ) {
     fout.close();
 }
 
-void testDataMiningProject() {
+void testOneToOne() {
 
     //////////////READ THE DATA////////////////////////////
     const double trainProportion = 0.9;
@@ -161,6 +164,7 @@ void testDataMiningProject() {
     for( int i=0; i < trainData.first.size(); ++i )
         train.push_back( { trainData.first[i], trainData.second[i] } );
 
+    random_shuffle( train.begin(), train.end() );
     random_shuffle( train.begin(), train.end() );
     vector< vector <double> > trainInputs;
     vector< vector <double> > validInputs;
@@ -189,17 +193,20 @@ void testDataMiningProject() {
     //////////////////////// INITIALIZATION //////////////////////////////
     printf( "\nNetwork: (%d) -> (%d) -> (%d) -> (%d) \n\n", in.size(), fc1.size(), fc2.size(), out.size() );
     in.createNeurons();
+    oto.createNeurons();
     fc1.createNeurons();
     fc2.createNeurons();
 //    fc3.createNeurons();
 //    fc4.createNeurons();
     out.createNeurons();
 
+    oto.createWeights();
     fc1.createWeights();
     fc2.createWeights();
 //    fc3.createWeights();
 //    fc4.createWeights();
 
+    oto.connectNeurons();
     fc1.connectNeurons();
     fc2.connectNeurons();
 //    fc3.connectNeurons();
@@ -210,7 +217,7 @@ void testDataMiningProject() {
     auto outputNeurons = out.getNeurons();
 
     ////////////////////// TRAINING //////////////////////////////////////
-    const int maxEpochs = 5000;
+    const int maxEpochs = 1000;
     const int batchSize = 200;
     const double initialLearningRate = 0.1;
     const double learningRateDecay = 0.7;
@@ -222,6 +229,7 @@ void testDataMiningProject() {
     for( int epoch = 0; epoch < maxEpochs; ++epoch ) {
 
         double epochTrainLoss = 0;
+        int epochAccuracy = 0;
 
         printf( "\n--Epoch: (%d)--Learning rate (%lf)--", epoch, learningRate );
 
@@ -233,6 +241,7 @@ void testDataMiningProject() {
                     ((BaseInputNeuron <double>*)inputNeurons[j]) -> setValue( trainInputs[i][j] );
 
                 /// activate neurons
+                for (auto neuron : oto.getNeurons())    neuron->activateNeuron();
                 for (auto neuron : fc1.getNeurons())    neuron->activateNeuron();
                 for (auto neuron : fc2.getNeurons())    neuron->activateNeuron();
 //                for (auto neuron : fc3.getNeurons())    neuron->activateNeuron();
@@ -248,6 +257,7 @@ void testDataMiningProject() {
 //                for (auto neuron : fc3.getNeurons())    neuron->calculateLoss();
                 for (auto neuron : fc2.getNeurons())    neuron->calculateLoss();
                 for (auto neuron : fc1.getNeurons())    neuron->calculateLoss();
+                for (auto neuron : oto.getNeurons())    neuron->calculateLoss();
 
                 /// backpropagate neurons
                 for (auto neuron : outputNeurons)       neuron->backpropagateNeuron();
@@ -255,6 +265,7 @@ void testDataMiningProject() {
 //                for (auto neuron : fc3.getNeurons())    neuron->backpropagateNeuron();
                 for (auto neuron : fc2.getNeurons())    neuron->backpropagateNeuron();
                 for (auto neuron : fc1.getNeurons())    neuron->backpropagateNeuron();
+                for (auto neuron : oto.getNeurons())    neuron->backpropagateNeuron();
             }
 
             epochTrainLoss += batchLoss;
@@ -266,6 +277,7 @@ void testDataMiningProject() {
 //            for (auto neuron : fc3.getNeurons())    neuron->updateWeights(learningRate, batchSize);
             for (auto neuron : fc2.getNeurons())    neuron->updateWeights(learningRate, batchSize);
             for (auto neuron : fc1.getNeurons())    neuron->updateWeights(learningRate, batchSize);
+            for (auto neuron : oto.getNeurons())    neuron->updateWeights(learningRate, batchSize);
         }
 
 
@@ -277,6 +289,7 @@ void testDataMiningProject() {
                 ((BaseInputNeuron<double> *) inputNeurons[j])->setValue(trainInputs[i][j]);
 
             /// activate neurons
+            for (auto neuron : oto.getNeurons()) neuron->activateNeuron();
             for (auto neuron : fc1.getNeurons()) neuron->activateNeuron();
             for (auto neuron : fc2.getNeurons()) neuron->activateNeuron();
 //            for (auto neuron : fc3.getNeurons()) neuron->activateNeuron();
@@ -287,6 +300,7 @@ void testDataMiningProject() {
             for (int j = 0; j < outputNeurons.size(); ++j) {
                 ((BaseOutputNeuron<double> *) outputNeurons[j])->calculateLoss(validLabels[i]);
                 validLoss += fabs( ((BaseOutputNeuron<double> *) outputNeurons[j])->getError(validLabels[i]) );
+                epochAccuracy += round( ( (BaseOutputNeuron<double> *) outputNeurons[j]) -> getValue() ) == validLabels[i];
             }
         }
         if( epoch % 50 == 0 ) {
@@ -312,10 +326,10 @@ void testDataMiningProject() {
             evaluateTest( 19971997, testData );
         }
 
-        printf( "\tValidation loss: %lf\tTrain loss: %lf", validLoss / validInputs.size(), epochTrainLoss / trainInputs.size() );
+        printf("\tValidation loss: %lf\tValidation acc: %lf\tTrain loss: %lf", validLoss / validInputs.size(), (double (epochAccuracy) ) / validInputs.size(), epochTrainLoss / trainInputs.size() );
     }
 
     evaluateTest( 100000, testData );
 }
 
-#endif //NEURALNETWORK_FULLYCONNECTEDTESTDATAMININGPROJECT_H
+#endif //NEURALNETWORK_DATAMINING_H
