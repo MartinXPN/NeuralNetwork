@@ -28,7 +28,10 @@ protected:
     std :: vector <BaseHiddenLayer <NetworkType>* > hiddenLayers;
     std :: vector <BaseOutputLayer <NetworkType>* > outputLayers;
 
+    std :: vector <BaseInputNeuron <NetworkType>* > inputNeurons;
     std :: vector< std :: vector <BaseNeuron <NetworkType>* > > buckets;
+    std :: vector <BaseOutputNeuron <NetworkType>* > outputNeurons;
+
 
 public:
     NeuralNetwork( std :: vector <BaseInputLayer <NetworkType>* > inputLayers,
@@ -44,7 +47,13 @@ public:
 
     virtual std :: vector< BaseNeuron <NetworkType>* > getInputNeuronsAndBiases();
     virtual std :: vector< std :: vector <BaseNeuron <NetworkType>* > > divideIntoBuckets( std :: vector< BaseNeuron <NetworkType>* > startOffNeurons );
-    virtual void train();
+    virtual void trainEpoch( size_t numberOfInputs,
+                             size_t batchSize,
+                             double learningRate,
+                             std::vector <NetworkType> (*inputLoader)(size_t itemNumber),
+                             std::vector <NetworkType> (*labelLoader)(size_t itemNumber),
+                             void (*onEpochTrained) (void) = nullptr,
+                             void (*onBatchProcessed) (void) = nullptr );
 };
 
 

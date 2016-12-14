@@ -37,9 +37,8 @@ void testBuckets() {
     cout << endl;
 
     for( auto neuron : buckets[0] ) {
-        if( find( in1.getNeurons().begin(), in1.getNeurons().end(), neuron ) != in1.getNeurons().end() ||
-            find( in2.getNeurons().begin(), in2.getNeurons().end(), neuron ) != in2.getNeurons().end() ||
-            neuron == bias );
+        if( find( fc1.getNeurons().begin(), fc1.getNeurons().end(), neuron ) != fc1.getNeurons().end() ||
+            find( fc2.getNeurons().begin(), fc2.getNeurons().end(), neuron ) != fc2.getNeurons().end() );
         else {
             cout << "Error -> " << neuron << endl;
         }

@@ -50,7 +50,7 @@ void Convolution <LayerType> :: connectOne( BaseNeuron<LayerType> *neuron,
 
     if( currentDimension == previousLayer -> getDimensions().size() ) {
         /// connect neuron to the neuron in the previous layer at position [previousLayerStart]
-        printf( "Connect *%d to prev[%d]   --with [%d]--> %lf\n", neuron, previousLayerStart, weightIndex, *weights[weightIndex] );
+//        printf( "Connect *%d to prev[%d]   --with [%d]--> %lf\n", neuron, previousLayerStart, weightIndex, *weights[weightIndex] );
         NeuronOperations::connectConvolutionalNeurons(previousLayer->getNeurons()[previousLayerStart],
                                                       neuron,
                                                       numberOfUsages[weightIndex],
@@ -77,7 +77,7 @@ void Convolution <LayerType> :: connectLayer( const BaseLayer <LayerType>* previ
                                               int currentDimension) {
 
     if( currentDimension == dimensions.size() ) {
-        printf( "\n\nConnect this[%d]...\n", currentLayerStart );
+//        printf( "\n\nConnect this[%d]...\n", currentLayerStart );
         connectOne( neurons[ currentLayerStart ], previousLayer, previousLayerStart, 0 );
     }
     else {
@@ -108,7 +108,7 @@ void Convolution <LayerType> :: createWeights() {
 
     printf( "\nWeights:->\n" );
     for( auto item : weights ) {
-        printf( "%lf\t", item );
+        printf( "%lf\t", *item );
     }
     printf( "\n" );
 }
