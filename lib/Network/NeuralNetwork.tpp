@@ -3,6 +3,8 @@
 #include <set>
 #include <cassert>
 #include <map>
+#include <cmath>
+#include <iostream>
 #include "NeuralNetwork.h"
 
 
@@ -141,13 +143,14 @@ template <class NetworkType>
 void NeuralNetwork <NetworkType> :: trainEpoch( size_t numberOfInputs,
                                                 size_t batchSize,
                                                 double learningRate,
-                                                std::vector <NetworkType> (*inputLoader)(size_t),
-                                                std::vector <NetworkType> (*labelLoader)(size_t),
-                                                void (*onEpochTrained)(void),
-                                                void (*onBatchProcessed)(void)) {
+                                                std::function<std::vector<NetworkType>(size_t itemNumber)> inputLoader,
+                                                std::function<std::vector<NetworkType>(size_t itemNumber)> labelLoader,
+                                                std::function<void()> onEpochTrained,
+                                                std::function<void()> onBatchProcessed) {
 
 
     for (size_t batchStart = 0; batchStart < numberOfInputs; batchStart += batchSize) {
+        double batchLoss = 0;
         for (size_t i = batchStart; i < batchStart + batchSize && i < numberOfInputs; ++i) {
             /// set values of input neurons
             auto currentInput = inputLoader( i );
@@ -158,38 +161,68 @@ void NeuralNetwork <NetworkType> :: trainEpoch( size_t numberOfInputs,
             for( auto bucket : buckets )
                 for( auto neuron : bucket )
                     neuron -> activateNeuron();
+            for( auto neuron : outputNeurons )
+                neuron -> activateNeuron();
 
             /// calculate loss
             auto currentLabel = labelLoader( i );
-            for( int j=0; j < outputNeurons.size(); ++j )
+            assert( outputNeurons.size() == currentLabel.size() );
+            for( int j=0; j < outputNeurons.size(); ++j ) {
                 outputNeurons[j] -> calculateLoss( currentLabel[j] );
-            for( int bucketNumber = buckets.size()-1; bucketNumber >= 0; --bucketNumber ) {
-                for( auto neuron : buckets[bucketNumber] ) {
-                    neuron -> calculateLoss();
-                }
+                batchLoss += fabs( outputNeurons[j] -> getError( currentLabel[j] ) );
             }
+            for( int bucketNumber = (int) buckets.size()-1; bucketNumber >= 0; --bucketNumber )
+                for( auto neuron : buckets[bucketNumber] )
+                    neuron -> calculateLoss();
 
             /// backpropagate neurons
             for( auto neuron : outputNeurons )
                 neuron -> backpropagateNeuron();
-            for( int bucketNumber = buckets.size()-1; bucketNumber >= 0; --bucketNumber ) {
-                for( auto neuron : buckets[bucketNumber] ) {
+            for( int bucketNumber = (int) buckets.size()-1; bucketNumber >= 0; --bucketNumber )
+                for( auto neuron : buckets[bucketNumber] )
                     neuron -> backpropagateNeuron();
-                }
-            }
         }
 
+
+        /// update weights
+        for (auto neuron : outputNeurons)
+            neuron->updateWeights(learningRate, batchSize);
+        for( auto bucket : buckets )
+            for( auto neuron : bucket )
+                neuron->updateWeights(learningRate, batchSize);
+
+        std::cout << "Current Loss: " << batchLoss / numberOfInputs << std::endl;
         if( onBatchProcessed != nullptr )
             onBatchProcessed();
     }
 
-    /// update weights
-    for (auto neuron : outputNeurons)
-        neuron->updateWeights(learningRate, batchSize);
-    for( auto bucket : buckets )
-        for( auto neuron : bucket )
-            neuron->updateWeights(learningRate, batchSize);
-
     if( onEpochTrained != nullptr )
         onEpochTrained();
+}
+
+
+template <class NetworkType>
+std::vector<NetworkType> NeuralNetwork <NetworkType> :: evaluateOne( std::vector<NetworkType> input,
+                                                                     std::function< void( const std::vector<NetworkType>& )> onEvaluated ) {
+
+
+    /// set values of input neurons
+    for( size_t i=0 ; i < inputNeurons.size(); ++i )
+        inputNeurons[i] -> setValue( input[i] );
+
+    /// activate neurons
+    for( auto bucket : buckets )
+        for( auto neuron : bucket )
+            neuron -> activateNeuron();
+    for( auto neuron : outputNeurons )
+        neuron -> activateNeuron();
+
+    /// fill the result
+    std::vector <NetworkType> res;
+    for( auto neuron : outputNeurons ) {
+        res.push_back( neuron -> getValue() );
+    }
+
+    onEvaluated( res );
+    return res;
 }

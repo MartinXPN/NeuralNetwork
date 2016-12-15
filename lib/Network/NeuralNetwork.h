@@ -4,6 +4,7 @@
 
 
 #include <vector>
+#include <functional>
 #include "../Neurons/BaseNeurons/BaseInputNeuron.h"
 #include "../Neurons/BaseNeurons/BaseOutputNeuron.h"
 #include "../Layers/BaseLayers/BaseLayer.h"
@@ -50,10 +51,13 @@ public:
     virtual void trainEpoch( size_t numberOfInputs,
                              size_t batchSize,
                              double learningRate,
-                             std::vector <NetworkType> (*inputLoader)(size_t itemNumber),
-                             std::vector <NetworkType> (*labelLoader)(size_t itemNumber),
-                             void (*onEpochTrained) (void) = nullptr,
-                             void (*onBatchProcessed) (void) = nullptr );
+                             std::function< std::vector <NetworkType> (size_t itemNumber) > inputLoader,
+                             std::function< std::vector <NetworkType> (size_t itemNumber) > labelLoader,
+                             std::function< void() > onEpochTrained = nullptr,
+                             std::function< void() > onBatchProcessed = nullptr );
+
+    virtual std::vector <NetworkType> evaluateOne( std::vector <NetworkType> input,
+                                                   std::function< void (const std::vector <NetworkType>&) > onEvaluated );
 };
 
 

@@ -7,6 +7,7 @@
 #include <ios>
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 #include "../../lib/Neurons/SimpleNeurons/Bias.h"
 #include "../../lib/Layers/BaseLayers/BaseInputLayer.h"
 #include "../../lib/Layers/SimpleLayers/Convolution.h"
@@ -15,6 +16,7 @@
 #include "../../lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h"
 #include "../../lib/Activations/SimpleActivations/Sigmoid.h"
 #include "../../lib/Network/NeuralNetwork.h"
+#include "../../lib/Layers/SimpleLayers/FullyConnected.h"
 
 
 using namespace std;
@@ -78,11 +80,18 @@ vector <int> readLabels(string directory, int numberOfLabels) {
     file.close();
     return labels;
 }
+void printMNISTImage( const vector <double>& image ) {
+    cout << endl;
+    for( int i=0; i < 28; ++i, printf( "\n" ) )
+        for( int j=0; j < 28; ++j )
+            if( image[ i*28 + j ] == 0 )    printf( "   " );
+            else                            printf( "%.1lf ", image[ i*28 + j ] );
+}
 
 
 vector< vector <double> > trainImages;
 vector< vector <double> > trainLabels;
-auto inputLoader( size_t item ) { return trainImages[item]; }
+//auto inputLoader( size_t item ) { return trainImages[item]; }
 auto labelLoader( size_t item ) { return trainLabels[item]; }
 
 
@@ -102,22 +111,37 @@ void networkMNISTtest() {
 
 
 
+    /// construct the network
     Bias <double>* bias = new Bias <double>();
     BaseInputLayer <double> inputLayer( {1, 28, 28} );
-    Convolution <double> conv1( {10, 13, 13}, {1, 4, 4}, new ReLU <double>(), {&inputLayer}, {0, 2, 2}, bias );
-    Convolution <double> conv2( {5, 10, 10}, {10, 4, 4}, new ReLU <double>(), {&conv1}, {0, 1, 1}, bias );
-    BaseOutputLayer <double> outputLayer( {10}, {&conv2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
+//    Convolution <double> conv1( {10, 13, 13}, {1, 4, 4}, new ReLU <double>(), {&inputLayer}, {0, 2, 2}, bias );
+    FullyConnected <double> fc1( {100}, new ReLU <double>(), {&inputLayer}, bias );
+    FullyConnected <double> fc2( {100}, new ReLU <double>(), {&fc1}, bias );
+    BaseOutputLayer <double> outputLayer( {10}, {&fc2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
 
-    NeuralNetwork <double> net( {&inputLayer}, {&conv1, &conv2}, {&outputLayer} );
 
+    /// initialise the network
+    NeuralNetwork <double> net( {&inputLayer}, {&fc1, &fc2}, {&outputLayer} );
     net.initializeNetwork();
-    cout << "Network initialized" << endl;
-    cout << "About to train the network" << endl;
+
+
+    /// start training
     net.trainEpoch( trainImages.size(),
-                    50,
-                    0.05,
-                    inputLoader,
-                    labelLoader );
+                    100,
+                    0.01,
+                    [&trainImages] (size_t item) { return trainImages[item]; },
+                    labelLoader,
+                    []() { printf( "Epoch Trained!!!" ); } );
+
+
+    /// evaluate the result
+    for( int i=0; i < 15; ++i ) {
+        int id = (int) (rand() % trainImages.size());
+        net.evaluateOne( trainImages[id], [&](const vector<double> &res) {
+            printMNISTImage( trainImages[id] );
+            cout << "Prediction -> " << std::max_element(res.begin(), res.end()) - res.begin() << "\tLabel -> " << labels[id] << endl;
+        } );
+    }
 }
 
 #endif //NEURALNETWORK_NETWORKMNISTTEST_H
