@@ -19,8 +19,18 @@ void testConvolutionConnections() {
 
     conv1.connectNeurons();
 
-    printf( "Sample connection:\n" );
+    printf( "Sample connection:\t" );
     for( auto connection : conv1.getNeurons()[0]->getPreviousConnections() ) {
+        printf( "%lf\t", connection -> getWeight() );
+    }
+
+    printf( "\nSample connection:\t" );
+    for( auto connection : conv1.getNeurons()[401]->getPreviousConnections() ) {
+        printf( "%lf\t", connection -> getWeight() );
+    }
+
+    printf( "\nSample connection:\t" );
+    for( auto connection : conv1.getNeurons()[400]->getPreviousConnections() ) {
         printf( "%lf\t", connection -> getWeight() );
     }
 }

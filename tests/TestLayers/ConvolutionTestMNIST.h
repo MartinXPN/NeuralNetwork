@@ -114,9 +114,9 @@ void evaluateOne(vector<double> image) {
 void testConvolutionMNIST() {
 
 
-    vector<vector<double>> trainImages = readImages("/home/martin/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
+    vector<vector<double>> trainImages = readImages("/home/ubuntu/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
     // vector<vector<double>> testImages = readImages("/home/ubuntu/Desktop/MNIST_test_images.idx3-ubyte", 100000, 28*28);
-    vector <int> labels = readLabels( "/home/martin/Desktop/MNIST_train_labels.idx1-ubyte", 100000 );
+    vector <int> labels = readLabels( "/home/ubuntu/Desktop/MNIST_train_labels.idx1-ubyte", 100000 );
 
     for( int i=0; i < trainImages.size(); ++i )
         for( int j=0; j < trainImages[i].size(); ++j )
@@ -196,7 +196,7 @@ void testConvolutionMNIST() {
                 /// calculate losses
                 for( int j=0; j < outputNeurons.size(); ++j ) {
                     ((BaseOutputNeuron <double>*)outputNeurons[j]) -> calculateLoss( j == labels[i] );
-                    batchLoss += ((BaseOutputNeuron <double>*)outputNeurons[j]) -> getError( j == labels[i] );
+                    batchLoss += fabs( ((BaseOutputNeuron <double>*)outputNeurons[j]) -> getError( j == labels[i] ) );
                 }
                 for (auto neuron : conv2.getNeurons())    neuron->calculateLoss();
                 for (auto neuron : conv1.getNeurons())    neuron->calculateLoss();
@@ -217,7 +217,7 @@ void testConvolutionMNIST() {
     }
 
     cout << "Training is done" << endl;
-    for( int i=0; i < 10; ++i ) {
+    for( int i=0; i < 15; ++i ) {
         int id = (int) (rand() % trainImages.size());
         evaluateOne(trainImages[id]);
     }

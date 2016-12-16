@@ -25,17 +25,6 @@ Convolution <LayerType> ::Convolution(std::vector<unsigned> dimensions,
 template <class LayerType>
 void Convolution <LayerType> :: connectNeurons() {
 
-    if( bias != nullptr ) {
-        for( auto neuron : neurons ) {
-            NeuronOperations::connectConvolutionalNeurons(bias,
-                                                          neuron,
-                                                          numberOfUsages.back(),
-                                                          weights.back(),
-                                                          deltaWeights.back());
-        }
-    }
-
-
     for( const BaseLayer <LayerType>* previousLayer : previousLayers ) {
         connectLayer( previousLayer, 0, 0, 0 );
     }
@@ -74,22 +63,36 @@ template <class LayerType>
 void Convolution <LayerType> :: connectLayer( const BaseLayer <LayerType>* previousLayer,
                                               int currentLayerStart,
                                               int previousLayerStart,
-                                              int currentDimension) {
+                                              int currentDimension,
+                                              int weightIndex ) {
 
     if( currentDimension == dimensions.size() ) {
 //        printf( "\n\nConnect this[%d]...\n", currentLayerStart );
-        connectOne( neurons[ currentLayerStart ], previousLayer, previousLayerStart, 0 );
+        connectOne( neurons[ currentLayerStart ], previousLayer, previousLayerStart, 0, weightIndex );
+        if( bias != nullptr ) {
+            int biasIndex = weightIndex + math::multiply( kernel ); /// connect all kernels and reach the bias term
+            NeuronOperations::connectConvolutionalNeurons( bias,
+                                                           neurons[ currentLayerStart ],
+                                                           numberOfUsages[ biasIndex ],
+                                                           weights[ biasIndex ],
+                                                           deltaWeights[ biasIndex ] );
+        }
     }
     else {
         int currentLayerStep = math :: multiply( dimensions, (size_t) currentDimension + 1 );
         int previousLayerStep = math :: multiply( previousLayer -> getDimensions(), (size_t) currentDimension + 1 ) *
                                 stride[ currentDimension ];
+        int weightStep = currentDimension == 0
+                         ? math::multiply( kernel ) + ( bias != nullptr ? 1 : 0 )
+                         : 0;  /// weights are different for different feature maps
+        if( currentDimension == 0 )printf( "WeightStep: %d\n", weightStep );
 
         for( int i=0; i< dimensions[ currentDimension ]; ++i ) {
             connectLayer( previousLayer,
                           currentLayerStart + i * currentLayerStep,
                           previousLayerStart + i * previousLayerStep,
-                          currentDimension + 1 );
+                          currentDimension + 1,
+                          weightIndex + (i * weightStep) );
         }
     }
 }
@@ -98,7 +101,9 @@ void Convolution <LayerType> :: connectLayer( const BaseLayer <LayerType>* previ
 template <class LayerType>
 void Convolution <LayerType> :: createWeights() {
 
-    int numberOfWeights = math :: multiply( kernel ) + ( bias != nullptr ? 1 : 0 );
+    /// number of feature maps * ( size of the kernel + bias )
+    /// structure -> [[weights of feature map, biasWeight]]
+    int numberOfWeights = dimensions[0] * ( math :: multiply( kernel ) + ( bias != nullptr ? 1 : 0 ) );
     for( int i=0; i < numberOfWeights; ++i ) {
         weights.push_back( new LayerType( LayerType(rand() / LayerType(RAND_MAX) - 0.5) ) );
         deltaWeights.push_back( new LayerType( 0 ) );

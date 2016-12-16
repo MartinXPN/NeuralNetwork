@@ -29,12 +29,13 @@ protected:
                              const BaseLayer <LayerType>* previousLayer,
                              int previousLayerStart,
                              int currentDimension,
-                             int weightIndex = 0 );
+                             int weightIndex );
 
     virtual void connectLayer( const BaseLayer <LayerType>* previousLayer,
                                int currentLayerStart,
                                int previousLayerStart,
-                               int currentDimension );
+                               int currentDimension,
+                               int weightIndex = 0 );
 
 public:
     Convolution( std :: vector <unsigned> dimensions,
