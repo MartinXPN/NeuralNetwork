@@ -34,7 +34,7 @@ protected:
     std::vector < BaseEdge <NeuronType>* > next;        /// all the connections to the neuron from the next layer
     std::vector < BaseEdge <NeuronType>* > previous;    /// all the connections to the neuron from the previous layer
 
-    BaseActivationFunction <NeuronType>* activationFunction; /// inherface for activation function ( contains activation() and activationDerivative() )
+    BaseActivationFunction <NeuronType>* activationFunction; /// interface for activation function ( contains activation() and activationDerivative() )
     NeuronType activatedValue;      /// value after activating the neuron
     NeuronType preActivatedValue;   /// value before activating the neuron
     NeuronType loss;                /// loss calculated during backpropagation
@@ -54,6 +54,8 @@ public:
 
     virtual void addNextLayerConnection( BaseEdge <NeuronType>* edge )      { next.push_back( edge ); }
     virtual void addPreviousLayerConnection( BaseEdge <NeuronType> * edge ) { previous.push_back( edge ); }
+    virtual void removeNextLayerConnection( NeuronType* weight );
+    virtual void removePreviousLayerConnection( NeuronType* weight );
 
 
 

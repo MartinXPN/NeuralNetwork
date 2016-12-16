@@ -111,9 +111,9 @@ void evaluateOne(vector<double> image) {
 
 void testMNIST() {
 
-    vector<vector<double>> trainImages = readImages("/home/martin/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
+    vector<vector<double>> trainImages = readImages("/home/ubuntu/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
     // vector<vector<double>> testImages = readImages("/home/ubuntu/Desktop/MNIST_test_images.idx3-ubyte", 100000, 28*28);
-    vector <int> labels = readLabels( "/home/martin/Desktop/MNIST_train_labels.idx1-ubyte", 100000 );
+    vector <int> labels = readLabels( "/home/ubuntu/Desktop/MNIST_train_labels.idx1-ubyte", 100000 );
 
     for( int i=0; i < trainImages.size(); ++i )
         for( int j=0; j < trainImages[i].size(); ++j )
@@ -220,8 +220,19 @@ void testMNIST() {
         for( auto edge : neuron -> getPreviousConnections() )
             if( fabs( edge -> getWeight() ) < 0.001 )
                 ++smallWeights;
-
     cout << "Number of edges smaller than 0.001: " << smallWeights;
+
+
+    /// prune fc2
+    for( auto neuron : fc2.getNeurons() ) {
+        cout << "Before pruning the neuron size of previous connections: " << neuron -> getPreviousConnections().size() << endl;
+        for (auto edge : neuron->getPreviousConnections())
+            if (fabs(edge->getWeight()) < 0.001) {
+                double& weight = (double &) edge -> getWeight();
+                neuron->removePreviousLayerConnection( &weight );
+            }
+        cout << "After pruning the neuron size of previous connections: " << neuron -> getPreviousConnections().size() << endl;
+    }
 }
 
 #endif //NEURALNETWORK_LAYERTESTMNIST_H

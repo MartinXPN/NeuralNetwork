@@ -75,3 +75,22 @@ void BaseNeuron <NeuronType> :: updateWeights( NeuronType learningRate, int batc
     }
 }
 
+
+template <class NeuronType>
+void BaseNeuron <NeuronType> :: removeNextLayerConnection( NeuronType* weight ) {
+
+    for( int i=0; i < next.size(); ++i ) {
+        if( &( next[i] -> getWeight() ) == weight )
+            next.erase( next.begin() + i );
+    }
+}
+
+template <class NeuronType>
+void BaseNeuron <NeuronType> :: removePreviousLayerConnection( NeuronType *weight ) {
+
+    for( int i=0; i < previous.size(); ++i ) {
+        if( &( previous[i] -> getWeight() ) == weight )
+            previous.erase( previous.begin() + i );
+    }
+}
+
