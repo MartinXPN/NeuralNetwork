@@ -57,9 +57,9 @@ namespace MNIST {
         return images;
     }
 
-    vector<int> readLabels(string directory, int numberOfLabels) {
+    vector<int> readLabels(string directory) {
 
-        vector<int> labels((size_t) numberOfLabels);
+        vector<int> labels;
         ifstream file(directory, ios::binary);
         if (file.is_open()) {
             int magic_number = 0;
@@ -67,7 +67,9 @@ namespace MNIST {
             magic_number = reverseInt(magic_number);
             if (magic_number != 2049)
                 throw runtime_error("Invalid MNIST label file!");
+            int numberOfLabels;
             file.read((char *) &numberOfLabels, sizeof(numberOfLabels)), numberOfLabels = reverseInt(numberOfLabels);
+            labels.resize((size_t) numberOfLabels);
             for (int i = 0; i < numberOfLabels; i++)
                 file.read((char *) &labels[i], 1);
         }

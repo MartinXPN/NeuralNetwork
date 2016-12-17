@@ -16,6 +16,6 @@ int main() {
 //    testConvolutionMNIST();
 //    testDataMiningProject();
 //    testBuckets();
-    networkMNISTtest();
+    testNeuralNetworkMNIST();
     return 0;
 }

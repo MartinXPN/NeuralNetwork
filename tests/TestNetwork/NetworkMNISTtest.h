@@ -20,18 +20,22 @@
 #include "../../lib/Utilities/MNIST.h"
 using namespace std;
 
-vector< vector <double> > trainImages;
-vector< vector <double> > trainLabels;
-//auto inputLoader( size_t item ) { return trainImages[item]; }
-auto labelLoader( size_t item ) { return trainLabels[item]; }
+vector< vector <double> > trainImages, testImages;
+vector< vector <double> > trainLabels, testLabels;
+//vector <double> inputLoader( size_t item ) { return trainImages[item]; }
+vector <double> labelLoader( size_t item ) { return trainLabels[item]; }
 
 
-void networkMNISTtest() {
+void testNeuralNetworkMNIST() {
 
+    /// load the data
     trainImages = MNIST::readImages("/home/martin/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
-    // vector<vector<double>> testImages = readImages("/home/ubuntu/Desktop/MNIST_test_images.idx3-ubyte", 100000, 28*28);
-    vector <int> labels = MNIST::readLabels( "/home/martin/Desktop/MNIST_train_labels.idx1-ubyte", 100000 );
-    trainLabels = MNIST::toLabelMatrix( labels );
+    testImages = MNIST::readImages("/home/martin/Desktop/MNIST_test_images.idx3-ubyte", 100000, 28 * 28);
+    trainLabels = MNIST::toLabelMatrix( MNIST::readLabels( "/home/martin/Desktop/MNIST_train_labels.idx1-ubyte" ) );
+    testLabels = MNIST::toLabelMatrix( MNIST::readLabels( "/home/martin/Desktop/MNIST_test_labels.idx1-ubyte" ) );
+
+    printf( "Train -> Images: %d\tLabels: %d\n", trainImages.size(), trainLabels.size() );
+    printf( "Test ->  Images: %d\tLabels: %d\n", testImages.size(), testLabels.size() );
 
 
     /// construct the network
@@ -39,7 +43,7 @@ void networkMNISTtest() {
     BaseInputLayer <double> inputLayer( {1, 28, 28} );
     Convolution <double> conv1( { 10, 13, 13 }, { 1, 4, 4 }, new ReLU <double>(), {&inputLayer}, {0, 2, 2}, bias );
     Convolution <double> conv2( { 5, 10, 10 }, { 10, 4, 4 }, new ReLU <double>(), {&conv1}, {0, 1, 1}, bias );
-    FullyConnected <double> fc1( {100}, new ReLU <double>(), {&conv2}, bias );
+    FullyConnected <double> fc1( {50}, new ReLU <double>(), {&conv2}, bias );
     BaseOutputLayer <double> outputLayer( {10}, {&fc1}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
 
 
@@ -58,10 +62,10 @@ void networkMNISTtest() {
 
 
     /// evaluate the result
-    for( int i=0; i < 15; ++i ) {
-        int id = (int) (rand() % trainImages.size());
-        net.evaluateOne( trainImages[id], [&](const vector<double> &res) {
-            MNIST::printImage( trainImages[id] );
+    for( int i=0; i < 20; ++i ) {
+        int id = (int) (rand() % testImages.size());
+        net.evaluateOne( testImages[id], [&](const vector<double> &res) {
+            MNIST::printImage( testImages[id] );
             cout << "Prediction -> " << std::max_element(res.begin(), res.end()) - res.begin() << endl;
         } );
     }
