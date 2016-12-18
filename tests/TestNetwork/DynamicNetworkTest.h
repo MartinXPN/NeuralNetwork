@@ -1,6 +1,6 @@
 
-#ifndef NEURALNETWORK_NETWORKMNISTTEST_H
-#define NEURALNETWORK_NETWORKMNISTTEST_H
+#ifndef NEURALNETWORK_DYNAMICNETWORKTEST_H
+#define NEURALNETWORK_DYNAMICNETWORKTEST_H
 
 #include <algorithm>
 #include "../../lib/Neurons/SimpleNeurons/Bias.h"
@@ -10,9 +10,10 @@
 #include "../../lib/Layers/BaseLayers/BaseOutputLayer.h"
 #include "../../lib/LossFunctions/SimpleLossFunctions/CrossEntropyCost.h"
 #include "../../lib/Activations/SimpleActivations/Sigmoid.h"
-#include "../../lib/Network/NeuralNetwork.h"
 #include "../../lib/Layers/SimpleLayers/FullyConnected.h"
 #include "../../lib/Utilities/MNIST.h"
+#include "../../lib/Network/DynamicNetwork.h"
+
 using namespace std;
 
 vector< vector <double> > trainImages, testImages;
@@ -21,7 +22,7 @@ vector< vector <double> > trainLabels, testLabels;
 vector <double> labelLoader( size_t item ) { return trainLabels[item]; }
 
 
-void testNeuralNetworkMNIST() {
+void testDynamicNetworkMNIST() {
 
     /// load the data
     trainImages = MNIST::readImages("/home/martin/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
@@ -43,7 +44,7 @@ void testNeuralNetworkMNIST() {
 
 
     /// initialise the network
-    NeuralNetwork <double> net( {&inputLayer}, {&conv1, &conv2, &fc1}, {&outputLayer} );
+    DynamicNetwork <double> net( {&inputLayer}, {&conv1, &conv2, &fc1}, {&outputLayer} );
     net.initializeNetwork();
 
 
@@ -53,7 +54,11 @@ void testNeuralNetworkMNIST() {
                     0.01,
                     [&trainImages] (size_t item) { return trainImages[item]; },
                     labelLoader,
-                    []() { printf( "Epoch Trained!!!" ); } );
+                    [&]() {
+                        printf( "Epoch Trained!!!\nCurrent small weights -> %d\n", (int) net.getSmallWeightsNumber( 0.01 ) );
+                        net.pruneNetwork( 0.01 );
+                        printf( "Number of small weights after pruning -> %d\n", (int) net.getSmallWeightsNumber( 0.01 ) );
+                    } );
 
 
     /// evaluate the result
@@ -66,4 +71,4 @@ void testNeuralNetworkMNIST() {
     }
 }
 
-#endif //NEURALNETWORK_NETWORKMNISTTEST_H
+#endif //NEURALNETWORK_DYNAMICNETWORKTEST_H

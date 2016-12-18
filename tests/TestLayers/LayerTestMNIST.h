@@ -16,8 +16,8 @@
 
 Bias <double>* bias = new Bias <double>();
 BaseInputLayer <double> inputLayer( {28*28} );
-FullyConnected <double> fc1( {100}, new ReLU <double>(), {&inputLayer}, bias );
-FullyConnected <double> fc2( {100}, new ReLU <double>(), {&fc1}, bias );
+FullyConnected <double> fc1( {50}, new ReLU <double>(), {&inputLayer}, bias );
+FullyConnected <double> fc2( {20}, new ReLU <double>(), {&fc1}, bias );
 BaseOutputLayer <double> outputLayer( {10}, {&fc2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
 
 using namespace std;
@@ -47,9 +47,9 @@ void evaluateOne(vector<double> image) {
 
 void testMNIST() {
 
-    vector<vector<double>> trainImages = MNIST::readImages("/home/ubuntu/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
+    vector<vector<double>> trainImages = MNIST::readImages("/home/martin/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
     // vector<vector<double>> testImages = readImages("/home/ubuntu/Desktop/MNIST_test_images.idx3-ubyte", 100000, 28*28);
-    vector <int> labels = MNIST::readLabels( "/home/ubuntu/Desktop/MNIST_train_labels.idx1-ubyte" );
+    vector <int> labels = MNIST::readLabels( "/home/martin/Desktop/MNIST_train_labels.idx1-ubyte" );
 
     cout << "Image: \n";
     for( int i=0; i < 28; ++i, printf( "\n" ) )
@@ -106,7 +106,7 @@ void testMNIST() {
                 /// calculate losses
                 for( int j=0; j < outputNeurons.size(); ++j ) {
                     ((BaseOutputNeuron <double>*)outputNeurons[j]) -> calculateLoss( j == labels[i] );
-                    batchLoss += ((BaseOutputNeuron <double>*)outputNeurons[j]) -> getError( j == labels[i] );
+                    batchLoss += fabs( ((BaseOutputNeuron <double>*)outputNeurons[j]) -> getError( j == labels[i] ) );
                 }
                 for (auto neuron : fc2.getNeurons())    neuron->calculateLoss();
                 for (auto neuron : fc1.getNeurons())    neuron->calculateLoss();
@@ -162,6 +162,25 @@ void testMNIST() {
             }
         cout << "After pruning the neuron size of previous connections: " << neuron -> getPreviousConnections().size() << endl;
     }
+
+
+    /// calculate number of very small weights
+    smallWeights = 0;
+    for( auto neuron : fc1.getNeurons() )
+        for( auto edge : neuron -> getPreviousConnections() )
+            if( fabs( edge -> getWeight() ) < 0.001 )
+                ++smallWeights;
+
+    for( auto neuron : fc2.getNeurons() )
+        for( auto edge : neuron -> getPreviousConnections() )
+            if( fabs( edge -> getWeight() ) < 0.001 )
+                ++smallWeights;
+
+    for( auto neuron : outputLayer.getNeurons() )
+        for( auto edge : neuron -> getPreviousConnections() )
+            if( fabs( edge -> getWeight() ) < 0.001 )
+                ++smallWeights;
+    cout << "Number of edges smaller than 0.001: " << smallWeights;
 }
 
 #endif //NEURALNETWORK_LAYERTESTMNIST_H

@@ -5,7 +5,8 @@
 //#include "tests/TestLayers/ConvolutionTestMNIST.h"
 //#include "tests/TestLayers/FullyConnectedTestDataMiningProject.h"
 //#include "tests/TestNetwork/NetworkBucketTest.h"
-#include "tests/TestNetwork/NetworkMNISTtest.h"
+//#include "tests/TestNetwork/NetworkMNISTtest.h"
+#include "tests/TestNetwork/DynamicNetworkTest.h"
 
 int main() {
 
@@ -16,6 +17,7 @@ int main() {
 //    testConvolutionMNIST();
 //    testDataMiningProject();
 //    testBuckets();
-    testNeuralNetworkMNIST();
+//    testNeuralNetworkMNIST();
+    testDynamicNetworkMNIST();
     return 0;
 }

@@ -80,8 +80,12 @@ template <class NeuronType>
 void BaseNeuron <NeuronType> :: removeNextLayerConnection( NeuronType* weight ) {
 
     for( int i=0; i < next.size(); ++i ) {
-        if( &( next[i] -> getWeight() ) == weight )
+        if( &( next[i] -> getWeight() ) == weight ) {
+            BaseNeuron <NeuronType>* other = (BaseNeuron<NeuronType>*) &( next[i] -> getTo() );
             next.erase( next.begin() + i );
+            other -> removePreviousLayerConnection( weight );
+            break;
+        }
     }
 }
 
@@ -89,8 +93,12 @@ template <class NeuronType>
 void BaseNeuron <NeuronType> :: removePreviousLayerConnection( NeuronType *weight ) {
 
     for( int i=0; i < previous.size(); ++i ) {
-        if( &( previous[i] -> getWeight() ) == weight )
+        if( &( previous[i] -> getWeight() ) == weight ) {
+            BaseNeuron <NeuronType>* other = (BaseNeuron<NeuronType>*) &( previous[i] -> getFrom() );
             previous.erase( previous.begin() + i );
+            other -> removeNextLayerConnection( weight );
+            break;
+        }
     }
 }
 
