@@ -33,6 +33,10 @@ protected:
     std :: vector< std :: vector <BaseNeuron <NetworkType>* > > buckets;
     std :: vector <BaseOutputNeuron <NetworkType>* > outputNeurons;
 
+    double learningRate;
+    double batchLoss;
+    double epochLoss;
+
 
 public:
     NeuralNetwork( std :: vector <BaseInputLayer <NetworkType>* > inputLayers,
@@ -43,6 +47,11 @@ public:
     const std::vector< std :: vector <BaseNeuron <NetworkType>* > >& getBuckets() {
         return buckets;
     }
+    virtual double getLearningRate()    { return learningRate; }
+    virtual double getBatchLoss()       { return batchLoss; }
+    virtual double getEpochLoss()       { return epochLoss; }
+
+
     virtual void initializeNetwork();
     virtual void calculatePropagationOrder();
 

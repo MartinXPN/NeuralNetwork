@@ -5,9 +5,6 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>
-using namespace std;
-
-
 #include "../../lib/Neurons/BaseNeurons/BaseInputNeuron.h"
 #include "../../lib/Neurons/BaseNeurons/BaseOutputNeuron.h"
 #include "../../lib/Activations/SimpleActivations/ReLU.h"
@@ -16,6 +13,7 @@ using namespace std;
 #include "../../lib/LossFunctions/SimpleLossFunctions/MeanSquaredError.h"
 #include "../../lib/Neurons/SimpleNeurons/Bias.h"
 #include "../../lib/Utilities/NeuronOperations.h"
+using namespace std;
 
 
 void testNeuronsXOR() {
@@ -35,6 +33,21 @@ void testNeuronsXOR() {
                                                       new Sigmoid <double> () ) );
 
 /*
+/// network with weights
+8 10
+0 3 0.5
+0 4 0.1
+1 3 1.0
+1 4 2.2
+2 3 0.2
+2 4 0.3
+3 5 0.4
+3 7 0.8
+4 6 1.1
+4 7 1.2
+
+
+/// XOR network without weights
 0 3
 0 4
 0 5
@@ -45,10 +58,10 @@ void testNeuronsXOR() {
 2 4
 2 5
 
-3 6
-4 6
-5 6
-2 6
+3 7
+4 7
+5 7
+6 7
 */
     srand( 1 );
     cout << "Get the edges..." << endl;

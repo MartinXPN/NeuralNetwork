@@ -149,11 +149,25 @@ void NeuralNetwork <NetworkType> :: trainEpoch( size_t numberOfInputs,
                                                 std::function<void()> onBatchProcessed) {
 
 
+    this -> learningRate = learningRate;
+    epochLoss = 0;
     for (size_t batchStart = 0; batchStart < numberOfInputs; batchStart += batchSize) {
-        double batchLoss = 0;
+
+        /// initialize batch
+        std::vector< std::vector <NetworkType> > batchInputs;
+        std::vector< std::vector <NetworkType> > batchLabels;
         for (size_t i = batchStart; i < batchStart + batchSize && i < numberOfInputs; ++i) {
+            batchInputs.push_back( inputLoader( i ) );
+            batchLabels.push_back( labelLoader( i ) );
+            assert( inputNeurons.size() == batchInputs.back().size() );
+            assert( outputNeurons.size() == batchLabels.back().size() );
+        }
+
+        batchLoss = 0;
+        for (size_t i = 0; i < batchInputs.size(); ++i) {
             /// set values of input neurons
-            auto currentInput = inputLoader( i );
+            auto& currentInput = batchInputs[i];
+            auto& currentLabel = batchLabels[i];
             for( size_t j=0 ; j < inputNeurons.size(); ++j )
                 inputNeurons[j] -> setValue( currentInput[j] );
 
@@ -165,8 +179,6 @@ void NeuralNetwork <NetworkType> :: trainEpoch( size_t numberOfInputs,
                 neuron -> activateNeuron();
 
             /// calculate loss
-            auto currentLabel = labelLoader( i );
-            assert( outputNeurons.size() == currentLabel.size() );
             for( int j=0; j < outputNeurons.size(); ++j ) {
                 outputNeurons[j] -> calculateLoss( currentLabel[j] );
                 batchLoss += fabs( outputNeurons[j] -> getError( currentLabel[j] ) );
@@ -183,19 +195,20 @@ void NeuralNetwork <NetworkType> :: trainEpoch( size_t numberOfInputs,
                     neuron -> backpropagateNeuron();
         }
 
-
         /// update weights
-        for (auto neuron : outputNeurons)
-            neuron->updateWeights(learningRate, batchSize);
+        for ( auto neuron : outputNeurons )
+            neuron->updateWeights( learningRate, batchSize );
         for( auto bucket : buckets )
             for( auto neuron : bucket )
-                neuron->updateWeights(learningRate, batchSize);
+                neuron->updateWeights( learningRate, batchSize );
 
-        std::cout << "Current Loss: " << batchLoss / numberOfInputs << std::endl;
+        epochLoss += batchLoss;
+        batchLoss /= batchInputs.size();
         if( onBatchProcessed != nullptr )
             onBatchProcessed();
     }
 
+    epochLoss /= numberOfInputs;
     if( onEpochTrained != nullptr )
         onEpochTrained();
 }
@@ -203,7 +216,7 @@ void NeuralNetwork <NetworkType> :: trainEpoch( size_t numberOfInputs,
 
 template <class NetworkType>
 std::vector<NetworkType> NeuralNetwork <NetworkType> :: evaluateOne( std::vector<NetworkType> input,
-                                                                     std::function< void( const std::vector<NetworkType>& )> onEvaluated ) {
+                                                                     std::function< void( const std::vector<NetworkType>& result )> onEvaluated ) {
 
 
     /// set values of input neurons

@@ -17,6 +17,9 @@ protected:
     using NeuralNetwork <NetworkType> :: buckets;
     using NeuralNetwork <NetworkType> :: outputNeurons;
 
+    virtual void pruneNeuronPreviousLayerConnections( BaseNeuron<NetworkType> *neuron, NetworkType threshold );
+    virtual void pruneNeuronNextLayerConnections( BaseNeuron<NetworkType> *neuron, NetworkType threshold );
+
 public:
     using NeuralNetwork <NetworkType> :: NeuralNetwork;
 
