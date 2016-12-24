@@ -40,15 +40,11 @@ void Convolution <LayerType> :: connectOne( BaseNeuron<LayerType> *neuron,
     if( currentDimension == previousLayer -> getDimensions().size() ) {
         /// connect neuron to the neuron in the previous layer at position [previousLayerStart]
 //        printf( "Connect *%d to prev[%d]   --with [%d]--> %lf\n", neuron, previousLayerStart, weightIndex, *weights[weightIndex] );
-        NeuronOperations::connectConvolutionalNeurons(previousLayer->getNeurons()[previousLayerStart],
-                                                      neuron,
-                                                      numberOfUsages[weightIndex],
-                                                      weights[weightIndex],
-                                                      deltaWeights[weightIndex]);
+        connectTwoNeurons( previousLayer -> getNeurons()[previousLayerStart], neuron, weightIndex );
     }
     else {
-        int step = math::multiply( previousLayer -> getDimensions(), (size_t) currentDimension + 1 );
-        int weightStep = math :: multiply( kernel, (size_t) (currentDimension + 1) );
+        int step = math::multiply(previousLayer->getDimensions(), (size_t) currentDimension + 1);
+        int weightStep = math::multiply(kernel, (size_t) (currentDimension + 1));
         for( int i=0; i < kernel[ currentDimension ]; ++i ) {
             connectOne( neuron,
                         previousLayer,
@@ -70,7 +66,7 @@ void Convolution <LayerType> :: connectLayer( const BaseLayer <LayerType>* previ
 //        printf( "\n\nConnect this[%d]...\n", currentLayerStart );
         connectOne( neurons[ currentLayerStart ], previousLayer, previousLayerStart, 0, weightIndex );
         if( bias != nullptr ) {
-            int biasIndex = weightIndex + math::multiply( kernel ); /// connect all kernels and reach the bias term
+            int biasIndex = weightIndex + math::multiply(kernel); /// connect all kernels and reach the bias term
             NeuronOperations::connectConvolutionalNeurons( bias,
                                                            neurons[ currentLayerStart ],
                                                            numberOfUsages[ biasIndex ],
@@ -79,11 +75,12 @@ void Convolution <LayerType> :: connectLayer( const BaseLayer <LayerType>* previ
         }
     }
     else {
-        int currentLayerStep = math :: multiply( dimensions, (size_t) currentDimension + 1 );
-        int previousLayerStep = math :: multiply( previousLayer -> getDimensions(), (size_t) currentDimension + 1 ) *
+        int currentLayerStep = math::multiply(dimensions, (size_t) currentDimension + 1);
+        int previousLayerStep =
+                math::multiply(previousLayer->getDimensions(), (size_t) currentDimension + 1) *
                                 stride[ currentDimension ];
         int weightStep = currentDimension == 0
-                         ? math::multiply( kernel ) + ( bias != nullptr ? 1 : 0 )
+                         ? math::multiply(kernel) + ( bias != nullptr ? 1 : 0 )
                          : 0;  /// weights are different for different feature maps
         if( currentDimension == 0 )printf( "WeightStep: %d\n", weightStep );
 
@@ -103,7 +100,7 @@ void Convolution <LayerType> :: createWeights() {
 
     /// number of feature maps * ( size of the kernel + bias )
     /// structure -> [[weights of feature map, biasWeight]]
-    int numberOfWeights = dimensions[0] * ( math :: multiply( kernel ) + ( bias != nullptr ? 1 : 0 ) );
+    int numberOfWeights = dimensions[0] * (math::multiply(kernel) + ( bias != nullptr ? 1 : 0 ) );
     for( int i=0; i < numberOfWeights; ++i ) {
         weights.push_back( new LayerType( LayerType(rand() / LayerType(RAND_MAX) - 0.5) ) );
         deltaWeights.push_back( new LayerType( 0 ) );
@@ -116,4 +113,17 @@ void Convolution <LayerType> :: createWeights() {
         printf( "%lf\t", *item );
     }
     printf( "\n" );
+}
+
+template <class LayerType>
+void Convolution <LayerType> :: connectTwoNeurons(BaseNeuron<LayerType> *previousNeuron,
+                                                  BaseNeuron<LayerType> *neuron,
+                                                  int weightIndex) {
+
+
+    NeuronOperations::connectConvolutionalNeurons(previousNeuron,
+                                                  neuron,
+                                                  numberOfUsages[weightIndex],
+                                                  weights[weightIndex],
+                                                  deltaWeights[weightIndex]);
 }

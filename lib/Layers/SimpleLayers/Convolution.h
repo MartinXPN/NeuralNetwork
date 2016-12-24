@@ -25,6 +25,10 @@ protected:
     std :: vector <LayerType*> deltaWeights;
     std :: vector <int*> numberOfUsages;     /// number of the usages of the same weight
 
+    virtual void connectTwoNeurons( BaseNeuron <LayerType>* previousNeuron,
+                                    BaseNeuron <LayerType>* neuron,
+                                    int weightIndex );
+
     virtual void connectOne( BaseNeuron <LayerType>* neuron,
                              const BaseLayer <LayerType>* previousLayer,
                              int previousLayerStart,

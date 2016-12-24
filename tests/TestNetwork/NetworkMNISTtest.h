@@ -24,10 +24,10 @@ vector <double> labelLoader( size_t item ) { return trainLabels[item]; }
 void testNeuralNetworkMNIST() {
 
     /// load the data
-    trainImages = MNIST::readImages("/home/martin/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
-    testImages = MNIST::readImages("/home/martin/Desktop/MNIST_test_images.idx3-ubyte", 100000, 28 * 28);
-    trainLabels = MNIST::toLabelMatrix( MNIST::readLabels( "/home/martin/Desktop/MNIST_train_labels.idx1-ubyte" ) );
-    testLabels = MNIST::toLabelMatrix( MNIST::readLabels( "/home/martin/Desktop/MNIST_test_labels.idx1-ubyte" ) );
+    trainImages = MNIST::readImages("/home/ubuntu/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
+    testImages = MNIST::readImages("/home/ubuntu/Desktop/MNIST_test_images.idx3-ubyte", 100000, 28 * 28);
+    trainLabels = MNIST::toLabelMatrix( MNIST::readLabels( "/home/ubuntu/Desktop/MNIST_train_labels.idx1-ubyte" ) );
+    testLabels = MNIST::toLabelMatrix( MNIST::readLabels( "/home/ubuntu/Desktop/MNIST_test_labels.idx1-ubyte" ) );
 
     printf( "Train -> Images: %d\tLabels: %d\n", trainImages.size(), trainLabels.size() );
     printf( "Test ->  Images: %d\tLabels: %d\n", testImages.size(), testLabels.size() );
@@ -47,15 +47,20 @@ void testNeuralNetworkMNIST() {
     net.initializeNetwork();
 
 
+    clock_t start_s=clock();
     /// start training
     net.trainEpoch( trainImages.size(),
                     100,
                     0.01,
                     [&trainImages] (size_t item) { return trainImages[item]; },
                     labelLoader,
-                    []() { printf( "Epoch Trained!!!" ); } );
+                    []()    { printf( "Epoch Trained!!!" ); },
+                    [&]()   { printf( "Batch loss: %lf\n", net.getBatchLoss() ); } );
 
+    clock_t stop_s=clock();
+    cout << "Time: " << (stop_s-start_s)/double(CLOCKS_PER_SEC) << endl;
 
+/*
     /// evaluate the result
     for( int i=0; i < 20; ++i ) {
         int id = (int) (rand() % testImages.size());
@@ -63,7 +68,7 @@ void testNeuralNetworkMNIST() {
             MNIST::printImage( testImages[id] );
             cout << "Prediction -> " << std::max_element(res.begin(), res.end()) - res.begin() << endl;
         } );
-    }
+    }*/
 }
 
 #endif //NEURALNETWORK_NETWORKMNISTTEST_H

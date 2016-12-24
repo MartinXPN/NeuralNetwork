@@ -166,13 +166,13 @@ void NeuralNetwork <NetworkType> :: trainEpoch( size_t numberOfInputs,
         batchLoss = 0;
         for (size_t i = 0; i < batchInputs.size(); ++i) {
             /// set values of input neurons
-            auto& currentInput = batchInputs[i];
-            auto& currentLabel = batchLabels[i];
+            const auto& currentInput = batchInputs[i];
+            const auto& currentLabel = batchLabels[i];
             for( size_t j=0 ; j < inputNeurons.size(); ++j )
                 inputNeurons[j] -> setValue( currentInput[j] );
 
             /// activate neurons
-            for( auto bucket : buckets )
+            for( const auto& bucket : buckets )
                 for( auto neuron : bucket )
                     neuron -> activateNeuron();
             for( auto neuron : outputNeurons )
@@ -198,7 +198,7 @@ void NeuralNetwork <NetworkType> :: trainEpoch( size_t numberOfInputs,
         /// update weights
         for ( auto neuron : outputNeurons )
             neuron->updateWeights( learningRate, batchSize );
-        for( auto bucket : buckets )
+        for( const auto& bucket : buckets )
             for( auto neuron : bucket )
                 neuron->updateWeights( learningRate, batchSize );
 
@@ -224,7 +224,7 @@ std::vector<NetworkType> NeuralNetwork <NetworkType> :: evaluateOne( std::vector
         inputNeurons[i] -> setValue( input[i] );
 
     /// activate neurons
-    for( auto bucket : buckets )
+    for( const auto& bucket : buckets )
         for( auto neuron : bucket )
             neuron -> activateNeuron();
     for( auto neuron : outputNeurons )
