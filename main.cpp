@@ -1,12 +1,12 @@
-//#include "tests/TestNeurons/NeuronTest.h"
-//#include "tests/TestLayers/LayerTestXOR.h"
-//#include "tests/TestLayers/LayerTestMNIST.h"
-//#include "tests/TestLayers/ConvolutionTestConnections.h"
-//#include "tests/TestLayers/ConvolutionTestMNIST.h"
-//#include "tests/TestLayers/FullyConnectedTestDataMiningProject.h"
-//#include "tests/TestNetwork/NetworkBucketTest.h"
-#include "tests/TestNetwork/NetworkMNISTtest.h"
-//#include "tests/TestNetwork/DynamicNetworkTest.h"
+//#include "test/neurons/NeuronTest.h"
+//#include "test/layers/LayerTestXOR.h"
+//#include "test/layers/LayerTestMNIST.h"
+//#include "test/layers/ConvolutionTestConnections.h"
+//#include "test/layers/ConvolutionTestMNIST.h"
+//#include "test/layers/FullyConnectedTestDataMiningProject.h"
+#include "test/network/NetworkBucketTest.h"
+//#include "test/network/NetworkMNISTtest.h"
+//#include "test/network/DynamicNetworkTest.h"
 
 int main() {
 
@@ -16,8 +16,8 @@ int main() {
 //    testConvolutionConnections();
 //    testConvolutionMNIST();
 //    testDataMiningProject();
-//    testBuckets();
-    testNeuralNetworkMNIST();
+    testBuckets();
+//    testNeuralNetworkMNIST();
 //    testDynamicNetworkMNIST();
     return 0;
 }
