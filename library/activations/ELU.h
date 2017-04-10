@@ -4,7 +4,7 @@
 
 
 #include <cmath>
-#include "../activations/base/BaseActivationFunction.h"
+#include "base/BaseActivationFunction.h"
 
 /**
  * Exponential Linear Unit

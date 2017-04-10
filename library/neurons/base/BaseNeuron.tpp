@@ -18,10 +18,6 @@ BaseNeuron <NeuronType> :: BaseNeuron( BaseActivationFunction<NeuronType>* activ
 
 template <class NeuronType>
 BaseNeuron <NeuronType> :: ~BaseNeuron() {
-
-    /// can't delete edges with delete because they may not be created with new
-    // for( auto edge : next )     free( edge );
-    // for( auto edge : previous ) free( edge );
 }
 
 
