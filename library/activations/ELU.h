@@ -35,8 +35,9 @@ public:
      * @param x the input of the neuron
      */
     virtual Type activation(Type x) override {
-        if( x < 0 ) return alpha * ( std::exp( x ) - 1 );
-        else        return x;
+        if( x >= 0 )    return x;
+        if( x < 8 )     return -alpha;  /// done for optimization as e^x --> 0 when x --> -INF
+        else            return alpha * ( std::exp( x ) - 1 );
     }
 
 
