@@ -36,8 +36,8 @@ void testDynamicNetworkMNIST() {
     InputLayer <double> inputLayer( {1, 28, 28} );
     Convolution <double> conv1( { 2, 13, 13 }, { 1, 4, 4 }, new ReLU <double>(), {&inputLayer}, {0, 2, 2}, bias );
     Convolution <double> conv2( { 1, 10, 10 }, { 2, 4, 4 }, new ReLU <double>(), {&conv1}, {0, 1, 1}, bias );
-    FullyConnected <double> fc1( {100}, new ReLU <double>(), {&conv2}, bias );
-    LossLayer <double> outputLayer( {10}, {&fc1}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
+    FullyConnected <double> fc1( {10}, new ReLU <double>(), {&conv2}, bias );
+    LossLayer <double> outputLayer( {10}, {&fc1}, new CrossEntropyCost <double>() );
 
 
     /// initialise the network

@@ -20,12 +20,9 @@ NeuralNetwork <NetworkType> :: NeuralNetwork( std::vector<InputLayer <NetworkTyp
 template <class NetworkType>
 void NeuralNetwork <NetworkType> :: initializeNetwork() {
 
-    /// initialize all layers by calling 3 virtual function -> ( createNeurons, createWeights, connectNeurons )
-    for( auto layer : inputLayers )     layer -> createNeurons();
-    for( auto layer : hiddenLayers )    layer -> createNeurons();
-    for( auto layer : outputLayers )    layer -> createNeurons();
-
+    /// initialize all layers by calling 2 virtual function -> ( createWeights, connectNeurons )
     for( auto layer : hiddenLayers )    layer -> createWeights();
+    for( auto layer : outputLayers )    layer -> createWeights();
 
     for( auto layer : hiddenLayers )    layer -> connectNeurons();
     for( auto layer : outputLayers )    layer -> connectNeurons();

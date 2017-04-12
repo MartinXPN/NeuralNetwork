@@ -12,6 +12,15 @@ LossLayer <LayerType> :: LossLayer(const std::vector<unsigned> &dimensions,
 
 }
 
+
+template <class LayerType>
+LossLayer <LayerType> :: LossLayer(const std::vector<unsigned> &dimensions,
+                                   const std::vector<const BaseLayer<LayerType> *> &previousLayers,
+                                   BaseLossFunction<LayerType> *lossFunction)
+        : LossLayer(dimensions, previousLayers, new OutputNeuronInitializer<LayerType>(lossFunction) ) {
+}
+
+
 template <class LayerType>
 void LossLayer <LayerType> :: createWeights() {
     for( int i=0; i < this -> size(); ++i ) {

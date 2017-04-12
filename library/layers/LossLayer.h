@@ -44,6 +44,17 @@ public:
               OutputNeuronInitializer <LayerType>* neuronInitializer = new OutputNeuronInitializer <LayerType> (new CrossEntropyCost <LayerType>()));
 
 
+
+    /**
+     * @param dimensions: dimensions of the layer
+     * @param previousLayers: all the layers that are connected to the output layer
+     * @param lossFunction: loss function of all neurons in the output layer            | to have multiple loss function for different neurons we need to create multiple output layers
+     */
+    LossLayer(const std :: vector <unsigned>& dimensions,
+              const std::vector< const BaseLayer<LayerType> *> &previousLayers,
+              BaseLossFunction <LayerType>* lossFunction);
+
+
     using OneToOne <LayerType> :: connectNeurons;
     void createWeights() override;
 };

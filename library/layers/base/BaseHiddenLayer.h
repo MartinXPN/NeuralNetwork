@@ -39,11 +39,18 @@ public:
                     NeuronInitializer <LayerType>* neuronInitializer,
                     Bias <LayerType>* bias = nullptr );
 
+    BaseHiddenLayer(const std :: vector <unsigned>& dimensions,
+                    BaseActivationFunction <LayerType>* activationFunction,
+                    const std::vector< const BaseLayer<LayerType>* > &previousLayers,
+                    Bias <LayerType>* bias = nullptr );
+
 
     BaseHiddenLayer(const std :: vector <unsigned>& dimensions,
                     const std::vector< const BaseLayer<LayerType>* > &previousLayers,
                     const std :: vector< BaseNeuron <LayerType>* >& neurons,
                     Bias <LayerType>* bias = nullptr );
+
+    using BaseLayer <LayerType> :: connectNeurons;
 
     virtual void createWeights() = 0;
 

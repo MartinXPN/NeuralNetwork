@@ -22,6 +22,40 @@ Convolution <LayerType> :: Convolution(std::vector<unsigned> dimensions,
 
 
 template <class LayerType>
+Convolution <LayerType> :: Convolution(std::vector<unsigned> dimensions,
+                                       std::vector<unsigned> kernel,
+                                       BaseActivationFunction<LayerType> *activationFunction,
+                                       const std::vector<const BaseLayer<LayerType> *> &previousLayers,
+                                       std::vector<unsigned int> stride,
+                                       Bias<LayerType> *bias)
+        : Convolution(dimensions,
+                      kernel,
+                      previousLayers,
+                      stride, new SimpleNeuronInitializer <LayerType>(activationFunction),
+                      bias) {
+
+}
+
+
+template <class LayerType>
+Convolution <LayerType> :: Convolution(std::vector<unsigned> dimensions,
+                                       std::vector<unsigned> kernel,
+                                       std::vector<BaseNeuron<LayerType> *> neurons,
+                                       const std::vector<const BaseLayer<LayerType> *> &previousLayers,
+                                       std::vector<unsigned int> stride,
+                                       Bias<LayerType> *bias)
+        : kernel(kernel),
+          stride(stride),
+          BaseHiddenLayer <LayerType> (dimensions, previousLayers, neurons, bias){
+
+    if( this -> stride.empty() )
+        stride  = std :: vector <unsigned> ( dimensions.size(), 1 );
+}
+
+
+
+
+template <class LayerType>
 void Convolution <LayerType> :: connectNeurons() {
 
     for( const BaseLayer <LayerType>* previousLayer : previousLayers ) {

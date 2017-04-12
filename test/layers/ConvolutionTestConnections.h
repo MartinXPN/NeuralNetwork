@@ -14,8 +14,6 @@ void testConvolutionConnections() {
     InputLayer <double> inputLayer( {1, 28, 28} );
     Convolution <double> conv1( { 10, 13, 13 }, { 1, 4, 4 }, new ReLU <double>(), {&inputLayer}, {0, 2, 2} );
 
-    inputLayer.createNeurons();
-    conv1.createNeurons();
     conv1.createWeights();
 
     conv1.connectNeurons();

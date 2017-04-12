@@ -50,6 +50,22 @@ public:
                  Bias<LayerType> *bias = nullptr );
 
 
+    Convolution( std :: vector <unsigned> dimensions,
+                 std :: vector <unsigned> kernel,
+                 BaseActivationFunction<LayerType> *activationFunction,
+                 const std::vector<const BaseLayer<LayerType> *> &previousLayers,
+                 std :: vector <unsigned> stride = {},
+                 Bias<LayerType> *bias = nullptr );
+
+
+    Convolution( std :: vector <unsigned> dimensions,
+                 std :: vector <unsigned> kernel,
+                 std :: vector <BaseNeuron <LayerType>* > neurons,
+                 const std::vector<const BaseLayer<LayerType> *> &previousLayers,
+                 std :: vector <unsigned> stride = {},
+                 Bias<LayerType> *bias = nullptr );
+
+
     virtual void connectNeurons() override;
 
     virtual void createWeights() override;

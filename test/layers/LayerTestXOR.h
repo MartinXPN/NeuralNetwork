@@ -26,22 +26,25 @@ void layerTestXOR() {
     Bias <double>* bias = new Bias <double>();
     InputLayer <double> inputLayer( {2} );
     FullyConnected <double> hidden1( {4}, new ReLU <double>(), {&inputLayer}, bias );
-    LossLayer <double> outputLayer( {1}, {&hidden1}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
+    FullyConnected <double> out( {1}, new Sigmoid <double>(), {&hidden1}, bias );
+    LossLayer <double> lossLayer( {1}, {&out}, new CrossEntropyCost <double>());
 
 
-    inputLayer.createNeurons();
-    hidden1.createNeurons();
     hidden1.createWeights();
     hidden1.connectNeurons();
 
-    outputLayer.createNeurons();
-    outputLayer.connectNeurons();
+    out.createWeights();
+    out.connectNeurons();
+
+    lossLayer.createWeights();
+    lossLayer.connectNeurons();
 
     /// get neurons
     vector <BaseNeuron <double>* > inputNeurons = inputLayer.getNeurons();
-    vector <BaseNeuron <double>* > hiddenNeurons = hidden1.getNeurons();
-    vector <BaseNeuron <double>* > outputNeurons = outputLayer.getNeurons();
-    printf( "input: %u\nhidden: %u\noutput: %u\n", inputNeurons.size(), hiddenNeurons.size(), outputNeurons.size() );
+    vector <BaseNeuron <double>* > hiddenNeurons1 = hidden1.getNeurons();
+    vector <BaseNeuron <double>* > hiddenNeurons2 = out.getNeurons();
+    vector <BaseNeuron <double>* > outputNeurons = lossLayer.getNeurons();
+    printf( "input: %u\nhidden: %u\noutput: %u\n", inputNeurons.size(), hiddenNeurons1.size(), outputNeurons.size() );
 
 
     /// learn XOR
@@ -61,18 +64,21 @@ void layerTestXOR() {
             ((BaseInputNeuron<double> *) inputNeurons[1]) -> setValue( two );
 
             /// activate neurons
-            for( auto neuron : hiddenNeurons )  neuron -> activateNeuron();
+            for( auto neuron : hiddenNeurons1 )  neuron -> activateNeuron();
+            for( auto neuron : hiddenNeurons2 )  neuron -> activateNeuron();
             for( auto neuron : outputNeurons )  neuron -> activateNeuron();
 
             /// calculate losses
             (( BaseOutputNeuron <double>* ) ( outputNeurons[0] ))-> calculateLoss( out );
             loss += (( BaseOutputNeuron <double>* ) ( outputNeurons[0] ))-> getError( out );
-            for( auto neuron : hiddenNeurons )  neuron -> calculateLoss();
+            for( auto neuron : hiddenNeurons2 )  neuron -> calculateLoss();
+            for( auto neuron : hiddenNeurons1 )  neuron -> calculateLoss();
 
 
             /// backpropagate neurons
             outputNeurons[0] -> backpropagateNeuron();
-            for( auto neuron : hiddenNeurons )  neuron -> backpropagateNeuron();
+            for( auto neuron : hiddenNeurons2 )  neuron -> backpropagateNeuron();
+            for( auto neuron : hiddenNeurons1 )  neuron -> backpropagateNeuron();
         }
 
         if( iteration % 100 == 0 )
@@ -80,7 +86,8 @@ void layerTestXOR() {
 
         /// update weights
         for( auto neuron : outputNeurons )  neuron -> updateWeights( learningRate, batchSize );
-        for( auto neuron : hiddenNeurons )  neuron -> updateWeights( learningRate, batchSize );
+        for( auto neuron : hiddenNeurons2 )  neuron -> updateWeights( learningRate, batchSize );
+        for( auto neuron : hiddenNeurons1 )  neuron -> updateWeights( learningRate, batchSize );
     }
 
 
@@ -96,7 +103,8 @@ void layerTestXOR() {
         ((BaseInputNeuron<double> *) inputNeurons[1])->setValue(two);
 
         /// activate neurons
-        for( auto neuron : hiddenNeurons )  neuron -> activateNeuron();
+        for( auto neuron : hiddenNeurons1 )  neuron -> activateNeuron();
+        for( auto neuron : hiddenNeurons2 )  neuron -> activateNeuron();
         for( auto neuron : outputNeurons )  neuron -> activateNeuron();
 
 

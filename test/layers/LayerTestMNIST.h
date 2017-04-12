@@ -18,8 +18,8 @@
 Bias <double>* bias = new Bias <double>();
 InputLayer <double> inputLayer( {28*28} );
 FullyConnected <double> fc1( {50}, new ReLU <double>(), {&inputLayer}, bias );
-FullyConnected <double> fc2( {20}, new ReLU <double>(), {&fc1}, bias );
-LossLayer <double> outputLayer( {10}, {&fc2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
+FullyConnected <double> fc2( {10}, new Sigmoid <double>(), {&fc1}, bias );
+LossLayer <double> outputLayer( {10}, {&fc2}, new CrossEntropyCost <double>() );
 
 using namespace std;
 
@@ -48,9 +48,9 @@ void evaluateOne(vector<double> image) {
 
 void testMNIST() {
 
-    vector<vector<double>> trainImages = MNIST::readImages("/home/ubuntu/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
+    vector<vector<double>> trainImages = MNIST::readImages("/home/martin/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
     // vector<vector<double>> testImages = readImages("/home/ubuntu/Desktop/MNIST_test_images.idx3-ubyte", 100000, 28*28);
-    vector <int> labels = MNIST::readLabels( "/home/ubuntu/Desktop/MNIST_train_labels.idx1-ubyte" );
+    vector <int> labels = MNIST::readLabels( "/home/martin/Desktop/MNIST_train_labels.idx1-ubyte" );
 
     cout << "Image: \n";
     for( int i=0; i < 28; ++i, printf( "\n" ) )
@@ -68,13 +68,10 @@ void testMNIST() {
 
     /// construct the network
 
-    inputLayer.createNeurons();
-    fc1.createNeurons();
-    fc2.createNeurons();
-    outputLayer.createNeurons();
 
     fc1.createWeights();
     fc2.createWeights();
+    outputLayer.createWeights();
 
     fc1.connectNeurons();
     fc2.connectNeurons();
