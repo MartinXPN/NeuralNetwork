@@ -20,10 +20,10 @@ void OneToOne <LayerType> :: connectNeurons() {
     for( auto layer : previousLayers ) {
         for( int i=0; i < layer -> size(); ++i ) {
             // printf( "Connect %d -> %d\n", i, currentNeuron );
-            NeuronOperations::connectNeurons( layer -> getNeurons()[i],
-                                              neurons[currentNeuron],
-                                              weights[currentNeuron],
-                                              deltaWeights[currentNeuron] );
+            connectNeurons( layer -> getNeurons()[i],
+                            neurons[currentNeuron],
+                            weights[currentNeuron],
+                            deltaWeights[currentNeuron] );
             ++currentNeuron;
         }
     }

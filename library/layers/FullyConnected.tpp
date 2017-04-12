@@ -10,10 +10,10 @@ void FullyConnected <LayerType> :: connectNeurons() {
     for( auto previousLayer : previousLayers ) {
         for( int i=0; i < size(); ++i ) {
             for( int j=0; j < previousLayer -> size(); ++j ) {
-                NeuronOperations::connectNeurons( previousLayer -> getNeurons()[j],
-                                                  neurons[i],
-                                                  weights[ i * previousLayer -> size() + j ],
-                                                  deltaWeights[ i * previousLayer -> size() + j ] );
+                connectNeurons( previousLayer -> getNeurons()[j],
+                                neurons[i],
+                                weights[ i * previousLayer -> size() + j ],
+                                deltaWeights[ i * previousLayer -> size() + j ] );
             }
         }
     }
@@ -21,10 +21,10 @@ void FullyConnected <LayerType> :: connectNeurons() {
     if( bias != nullptr ) {
         int start = (int) (weights.size() - size());
         for( int i=0; i < size(); ++i ) {
-            NeuronOperations::connectNeurons( bias,
-                                              neurons[i],
-                                              weights[ start + i ],
-                                              deltaWeights[ start + i ] );
+            connectNeurons( bias,
+                            neurons[i],
+                            weights[ start + i ],
+                            deltaWeights[ start + i ] );
         }
     }
 }

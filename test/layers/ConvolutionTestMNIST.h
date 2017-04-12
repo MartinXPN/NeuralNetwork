@@ -25,7 +25,7 @@ InputLayer <double> inputLayer( {1, 28, 28} );
 Convolution <double> conv1( { 10, 13, 13 }, { 1, 4, 4 }, {&inputLayer}, {0, 2, 2}, new SimpleNeuronInitializer <double>( new ReLU<double>() ), bias );
 Convolution <double> conv2( { 5, 10, 10 }, { 10, 4, 4 }, {&conv1}, {0, 1, 1}, new SimpleNeuronInitializer <double>( new ReLU<double>() ), bias );
 FullyConnected <double> outputLayer( {10}, {&conv2}, new SimpleNeuronInitializer <double> ( new Sigmoid <double> ), bias );
-LossLayer <double> loss( {10}, {&outputLayer}, new OutputNeuronInitializer<double>(new MeanSquaredError<double>()) );
+LossLayer <double> loss( {10}, {&outputLayer}, new OutputNeuronInitializer<double>(new CrossEntropyCost<double>()) );
 
 using namespace std;
 

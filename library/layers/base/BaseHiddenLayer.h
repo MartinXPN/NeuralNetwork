@@ -27,6 +27,12 @@ protected:
     std :: vector <LayerType*> deltaWeights;
     Bias <LayerType>* bias;
 
+
+    virtual void connectNeurons(BaseNeuron<LayerType>* source,
+                                BaseNeuron<LayerType>* target,
+                                LayerType* weight,
+                                LayerType* deltaWeight = nullptr);
+
 public:
     BaseHiddenLayer(const std :: vector <unsigned>& dimensions,
                     const std::vector< const BaseLayer<LayerType>* > &previousLayers,

@@ -13,6 +13,7 @@ protected:
     using BaseHiddenLayer <LayerType> :: weights;
     using BaseHiddenLayer <LayerType> :: deltaWeights;
     using BaseHiddenLayer <LayerType> :: previousLayers;
+    using BaseHiddenLayer <LayerType> :: connectNeurons;
 
 
 public:

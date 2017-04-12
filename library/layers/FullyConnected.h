@@ -23,6 +23,7 @@ protected:
     using BaseHiddenLayer <LayerType> :: bias;
     using BaseHiddenLayer <LayerType> :: weights;
     using BaseHiddenLayer <LayerType> :: deltaWeights;
+    using BaseHiddenLayer <LayerType> :: connectNeurons;
 
 public:
     using BaseHiddenLayer <LayerType> :: BaseHiddenLayer;

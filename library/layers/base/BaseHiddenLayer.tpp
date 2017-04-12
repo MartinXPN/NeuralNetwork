@@ -32,3 +32,18 @@ BaseHiddenLayer <LayerType> :: ~BaseHiddenLayer() {
     for( int i=0; i < weights.size(); ++i )         delete weights[i];
     for( int i=0; i < deltaWeights.size(); ++i )    delete deltaWeights[i];
 }
+
+
+template <class LayerType>
+void BaseHiddenLayer <LayerType> :: connectNeurons(BaseNeuron<LayerType> *source,
+                                                   BaseNeuron<LayerType> *target,
+                                                   LayerType* weight,
+                                                   LayerType* deltaWeight) {
+
+    if( deltaWeight == nullptr )    deltaWeight = new LayerType( 0 );
+
+    BaseEdge<LayerType> *edge = new BaseEdge<LayerType>(source, target, weight, deltaWeight );
+
+    source->addNextLayerConnection(edge);
+    target->addPreviousLayerConnection(edge);
+}

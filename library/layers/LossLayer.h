@@ -28,6 +28,11 @@ protected:
     using OneToOne <LayerType> :: weights;
     using OneToOne <LayerType> :: deltaWeights;
 
+    void connectNeurons(BaseNeuron<LayerType> *source,
+                        BaseNeuron<LayerType> *target,
+                        LayerType *weight,
+                        LayerType *deltaWeight) override;
+
 public:
     /**
      * @param dimensions: dimensions of the layer
@@ -39,6 +44,7 @@ public:
               OutputNeuronInitializer <LayerType>* neuronInitializer = new OutputNeuronInitializer <LayerType> (new CrossEntropyCost <LayerType>()));
 
 
+    using OneToOne <LayerType> :: connectNeurons;
     void createWeights() override;
 };
 

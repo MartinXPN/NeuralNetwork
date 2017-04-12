@@ -1,6 +1,7 @@
 
 #include <cstdlib>
 #include "LossLayer.h"
+#include "../edges/ConstantEdge.h"
 
 
 template <class LayerType>
@@ -17,4 +18,16 @@ void LossLayer <LayerType> :: createWeights() {
         weights.push_back(new LayerType(1));
         deltaWeights.push_back(new LayerType(0));
     }
+}
+
+
+template <class LayerType>
+void LossLayer <LayerType> :: connectNeurons(BaseNeuron<LayerType> *source,
+                                             BaseNeuron<LayerType> *target,
+                                             LayerType *weight,
+                                             LayerType *deltaWeight) {
+
+    BaseEdge<LayerType> *edge = new ConstantEdge<LayerType>(source, target, weight );
+    source->addNextLayerConnection(edge);
+    target->addPreviousLayerConnection(edge);
 }
