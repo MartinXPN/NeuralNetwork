@@ -3,14 +3,12 @@
 #define NEURALNETWORK_ONETOONE_H
 
 #include <cstdlib>
-#include "BaseLayers/BaseHiddenLayer.h"
-#include "../Utilities/NeuronOperations.h"
+#include "base/BaseHiddenLayer.h"
 
 
 template <class LayerType>
 class OneToOne : public BaseHiddenLayer <LayerType> {
 protected:
-    using BaseHiddenLayer <LayerType> :: numberOfNeurons;
     using BaseHiddenLayer <LayerType> :: neurons;
     using BaseHiddenLayer <LayerType> :: weights;
     using BaseHiddenLayer <LayerType> :: deltaWeights;
@@ -18,11 +16,9 @@ protected:
 
 
 public:
-    OneToOne(const std::vector<unsigned int> &dimensions,
-             const std::vector<const BaseLayer<LayerType> *> &previousLayers,
-             BaseActivationFunction<LayerType> *activationFunction);
+    using BaseHiddenLayer <LayerType> :: BaseHiddenLayer;
 
-    void createWeights() override;
+    virtual void createWeights();
 
     void connectNeurons() override;
 };

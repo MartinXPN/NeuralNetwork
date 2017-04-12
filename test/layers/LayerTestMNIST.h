@@ -6,20 +6,20 @@
 #include <vector>
 #include <fstream>
 #include "../../library/neurons/Bias.h"
-#include "../../library/layers/base/BaseInputLayer.h"
+#include "../../library/layers/InputLayer.h"
 #include "../../library/layers/FullyConnected.h"
 #include "../../library/activations/ReLU.h"
-#include "../../library/layers/base/BaseOutputLayer.h"
+#include "../../library/layers/LossLayer.h"
 #include "../../library/lossfunctions/CrossEntropyCost.h"
 #include "../../library/activations/Sigmoid.h"
 #include "../../library/util/MNIST.h"
 
 
 Bias <double>* bias = new Bias <double>();
-BaseInputLayer <double> inputLayer( {28*28} );
+InputLayer <double> inputLayer( {28*28} );
 FullyConnected <double> fc1( {50}, new ReLU <double>(), {&inputLayer}, bias );
 FullyConnected <double> fc2( {20}, new ReLU <double>(), {&fc1}, bias );
-BaseOutputLayer <double> outputLayer( {10}, {&fc2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
+LossLayer <double> outputLayer( {10}, {&fc2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
 
 using namespace std;
 

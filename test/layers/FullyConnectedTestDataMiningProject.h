@@ -9,11 +9,11 @@
 #include <iterator>
 #include <fstream>
 #include "../../library/neurons/Bias.h"
-#include "../../library/layers/base/BaseInputLayer.h"
+#include "../../library/layers/InputLayer.h"
 #include "../../library/layers/FullyConnected.h"
 #include "../../library/activations/Sigmoid.h"
 #include "../../library/activations/ReLU.h"
-#include "../../library/layers/base/BaseOutputLayer.h"
+#include "../../library/layers/LossLayer.h"
 #include "../../library/lossfunctions/CrossEntropyCost.h"
 
 
@@ -21,10 +21,10 @@ using namespace std;
 
 //////////////////////// NETWORK CONSTRUCTION//////////////////////////////////
 Bias <double> *bias = new Bias <double>();
-BaseInputLayer <double> in( {143} );
+InputLayer <double> in( {143} );
 FullyConnected <double> fc1( {32}, new Sigmoid <double>(), {&in}, bias );
 FullyConnected <double> fc2( {8}, new ReLU <double>(), {&fc1}, bias );
-BaseOutputLayer <double> out( {1}, {&fc2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
+LossLayer <double> out( {1}, {&fc2}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
 
 
 

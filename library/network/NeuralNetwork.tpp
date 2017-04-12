@@ -9,9 +9,9 @@
 
 
 template <class NetworkType>
-NeuralNetwork <NetworkType> :: NeuralNetwork( std::vector<BaseInputLayer <NetworkType>* > inputLayers,
+NeuralNetwork <NetworkType> :: NeuralNetwork( std::vector<InputLayer <NetworkType>* > inputLayers,
                                               std::vector<BaseHiddenLayer <NetworkType>* > hiddenLayers,
-                                              std::vector<BaseOutputLayer <NetworkType>* > outputLayers)
+                                              std::vector<LossLayer <NetworkType>* > outputLayers)
         : inputLayers( inputLayers ), hiddenLayers( hiddenLayers ), outputLayers( outputLayers ) {
 }
 

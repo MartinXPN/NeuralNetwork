@@ -4,19 +4,6 @@
 #include "../util/NeuronOperations.h"
 
 
-
-template <class LayerType>
-FullyConnected <LayerType> :: FullyConnected(const std :: vector <unsigned>& dimensions,
-                                             BaseActivationFunction<LayerType> *activationFunction,
-                                             const std::vector< const BaseLayer<LayerType>* > &previousLayers,
-                                             Bias <LayerType>* bias) :
-        BaseHiddenLayer <LayerType> ( dimensions,
-                                      previousLayers,
-                                      activationFunction,
-                                      bias ) {
-
-}
-
 template <class LayerType>
 void FullyConnected <LayerType> :: connectNeurons() {
 

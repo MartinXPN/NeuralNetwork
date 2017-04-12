@@ -2,20 +2,19 @@
 #include <cstdlib>
 #include <ctime>
 #include "Convolution.h"
-#include "../util/MathOperations.h"
 #include "../util/NeuronOperations.h"
 
 
 template <class LayerType>
-Convolution <LayerType> ::Convolution(std::vector<unsigned> dimensions,
-                                      std::vector<unsigned> kernel,
-                                      BaseActivationFunction<LayerType> *activationFunction,
-                                      const std::vector<const BaseLayer<LayerType> *> &previousLayers,
-                                      std::vector<unsigned> stride,
-                                      Bias<LayerType> *bias)
-        : kernel( kernel ),
-          stride( stride ),
-          BaseHiddenLayer <LayerType> ( dimensions, previousLayers, activationFunction, bias ) {
+Convolution <LayerType> :: Convolution(std::vector<unsigned> dimensions,
+                                       std::vector<unsigned> kernel,
+                                       const std::vector<const BaseLayer<LayerType> *> &previousLayers,
+                                       std::vector<unsigned int> stride,
+                                       NeuronInitializer<LayerType> *neuronInitializer,
+                                       Bias<LayerType> *bias)
+        : kernel(kernel),
+          stride(stride),
+          BaseHiddenLayer <LayerType> (dimensions, previousLayers, neuronInitializer, bias) {
 
     if( this -> stride.empty() )
         stride  = std :: vector <unsigned> ( dimensions.size(), 1 );
@@ -104,7 +103,7 @@ void Convolution <LayerType> :: createWeights() {
     for( int i=0; i < numberOfWeights; ++i ) {
         weights.push_back( new LayerType( LayerType(rand() / LayerType(RAND_MAX) - 0.5) ) );
         deltaWeights.push_back( new LayerType( 0 ) );
-        numberOfUsages.push_back( new int( numberOfNeurons ) );
+        numberOfUsages.push_back( new int( this -> size() ) );
     }
 
 

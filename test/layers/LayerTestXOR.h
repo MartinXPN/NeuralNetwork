@@ -6,10 +6,10 @@
 #include <vector>
 #include <iostream>
 #include "../../library/neurons/Bias.h"
-#include "../../library/layers/base/BaseInputLayer.h"
+#include "../../library/layers/InputLayer.h"
 #include "../../library/layers/FullyConnected.h"
 #include "../../library/activations/ReLU.h"
-#include "../../library/layers/base/BaseOutputLayer.h"
+#include "../../library/layers/LossLayer.h"
 #include "../../library/lossfunctions/CrossEntropyCost.h"
 #include "../../library/activations/Sigmoid.h"
 
@@ -24,9 +24,9 @@ void layerTestXOR() {
 
     /// construct the Network
     Bias <double>* bias = new Bias <double>();
-    BaseInputLayer <double> inputLayer( {2} );
+    InputLayer <double> inputLayer( {2} );
     FullyConnected <double> hidden1( {4}, new ReLU <double>(), {&inputLayer}, bias );
-    BaseOutputLayer <double> outputLayer( {1}, {&hidden1}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
+    LossLayer <double> outputLayer( {1}, {&hidden1}, new CrossEntropyCost <double>(), new Sigmoid <double>(), bias );
 
 
     inputLayer.createNeurons();

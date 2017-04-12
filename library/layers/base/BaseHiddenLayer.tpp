@@ -1,24 +1,30 @@
 
 #include "BaseHiddenLayer.h"
+#include "../../util/MathOperations.h"
 
 template <class LayerType>
-BaseHiddenLayer <LayerType> :: BaseHiddenLayer(const std :: vector <unsigned>& dimensions,
-                                               const std::vector< const BaseLayer<LayerType>* > &previousLayers,
-                                               BaseActivationFunction<LayerType> *activationFunction,
-                                               Bias <LayerType>* bias)
-        : BaseLayer <LayerType> (dimensions, previousLayers),
-          activationFunction( activationFunction),
-          bias( bias ) {
+BaseHiddenLayer <LayerType> :: BaseHiddenLayer(const std::vector<unsigned> &dimensions,
+                                               const std::vector<const BaseLayer<LayerType> *> &previousLayers,
+                                               NeuronInitializer<LayerType> *neuronInitializer,
+                                               Bias<LayerType> *bias) :
+        BaseHiddenLayer(dimensions,
+                        previousLayers,
+                        neuronInitializer -> createNeurons( math::multiply(dimensions) ),
+                        bias) {
 
 }
 
 
 template <class LayerType>
-void BaseHiddenLayer <LayerType> :: createNeurons() {
+BaseHiddenLayer <LayerType> :: BaseHiddenLayer(const std::vector<unsigned> &dimensions,
+                                               const std::vector<const BaseLayer<LayerType> *> &previousLayers,
+                                               const std::vector<BaseNeuron<LayerType> *> &neurons,
+                                               Bias<LayerType> *bias) :
+        BaseLayer <LayerType> (dimensions, previousLayers, neurons),
+        bias(bias) {
 
-    for( int i=0; i < numberOfNeurons; ++i )
-        neurons.push_back( new BaseNeuron <LayerType> ( activationFunction ) );
 }
+
 
 template <class LayerType>
 BaseHiddenLayer <LayerType> :: ~BaseHiddenLayer() {

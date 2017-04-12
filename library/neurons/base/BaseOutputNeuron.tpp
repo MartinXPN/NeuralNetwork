@@ -1,22 +1,13 @@
 
+#include <iostream>
 #include "BaseOutputNeuron.h"
-#include "../../activations/Identitiy.h"
 
-
-template <class NeuronType>
-BaseOutputNeuron <NeuronType> :: BaseOutputNeuron(BaseLossFunction<NeuronType> *lossFunction) :
-        BaseOutputNeuron( lossFunction, new Identity <NeuronType>, {} ) {
-
-    this -> lossFunction = lossFunction;
-}
 
 template <class NeuronType>
 BaseOutputNeuron <NeuronType> ::BaseOutputNeuron(BaseLossFunction<NeuronType> *lossFunction,
                                                  BaseActivationFunction<NeuronType> *activationFunction,
                                                  std::vector<BaseEdge<NeuronType> *> previous) :
-        BaseNeuron <NeuronType> ( activationFunction, {}, previous ) {
-
-    this -> lossFunction = lossFunction;
+        BaseNeuron <NeuronType> ( activationFunction, {}, previous ), lossFunction(lossFunction) {
 }
 
 
@@ -28,5 +19,6 @@ void BaseOutputNeuron <NeuronType> :: calculateLoss( NeuronType targetValue ) {
 
 template <class NeuronType>
 NeuronType BaseOutputNeuron <NeuronType> :: getError(NeuronType targetValue) {
+//    std::cout << "loss( " << getValue() << ", " << targetValue << ") = " << lossFunction -> loss(getValue(), targetValue) << std::endl;
     return lossFunction -> loss( getValue(), targetValue );
 }
