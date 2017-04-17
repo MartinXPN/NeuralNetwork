@@ -39,7 +39,7 @@ void testNeuralNetworkMNIST() {
     InputLayer <double> inputLayer( {1, 28, 28} );
     Convolution <double> conv1( { 10, 13, 13 }, { 1, 4, 4 }, new ReLU <double>(), {&inputLayer}, {0, 2, 2}, bias );
     Convolution <double> conv2( { 5, 10, 10 }, { 10, 4, 4 }, new ReLU <double>(), {&conv1}, {0, 1, 1}, bias );
-    FullyConnected <double> fc1( {10}, new ReLU <double>(), {&conv2}, bias );
+    FullyConnected <double> fc1( {10}, new Sigmoid <double>(), {&conv2}, bias );
     LossLayer <double> outputLayer( {10}, {&fc1}, new CrossEntropyCost <double>());
 
 

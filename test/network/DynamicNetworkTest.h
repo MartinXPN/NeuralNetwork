@@ -22,10 +22,10 @@ vector< vector <double> > trainLabels, testLabels;
 void testDynamicNetworkMNIST() {
 
     /// load the data
-    trainImages = MNIST::readImages("/home/ubuntu/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
-    testImages = MNIST::readImages("/home/ubuntu/Desktop/MNIST_test_images.idx3-ubyte", 100000, 28 * 28);
-    trainLabels = MNIST::toLabelMatrix( MNIST::readLabels( "/home/ubuntu/Desktop/MNIST_train_labels.idx1-ubyte" ) );
-    testLabels = MNIST::toLabelMatrix( MNIST::readLabels( "/home/ubuntu/Desktop/MNIST_test_labels.idx1-ubyte" ) );
+    trainImages = MNIST::readImages("/home/martin/Desktop/MNIST_train_images.idx3-ubyte", 100000, 28 * 28);
+    testImages = MNIST::readImages("/home/martin/Desktop/MNIST_test_images.idx3-ubyte", 100000, 28 * 28);
+    trainLabels = MNIST::toLabelMatrix( MNIST::readLabels( "/home/martin/Desktop/MNIST_train_labels.idx1-ubyte" ) );
+    testLabels = MNIST::toLabelMatrix( MNIST::readLabels( "/home/martin/Desktop/MNIST_test_labels.idx1-ubyte" ) );
 
     printf( "Train -> Images: %d\tLabels: %d\n", trainImages.size(), trainLabels.size() );
     printf( "Test ->  Images: %d\tLabels: %d\n", testImages.size(), testLabels.size() );
@@ -36,7 +36,7 @@ void testDynamicNetworkMNIST() {
     InputLayer <double> inputLayer( {1, 28, 28} );
     Convolution <double> conv1( { 2, 13, 13 }, { 1, 4, 4 }, new ReLU <double>(), {&inputLayer}, {0, 2, 2}, bias );
     Convolution <double> conv2( { 1, 10, 10 }, { 2, 4, 4 }, new ReLU <double>(), {&conv1}, {0, 1, 1}, bias );
-    FullyConnected <double> fc1( {10}, new ReLU <double>(), {&conv2}, bias );
+    FullyConnected <double> fc1( {10}, new Sigmoid <double>(), {&conv2}, bias );
     LossLayer <double> outputLayer( {10}, {&fc1}, new CrossEntropyCost <double>() );
 
 
