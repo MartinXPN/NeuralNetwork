@@ -5,9 +5,9 @@
 
 #include <vector>
 #include <functional>
-#include "../layers/base/BaseInputLayer.h"
+#include "../layers/InputLayer.h"
 #include "../layers/base/BaseHiddenLayer.h"
-#include "../layers/base/BaseOutputLayer.h"
+#include "../layers/LossLayer.h"
 
 
 /**
@@ -22,9 +22,9 @@ template <class NetworkType>
 class NeuralNetwork {
 
 protected:
-    std :: vector <BaseInputLayer <NetworkType>* > inputLayers;
+    std :: vector <InputLayer <NetworkType>* > inputLayers;
     std :: vector <BaseHiddenLayer <NetworkType>* > hiddenLayers;
-    std :: vector <BaseOutputLayer <NetworkType>* > outputLayers;
+    std :: vector <LossLayer <NetworkType>* > outputLayers;
 
     std :: vector <BaseInputNeuron <NetworkType>* > inputNeurons;
     std :: vector< std :: vector <BaseNeuron <NetworkType>* > > buckets;
@@ -36,9 +36,9 @@ protected:
 
 
 public:
-    NeuralNetwork( std :: vector <BaseInputLayer <NetworkType>* > inputLayers,
+    NeuralNetwork( std :: vector <InputLayer <NetworkType>* > inputLayers,
                    std :: vector <BaseHiddenLayer <NetworkType>* > hiddenLayers,
-                   std :: vector <BaseOutputLayer <NetworkType>* > outputLayers );
+                   std :: vector <LossLayer <NetworkType>* > outputLayers );
 
 
     const std::vector< std :: vector <BaseNeuron <NetworkType>* > >& getBuckets() {

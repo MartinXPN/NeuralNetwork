@@ -5,6 +5,7 @@
 
 #include "BaseNeuron.h"
 #include "../../lossfunctions/base/BaseLossFunction.h"
+#include "../../activations/Identitiy.h"
 
 
 /**
@@ -38,9 +39,8 @@ protected:
 
 
 public:
-    BaseOutputNeuron( BaseLossFunction <NeuronType>* lossFunction );
     BaseOutputNeuron( BaseLossFunction <NeuronType>* lossFunction,
-                      BaseActivationFunction <NeuronType> * activationFunction,
+                      BaseActivationFunction <NeuronType> * activationFunction = new Identity <NeuronType>(),
                       std::vector < BaseEdge <NeuronType>* > previous = {} );
     virtual ~BaseOutputNeuron() {}
 

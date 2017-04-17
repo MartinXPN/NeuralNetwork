@@ -3,10 +3,9 @@
 //#include "test/layers/LayerTestMNIST.h"
 //#include "test/layers/ConvolutionTestConnections.h"
 //#include "test/layers/ConvolutionTestMNIST.h"
-//#include "test/layers/FullyConnectedTestDataMiningProject.h"
-#include "test/network/NetworkBucketTest.h"
+//#include "test/network/NetworkBucketTest.h"
 //#include "test/network/NetworkMNISTtest.h"
-//#include "test/network/DynamicNetworkTest.h"
+#include "test/network/DynamicNetworkTest.h"
 
 int main() {
 
@@ -15,9 +14,8 @@ int main() {
 //    testMNIST();
 //    testConvolutionConnections();
 //    testConvolutionMNIST();
-//    testDataMiningProject();
-    testBuckets();
+//    testBuckets();
 //    testNeuralNetworkMNIST();
-//    testDynamicNetworkMNIST();
+    testDynamicNetworkMNIST();
     return 0;
 }

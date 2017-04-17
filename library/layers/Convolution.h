@@ -7,14 +7,14 @@
 #include <cstdio>
 #include <cmath>
 #include "base/BaseHiddenLayer.h"
+#include "../initializers/neuron/SimpleNeuronInitializer.h"
+#include "../activations/ReLU.h"
 
 template <class LayerType>
 class Convolution : public BaseHiddenLayer <LayerType> {
 
 protected:
     using BaseHiddenLayer <LayerType> :: neurons;
-    using BaseHiddenLayer <LayerType> :: numberOfNeurons;
-    using BaseHiddenLayer <LayerType> :: activationFunction;
     using BaseHiddenLayer <LayerType> :: bias;
     using BaseHiddenLayer <LayerType> :: previousLayers;
     using BaseHiddenLayer <LayerType> :: dimensions;
@@ -44,7 +44,23 @@ protected:
 public:
     Convolution( std :: vector <unsigned> dimensions,
                  std :: vector <unsigned> kernel,
+                 const std::vector<const BaseLayer<LayerType> *> &previousLayers,
+                 std :: vector <unsigned> stride = {},
+                 NeuronInitializer<LayerType> *neuronInitializer = new SimpleNeuronInitializer <LayerType>( new ReLU <LayerType>() ),
+                 Bias<LayerType> *bias = nullptr );
+
+
+    Convolution( std :: vector <unsigned> dimensions,
+                 std :: vector <unsigned> kernel,
                  BaseActivationFunction<LayerType> *activationFunction,
+                 const std::vector<const BaseLayer<LayerType> *> &previousLayers,
+                 std :: vector <unsigned> stride = {},
+                 Bias<LayerType> *bias = nullptr );
+
+
+    Convolution( std :: vector <unsigned> dimensions,
+                 std :: vector <unsigned> kernel,
+                 std :: vector <BaseNeuron <LayerType>* > neurons,
                  const std::vector<const BaseLayer<LayerType> *> &previousLayers,
                  std :: vector <unsigned> stride = {},
                  Bias<LayerType> *bias = nullptr );

@@ -25,9 +25,6 @@ protected:
     /// collections of neurons in this layer
     std :: vector< BaseNeuron <LayerType>* > neurons;
 
-    /// number of neurons in this layer
-    unsigned numberOfNeurons;
-
     /// dimensions of the layer
     std :: vector <unsigned> dimensions;
 
@@ -39,9 +36,11 @@ public:
     /**
      * @param dimensions every layer may have different dimensions. For example when training a model on pictures one may use 2D convolutions + 1 dimensions for filters
      * @param previousLayers all previous layers that are connected to this layer
+     * @param neurons array of all neurons that form this layer
      */
     BaseLayer( const std :: vector <unsigned>& dimensions,
-               const std :: vector< const BaseLayer <LayerType>* >& previousLayers );
+               const std :: vector< const BaseLayer <LayerType>* >& previousLayers,
+               const std :: vector< BaseNeuron <LayerType>* >& neurons );
 
 
     /**
@@ -52,20 +51,13 @@ public:
     }
 
 
-    virtual unsigned size() const {
-        return numberOfNeurons;
+    virtual size_t size() const {
+        return neurons.size();
     }
 
     virtual const std :: vector <unsigned>& getDimensions() const {
         return dimensions;
     }
-
-
-
-    /**
-     * Has to create neurons and populate the vector< BaseNeuron <LayerType>* > neurons
-     */
-    virtual void createNeurons() = 0;
 
 
 

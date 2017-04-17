@@ -69,7 +69,14 @@ void testNeuronsXOR() {
     for( int i=0; i < numberOfEdges; ++i ) {
         int from, to;
         cin >> from >> to;
-        NeuronOperations::connectNeurons( neurons[from], neurons[to] );
+
+        double* deltaWeight = new double(0);
+        double* weight = new double(rand() / double(RAND_MAX) - 0.5);
+
+        BaseEdge<double> *edge = new BaseEdge<double>(neurons[from], neurons[to], weight, deltaWeight );
+
+        neurons[from]->addNextLayerConnection(edge);
+        neurons[to]->addPreviousLayerConnection(edge);
     }
 
     cout << "Finished initialization..." << endl;

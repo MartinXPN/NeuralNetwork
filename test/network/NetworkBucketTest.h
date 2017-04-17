@@ -16,12 +16,12 @@ void testBuckets() {
     using std::find;
 
     Bias <double> *bias = new Bias <double>();
-    auto in1 = BaseInputLayer <double>( {10, 20} );
-    auto in2 = BaseInputLayer <double>( {20, 30} );
-    auto fc1 = FullyConnected <double> ( {20}, new ReLU <double>(), {&in1, &in2}, bias );
-    auto fc2 = FullyConnected <double> ( {30}, new ReLU <double>(), {&in2} );
-    auto out1 = BaseOutputLayer <double> ( {10}, {&fc1, &fc2}, new CrossEntropyCost <double>(), new ReLU <double>(), bias );
-    auto out2 = BaseOutputLayer <double> ( {10}, {&in1}, new CrossEntropyCost <double>(), new ReLU <double>(), bias );
+    InputLayer <double> in1( {10, 20} );
+    InputLayer <double> in2( {20, 30} );
+    FullyConnected <double> fc1( {20}, new ReLU <double>(), {&in1, &in2}, bias );
+    FullyConnected <double> fc2( {30}, new ReLU <double>(), {&in2} );
+    LossLayer <double> out1( {50}, {&fc1, &fc2}, new CrossEntropyCost <double>() );
+    LossLayer <double> out2( {200}, {&in1}, new CrossEntropyCost <double>() );
 
     NeuralNetwork <double> net( { &in1, &in2 },
                                 { &fc1, &fc2 },
